@@ -85,10 +85,10 @@ export const navData = [
     items: [
       {
         title: 'Maintenance',
-        path: paths.dashboard.group.root,
+        path: paths.maintenance.root,
         icon: ICONS.user,
         children: [
-          { title: 'User Management', path: paths.dashboard.group.root },
+          { title: 'User Management', path: paths.maintenance.users },
           { title: 'Role and Permission', path: paths.dashboard.group.five },
           { title: 'PL Approval Workflow', path: paths.dashboard.group.six },
         ],
