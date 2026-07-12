@@ -12,6 +12,7 @@ import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
+import MenuItem from '@mui/material/MenuItem';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -21,21 +22,18 @@ import { Iconify } from 'src/components/iconify';
 import { Form, Field } from 'src/components/hook-form';
 
 import { useAuthContext } from '../../hooks';
-import { getErrorMessage } from '../../utils';
 import { FormHead } from '../../components/form-head';
 import { signInWithPassword } from '../../context/jwt';
 
 // ----------------------------------------------------------------------
 
 export const SignInSchema = zod.object({
-  email: zod
-    .string()
-    .min(1, { message: 'Email is required!' })
-    .email({ message: 'Email must be a valid email address!' }),
+  username: zod.string().min(1, { message: 'Username is required!' }),
   password: zod
     .string()
     .min(1, { message: 'Password is required!' })
     .min(6, { message: 'Password must be at least 6 characters!' }),
+  env: zod.string().min(1, 'Environment is required'),
 });
 
 // ----------------------------------------------------------------------
@@ -50,8 +48,9 @@ export function JwtSignInView() {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const defaultValues = {
-    email: 'demo@minimals.cc',
-    password: '@2Minimal',
+    username: 'Ryan',
+    password: 'password',
+    env: 'MOA',
   };
 
   const methods = useForm({
@@ -66,23 +65,23 @@ export function JwtSignInView() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await signInWithPassword({ email: data.email, password: data.password });
+      await signInWithPassword({ username: data.username, password: data.password });
       await checkUserSession?.();
 
       router.refresh();
     } catch (error) {
-      console.error(error);
-      const feedbackMessage = getErrorMessage(error);
-      setErrorMessage(feedbackMessage);
+      const message = error.response?.data?.detail ?? error.message ?? 'Something went wrong';
+      console.log(error.message);
+      setErrorMessage(message);
     }
   });
 
   const renderForm = () => (
     <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
-      <Field.Text name="email" label="Email address" slotProps={{ inputLabel: { shrink: true } }} />
+      <Field.Text name="username" label="Username" slotProps={{ inputLabel: { shrink: true } }} />
 
       <Box sx={{ gap: 1.5, display: 'flex', flexDirection: 'column' }}>
-        <Link
+        {/* <Link
           component={RouterLink}
           href="#"
           variant="body2"
@@ -90,7 +89,7 @@ export function JwtSignInView() {
           sx={{ alignSelf: 'flex-end' }}
         >
           Forgot password?
-        </Link>
+        </Link> */}
 
         <Field.Text
           name="password"
@@ -114,9 +113,25 @@ export function JwtSignInView() {
         />
       </Box>
 
+      <Box sx={{ gap: 1.5, display: 'flex', flexDirection: 'column' }}>
+        <Field.Select name="env" label="Environment" slotProps={{ inputLabel: { shrink: true } }}>
+          <MenuItem value="">Select Branch</MenuItem>
+
+          <MenuItem value="MKT">DSL</MenuItem>
+          <MenuItem value="MOA">LSP</MenuItem>
+          <MenuItem value="NOR">WAP</MenuItem>
+        </Field.Select>
+      </Box>
+
       <Button
         fullWidth
         color="inherit"
+        sx={{
+          backgroundColor: '#0030ff',
+          '&:hover': {
+            backgroundColor: '#0025c7',
+          },
+        }}
         size="large"
         type="submit"
         variant="contained"
@@ -135,18 +150,21 @@ export function JwtSignInView() {
         description={
           <>
             {`Don’t have an account? `}
-            <Link component={RouterLink} href={paths.auth.jwt.signUp} variant="subtitle2">
+            <Link
+              component={RouterLink}
+              href={paths.auth.jwt.signUp}
+              variant="subtitle2"
+              sx={{ color: '#0030ff' }}
+            >
               Get started
             </Link>
           </>
         }
-        sx={{ textAlign: { xs: 'center', md: 'left' } }}
+        sx={{ textAlign: { xs: 'center', md: 'center' } }}
       />
 
       <Alert severity="info" sx={{ mb: 3 }}>
-        Use <strong>{defaultValues.email}</strong>
-        {' with password '}
-        <strong>{defaultValues.password}</strong>
+        Sign in with your assigned company <strong>credentials</strong> to continue.
       </Alert>
 
       {!!errorMessage && (

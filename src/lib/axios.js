@@ -1,14 +1,23 @@
 import axios from 'axios';
 
-import { CONFIG } from 'src/global-config';
-
+import { JWT_STORAGE_KEY } from 'src/auth/context/jwt/constant';
 // ----------------------------------------------------------------------
 
 const axiosInstance = axios.create({
-  baseURL: CONFIG.serverUrl,
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
+});
+
+axiosInstance.interceptors.request.use((config) => {
+  const token = sessionStorage.getItem(JWT_STORAGE_KEY);
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
 });
 
 /**
@@ -27,9 +36,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    const message = error?.response?.data?.message || error?.message || 'Something went wrong!';
-    console.error('Axios error:', message);
-    return Promise.reject(new Error(message));
+    console.error('Axios error:', error.response?.data);
+    return Promise.reject(error);
   }
 );
 
@@ -58,7 +66,7 @@ export const endpoints = {
   calendar: '/api/calendar',
   auth: {
     me: '/api/auth/me',
-    signIn: '/api/auth/sign-in',
+    signIn: '/api/auth/login',
     signUp: '/api/auth/sign-up',
   },
   mail: {
@@ -76,5 +84,8 @@ export const endpoints = {
     list: '/api/product/list',
     details: '/api/product/details',
     search: '/api/product/search',
+  },
+  user: {
+    list: '/api/users',
   },
 };
