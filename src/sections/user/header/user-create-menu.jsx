@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Button, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Menu, Button, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 
 import { SvgColor } from 'src/components/svg-color';
 

@@ -1,6 +1,7 @@
-import { Chip, Avatar, Stack, Typography, Box, Tooltip, IconButton } from '@mui/material';
+import { Box, Chip, Stack, Avatar, Tooltip, Typography, IconButton } from '@mui/material';
 
 import { _mock } from 'src/_mock';
+
 import { SvgColor } from 'src/components/svg-color';
 
 export const UserTableColumns = [
@@ -10,7 +11,7 @@ export const UserTableColumns = [
     flex: 1.5,
     renderCell: (params) => (
       <Stack direction="row" spacing={1.5} alignItems="center" sx={{ height: 1 }}>
-        <Avatar src={_mock.image.avatar(1 + 1)} sx={{ width: 40, height: 40 }}></Avatar>
+        <Avatar src={_mock.image.avatar(1 + 1)} sx={{ width: 40, height: 40 }} />
 
         <Stack spacing={0}>
           <Typography variant="body2" fontWeight={600} noWrap>
