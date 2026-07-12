@@ -43,19 +43,38 @@ const ICONS = {
 
 export const navData = [
   /**
-   * Overview
+   * Maine Menu
    */
   {
-    subheader: 'Overview',
+    subheader: 'Main Menu',
     items: [
       {
-        title: 'One',
+        title: 'Dashboard',
         path: paths.dashboard.root,
         icon: ICONS.dashboard,
-        info: <Label>v{CONFIG.appVersion}</Label>,
       },
-      { title: 'Two', path: paths.dashboard.two, icon: ICONS.ecommerce },
-      { title: 'Three', path: paths.dashboard.three, icon: ICONS.analytics },
+      {
+        title: 'MNS Master File',
+        path: paths.dashboard.group.root,
+        icon: ICONS.user,
+        children: [
+          { title: 'Branch', path: paths.dashboard.group.root },
+          { title: 'Item', path: paths.dashboard.group.five },
+        ],
+      },
+      { title: 'Packing List', path: paths.dashboard.two, icon: ICONS.ecommerce },
+      { title: 'PL Receiving', path: paths.dashboard.three, icon: ICONS.analytics },
+      { title: 'PO Logs', path: paths.dashboard.three, icon: ICONS.kanban },
+      {
+        title: 'Reports',
+        path: paths.dashboard.group.root,
+        icon: ICONS.folder,
+        children: [
+          { title: 'PL Ageing Report', path: paths.dashboard.two },
+          { title: 'Receiving Report', path: paths.dashboard.three },
+          { title: 'Discrepancy Report', path: paths.dashboard.three },
+        ],
+      },
     ],
   },
   /**
@@ -65,13 +84,22 @@ export const navData = [
     subheader: 'Management',
     items: [
       {
-        title: 'Group',
+        title: 'Maintenance',
         path: paths.dashboard.group.root,
         icon: ICONS.user,
         children: [
-          { title: 'Four', path: paths.dashboard.group.root },
-          { title: 'Five', path: paths.dashboard.group.five },
-          { title: 'Six', path: paths.dashboard.group.six },
+          { title: 'User Management', path: paths.dashboard.group.root },
+          { title: 'Role and Permission', path: paths.dashboard.group.five },
+          { title: 'PL Approval Workflow', path: paths.dashboard.group.six },
+        ],
+      },
+      {
+        title: 'Application Setup',
+        path: paths.dashboard.group.root,
+        icon: ICONS.lock,
+        children: [
+          { title: 'Lookup', path: paths.dashboard.group.root },
+          { title: 'Global Config', path: paths.dashboard.group.five },
         ],
       },
     ],
