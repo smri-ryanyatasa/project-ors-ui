@@ -31,9 +31,14 @@ export function SignOutButton({ onClose, sx, ...other }) {
       fullWidth
       variant="soft"
       size="large"
-      color="error"
       onClick={handleLogout}
-      sx={sx}
+      sx={{
+        bgcolor: '#0030ff',
+        '&:hover': {
+          backgroundColor: '#0025c7',
+        },
+        color: 'white',
+      }}
       {...other}
     >
       Logout
