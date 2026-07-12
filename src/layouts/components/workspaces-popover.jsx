@@ -83,7 +83,7 @@ export function WorkspacesPopover({ data = [], sx, ...other }) {
         {workspace?.name}
       </Box>
 
-      <Label
+      {/* <Label
         color={workspace?.plan === 'Free' ? 'default' : 'info'}
         sx={{
           height: 22,
@@ -92,7 +92,7 @@ export function WorkspacesPopover({ data = [], sx, ...other }) {
         }}
       >
         {workspace?.plan}
-      </Label>
+      </Label> */}
 
       <Iconify width={16} icon="carbon:chevron-sort" sx={{ color: 'text.disabled' }} />
     </ButtonBase>
@@ -105,7 +105,7 @@ export function WorkspacesPopover({ data = [], sx, ...other }) {
       onClose={onClose}
       slotProps={{
         arrow: { placement: 'top-left' },
-        paper: { sx: { mt: 0.5, ml: -1.55, width: 240 } },
+        paper: { sx: { mt: 0.5, ml: -1.55, width: 200 } },
       }}
     >
       <Scrollbar sx={{ maxHeight: 240 }}>
@@ -128,7 +128,7 @@ export function WorkspacesPopover({ data = [], sx, ...other }) {
                 {option.name}
               </Typography>
 
-              <Label color={option.plan === 'Free' ? 'default' : 'info'}>{option.plan}</Label>
+              {/* <Label color={option.plan === 'Free' ? 'default' : 'info'}>{option.plan}</Label> */}
             </MenuItem>
           ))}
         </MenuList>
