@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { useState } from 'react';
 
 import { Box, Stack, Button } from '@mui/material';
 
@@ -10,36 +10,19 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import { SvgColor } from 'src/components/svg-color';
 import { PageHeader } from 'src/components/page-header/page-header';
 
+import { useUsers } from '../hooks/use-users';
 import { UserTable } from '../table/user-table';
 import { UserCreateMenu } from '../header/user-create-menu';
 import { UserCreateDialog } from '../dialogs/user-create-dialog';
 import { UserDeleteDialog } from '../dialogs/user-delete-dialog';
 
-import { useUsers } from '../hooks/use-users';
-
 // ----------------------------------------------------------------------
 
 export function UserListView({ title = 'Blank', sx }) {
-  const { getUsers, createUser, deleteUser } = useUsers();
-  const [users, setUsers] = useState();
+  const { users, refresh, createUser, deleteUser } = useUsers();
   const [selectedUser, setSelectedUser] = useState([]);
   const [createOpen, setCreateOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-
-  const fetchUsers = async () => {
-    const data = await getUsers();
-
-    setUsers(
-      data.map((user) => ({
-        ...user,
-        id: user.user_id,
-      }))
-    );
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
 
   const handleOpenDelete = async (user) => {
     setDeleteOpen(true);
@@ -48,14 +31,13 @@ export function UserListView({ title = 'Blank', sx }) {
 
   const handleCreate = async (form) => {
     await createUser(form);
+    await refresh();
     toast.success('User created successfully');
-    fetchUsers();
   };
 
   const handleDelete = async (user) => {
     await deleteUser(user);
     toast.success('User deleted successfully');
-    setUsers((prev) => prev.filter((u) => u.user_id !== user.user_id));
   };
 
   const renderContent = () => (

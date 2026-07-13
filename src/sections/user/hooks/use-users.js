@@ -1,17 +1,21 @@
-import { useAuthContext } from 'src/auth/hooks';
+import { useState, useEffect, useCallback } from 'react';
+
 import UserService from 'src/services/user.service';
+
+import { useAuthContext } from 'src/auth/hooks';
 
 export function useUsers() {
   const { user } = useAuthContext();
+  const [users, setUsers] = useState([]);
 
-  const getUsers = async () => {
-    try {
-      return await UserService.getUsers();
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  };
+  const refresh = useCallback(async () => {
+    const data = await UserService.getUsers();
+    setUsers(data);
+  }, []);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
 
   const createUser = async (form) => {
     const payload = {
@@ -22,13 +26,15 @@ export function useUsers() {
     return await UserService.createUser(payload);
   };
 
-  const deleteUser = async (user) => {
-    return await UserService.deleteUser(user);
+  const deleteUser = async (user_data) => {
+    await UserService.deleteUser(user_data);
+    setUsers((prev) => prev.filter((u) => u.user_id !== user.user_id));
   };
 
   return {
+    users,
+    refresh,
     createUser,
-    getUsers,
     deleteUser,
   };
 }

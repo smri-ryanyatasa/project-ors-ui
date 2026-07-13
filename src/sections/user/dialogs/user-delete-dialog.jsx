@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Dialog,
+  Button,
+  Typography,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Button,
-  Typography,
 } from '@mui/material';
 
 export function UserDeleteDialog({ open, user, onClose, onDelete }) {
