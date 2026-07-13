@@ -4,7 +4,7 @@ import { _mock } from 'src/_mock';
 
 import { SvgColor } from 'src/components/svg-color';
 
-export const UserTableColumns = [
+export const UserTableColumns = ({ onDelete }) => [
   {
     field: 'full_name',
     headerName: 'Name & Email',
@@ -46,7 +46,7 @@ export const UserTableColumns = [
     flex: 1,
     renderCell: (params) => (
       <Stack direction="row" spacing={2} alignItems="center" sx={{ height: '100%' }}>
-        <Typography variant="body2">Merchandising</Typography>
+        <Typography variant="body2">{params.row.position}</Typography>
       </Stack>
     ),
   },
@@ -102,7 +102,7 @@ export const UserTableColumns = [
             sx={{ width: 14, height: 14, color: 'text.secondary' }}
           />
 
-          <Typography variant="caption">Branch 1</Typography>
+          <Typography variant="caption">{params.row.branches}</Typography>
         </Box>
       </Stack>
     ),
@@ -140,7 +140,7 @@ export const UserTableColumns = [
           <IconButton size="small">
             <SvgColor
               src="/assets/icons/solar/solar--pen-bold.svg"
-              sx={{ width: 18, height: 18 }}
+              sx={{ width: 20, height: 20 }}
             />
           </IconButton>
         </Tooltip>
@@ -149,7 +149,7 @@ export const UserTableColumns = [
           <IconButton size="small">
             <SvgColor
               src="/assets/icons/solar/solar--shield-user-bold.svg"
-              sx={{ width: 18, height: 18 }}
+              sx={{ width: 20, height: 20 }}
             />
           </IconButton>
         </Tooltip>
@@ -158,16 +158,16 @@ export const UserTableColumns = [
           <IconButton size="small">
             <SvgColor
               src="/assets/icons/solar/solar--clock-circle-bold.svg"
-              sx={{ width: 18, height: 18 }}
+              sx={{ width: 20, height: 20 }}
             />
           </IconButton>
         </Tooltip>
 
         <Tooltip title="Delete">
-          <IconButton size="small" color="error">
+          <IconButton size="small" color="error" onClick={() => onDelete(params.row)}>
             <SvgColor
               src="/assets/icons/solar/solar--trash-bin-2-bold.svg"
-              sx={{ width: 18, height: 18 }}
+              sx={{ width: 20, height: 20 }}
             />
           </IconButton>
         </Tooltip>
