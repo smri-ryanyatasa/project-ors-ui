@@ -21,7 +21,12 @@ export function UserCreateMenu({ onAddSingleUser, onBulkUpload }) {
     <>
       <Button
         variant="contained"
-        color="primary"
+        sx={{
+          bgcolor: '#0030ff',
+          '&:hover': {
+            bgcolor: '#032ad8',
+          },
+        }}
         endIcon={
           <SvgColor
             src="/assets/icons/solar/solar--alt-arrow-down-line-duotone.svg"
@@ -46,7 +51,11 @@ export function UserCreateMenu({ onAddSingleUser, onBulkUpload }) {
           horizontal: 'right',
         }}
       >
-        <MenuItem>
+        <MenuItem
+          onClick={() => {
+            onAddSingleUser();
+          }}
+        >
           <ListItemIcon>
             <SvgColor
               src="/assets/icons/solar/solar--user-plus-bold.svg"

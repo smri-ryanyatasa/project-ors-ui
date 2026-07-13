@@ -1,5 +1,7 @@
 import 'src/global.css';
 
+import { Toaster } from 'sonner';
+
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 
@@ -74,6 +76,7 @@ export default async function RootLayout({ children }) {
                   <ProgressBar />
                   <SettingsDrawer defaultSettings={defaultSettings} />
                   {children}
+                  <Toaster position="top-right" richColors />
                 </MotionLazy>
               </ThemeProvider>
             </AppRouterCacheProvider>

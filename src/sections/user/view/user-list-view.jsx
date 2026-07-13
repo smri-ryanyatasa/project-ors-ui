@@ -1,5 +1,8 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
+
 import { Box, Stack, Button } from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
@@ -9,10 +12,52 @@ import { PageHeader } from 'src/components/page-header/page-header';
 
 import { UserTable } from '../table/user-table';
 import { UserCreateMenu } from '../header/user-create-menu';
+import { UserCreateDialog } from '../dialogs/user-create-dialog';
+import { UserDeleteDialog } from '../dialogs/user-delete-dialog';
+
+import { useUsers } from '../hooks/use-users';
 
 // ----------------------------------------------------------------------
 
-export function UserListView({ title = 'Blank', description, sx }) {
+export function UserListView({ title = 'Blank', sx }) {
+  const { getUsers, createUser, deleteUser } = useUsers();
+  const [users, setUsers] = useState();
+  const [selectedUser, setSelectedUser] = useState([]);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const fetchUsers = async () => {
+    const data = await getUsers();
+
+    setUsers(
+      data.map((user) => ({
+        ...user,
+        id: user.user_id,
+      }))
+    );
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const handleOpenDelete = async (user) => {
+    setDeleteOpen(true);
+    setSelectedUser(user);
+  };
+
+  const handleCreate = async (form) => {
+    await createUser(form);
+    toast.success('User created successfully');
+    fetchUsers();
+  };
+
+  const handleDelete = async (user) => {
+    await deleteUser(user);
+    toast.success('User deleted successfully');
+    setUsers((prev) => prev.filter((u) => u.user_id !== user.user_id));
+  };
+
   const renderContent = () => (
     <Box
       sx={[
@@ -28,7 +73,7 @@ export function UserListView({ title = 'Blank', description, sx }) {
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
     >
-      <UserTable />
+      <UserTable users={users} onDelete={handleOpenDelete} />
     </Box>
   );
 
@@ -59,7 +104,7 @@ export function UserListView({ title = 'Blank', description, sx }) {
           >
             Select Users from MMS
           </Button>
-          <UserCreateMenu />
+          <UserCreateMenu onAddSingleUser={() => setCreateOpen(true)} />
         </Stack>
       }
     />
@@ -69,6 +114,17 @@ export function UserListView({ title = 'Blank', description, sx }) {
     <>
       {renderPageHeader()}
       <DashboardContent maxWidth="xl">{renderContent()}</DashboardContent>
+      <UserCreateDialog
+        open={createOpen}
+        onClose={() => setCreateOpen(false)}
+        onSave={handleCreate}
+      />
+      <UserDeleteDialog
+        open={deleteOpen}
+        onClose={() => setDeleteOpen(false)}
+        user={selectedUser}
+        onDelete={handleDelete}
+      />
     </>
   );
 }
