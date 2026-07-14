@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import MenuItem from '@mui/material/MenuItem';
 import {
-  Stack,
   Dialog,
   Button,
   TextField,
@@ -12,7 +11,6 @@ import {
   DialogActions,
 } from '@mui/material';
 
-import { useAuthContext } from 'src/auth/hooks';
 
 export function UserEditDialog({ open, user, onClose, onSave }) {
   const [loading, setLoading] = useState(false);

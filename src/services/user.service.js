@@ -10,8 +10,7 @@ class UserService {
 
   async createUser(payload) {
     const { data } = await axios.post(endpoints.user.create, payload);
-    return;
-    data;
+    return data;
   }
 
   async updateUser(payload) {
@@ -21,6 +20,11 @@ class UserService {
 
   async changePassword(payload) {
     const { data } = await axios.put(endpoints.user.changePassword(payload.user_id), payload);
+    return data;
+  }
+
+  async activityLog(payload) {
+    const { data } = await axios.get(endpoints.user.activityLog(payload.user_id));
     return data;
   }
 

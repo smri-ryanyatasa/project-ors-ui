@@ -6,5 +6,6 @@ export const endpoints = {
     update: (id) => `/api/users/${id}`,
     delete: (id) => `/api/users/${id}`,
     changePassword: (id) => `/api/users/${id}/change-password`,
+    activityLog: (id) => `/api/users/${id}/activity-logs`,
   },
 };
