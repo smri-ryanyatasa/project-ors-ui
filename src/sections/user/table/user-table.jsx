@@ -6,6 +6,7 @@ export function UserTable(props) {
   const columns = UserTableColumns({
     onDelete: props.onDelete,
     onUpdate: props.onUpdate,
+    onChangePassword: props.onChangePassword,
   });
 
   return (
