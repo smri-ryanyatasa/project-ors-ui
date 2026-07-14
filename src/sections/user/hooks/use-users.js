@@ -44,6 +44,14 @@ export function useUsers() {
     await UserService.changePassword(payload);
   };
 
+  const activityLog = async (userData) => {
+    const payload = {
+      ...userData,
+    };
+
+    return await UserService.activityLog(payload);
+  };
+
   const deleteUser = async (userData) => {
     await UserService.deleteUser(userData);
     setUsers((prev) => prev.filter((u) => u.user_id !== userData.user_id));
@@ -55,6 +63,7 @@ export function useUsers() {
     createUser,
     updateUser,
     changePassword,
+    activityLog,
     deleteUser,
   };
 }

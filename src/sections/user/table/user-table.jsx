@@ -7,6 +7,7 @@ export function UserTable(props) {
     onDelete: props.onDelete,
     onUpdate: props.onUpdate,
     onChangePassword: props.onChangePassword,
+    onActivityLog: props.onActivityLog,
   });
 
   return (

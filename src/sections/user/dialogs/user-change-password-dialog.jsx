@@ -1,20 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-import Grid from '@mui/material/Grid';
-import MenuItem from '@mui/material/MenuItem';
 import {
+  Stack,
   Button,
   Dialog,
+  TextField,
+  IconButton,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Stack,
-  TextField,
-  IconButton,
   InputAdornment,
 } from '@mui/material';
 
-import { useAuthContext } from 'src/auth/hooks';
 import { Iconify } from 'src/components/iconify';
 
 export function UserChangePassowordDialog({ open, user, onClose, onSave }) {
@@ -24,7 +21,7 @@ export function UserChangePassowordDialog({ open, user, onClose, onSave }) {
   });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [errors, setError] = useState('');
 
   const handleChange = (field) => (event) => {
     const { value } = event.target;
@@ -80,8 +77,8 @@ export function UserChangePassowordDialog({ open, user, onClose, onSave }) {
             onChange={handleChange('new_password')}
             type={showPassword ? 'text' : 'password'}
             value={form.new_password}
-            error={!!error}
-            helperText={error}
+            error={!!errors}
+            helperText={errors}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -100,8 +97,8 @@ export function UserChangePassowordDialog({ open, user, onClose, onSave }) {
             onChange={handleChange('confirm_password')}
             type={showPassword ? 'text' : 'password'}
             value={form.confirm_password}
-            error={!!error}
-            helperText={error}
+            error={!!errors}
+            helperText={errors}
           />
         </Stack>
       </DialogContent>

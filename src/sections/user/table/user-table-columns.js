@@ -4,7 +4,7 @@ import { _mock } from 'src/_mock';
 
 import { SvgColor } from 'src/components/svg-color';
 
-export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword }) => [
+export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActivityLog }) => [
   {
     field: 'full_name',
     headerName: 'Name & Email',
@@ -155,7 +155,7 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword }) => [
         </Tooltip>
 
         <Tooltip title="Activity Logs">
-          <IconButton size="small">
+          <IconButton size="small" onClick={() => onActivityLog(params.row)}>
             <SvgColor
               src="/assets/icons/solar/solar--clock-circle-bold.svg"
               sx={{ width: 20, height: 20 }}
