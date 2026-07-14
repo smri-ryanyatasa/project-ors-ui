@@ -5,6 +5,6 @@ export const endpoints = {
     detail: (id) => `/api/users/${id}`,
     update: (id) => `/api/users/${id}`,
     delete: (id) => `/api/users/${id}`,
-    changePassword: (id) => `/users/${id}/change-password`,
+    changePassword: (id) => `/api/users/${id}/change-password`,
   },
 };

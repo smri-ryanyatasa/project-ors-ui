@@ -31,14 +31,22 @@ export function useUsers() {
       ...userData,
       last_update_by: user.user_id,
     };
-    console.log(payload);
 
     await UserService.updateUser(payload);
   };
 
+  const changePassword = async (userData) => {
+    const payload = {
+      ...userData,
+      last_update_by: user.user_id,
+    };
+
+    await UserService.changePassword(payload);
+  };
+
   const deleteUser = async (userData) => {
     await UserService.deleteUser(userData);
-    setUsers((prev) => prev.filter((u) => u.user_id !== user.user_id));
+    setUsers((prev) => prev.filter((u) => u.user_id !== userData.user_id));
   };
 
   return {
@@ -46,6 +54,7 @@ export function useUsers() {
     refresh,
     createUser,
     updateUser,
+    changePassword,
     deleteUser,
   };
 }

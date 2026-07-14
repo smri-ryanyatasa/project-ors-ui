@@ -16,18 +16,25 @@ import { UserCreateMenu } from '../header/user-create-menu';
 import { UserCreateDialog } from '../dialogs/user-create-dialog';
 import { UserEditDialog } from '../dialogs/user-edit-dialog';
 import { UserDeleteDialog } from '../dialogs/user-delete-dialog';
+import { UserChangePassowordDialog } from '../dialogs/user-change-password-dialog';
 
 // ----------------------------------------------------------------------
 
 export function UserListView({ title = 'Blank', sx }) {
-  const { users, refresh, createUser, updateUser, deleteUser } = useUsers();
+  const { users, refresh, createUser, updateUser, changePassword, deleteUser } = useUsers();
   const [selectedUser, setSelectedUser] = useState([]);
   const [createOpen, setCreateOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-
+  const [changePassOpen, setChangePassOpen] = useState(false);
+  console.log(users);
   const handleOpenEdit = async (user) => {
     setEditOpen(true);
+    setSelectedUser(user);
+  };
+
+  const handleOpenChangePass = async (user) => {
+    setChangePassOpen(true);
     setSelectedUser(user);
   };
 
@@ -53,6 +60,11 @@ export function UserListView({ title = 'Blank', sx }) {
     toast.success('User updated successfully');
   };
 
+  const handleChangePassword = async (user) => {
+    await changePassword(user);
+    console.log(user);
+  };
+
   const renderContent = () => (
     <Box
       sx={[
@@ -68,7 +80,12 @@ export function UserListView({ title = 'Blank', sx }) {
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
     >
-      <UserTable users={users} onDelete={handleOpenDelete} onUpdate={handleOpenEdit} />
+      <UserTable
+        users={users}
+        onDelete={handleOpenDelete}
+        onUpdate={handleOpenEdit}
+        onChangePassword={handleOpenChangePass}
+      />
     </Box>
   );
 
@@ -119,6 +136,12 @@ export function UserListView({ title = 'Blank', sx }) {
         onClose={() => setEditOpen(false)}
         user={selectedUser}
         onSave={handleUpdate}
+      />
+      <UserChangePassowordDialog
+        open={changePassOpen}
+        user={selectedUser}
+        onClose={() => setChangePassOpen(false)}
+        onSave={handleChangePassword}
       />
       <UserDeleteDialog
         open={deleteOpen}

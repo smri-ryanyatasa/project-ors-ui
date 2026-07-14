@@ -19,6 +19,11 @@ class UserService {
     return data;
   }
 
+  async changePassword(payload) {
+    const { data } = await axios.put(endpoints.user.changePassword(payload.user_id), payload);
+    return data;
+  }
+
   async deleteUser(payload) {
     const { data } = await axios.delete(endpoints.user.delete(payload.user_id));
     return data;
