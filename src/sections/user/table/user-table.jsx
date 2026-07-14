@@ -5,6 +5,7 @@ import { UserTableColumns } from './user-table-columns';
 export function UserTable(props) {
   const columns = UserTableColumns({
     onDelete: props.onDelete,
+    onUpdate: props.onUpdate,
   });
 
   return (

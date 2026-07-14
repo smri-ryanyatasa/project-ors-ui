@@ -4,7 +4,7 @@ import { _mock } from 'src/_mock';
 
 import { SvgColor } from 'src/components/svg-color';
 
-export const UserTableColumns = ({ onDelete }) => [
+export const UserTableColumns = ({ onDelete, onUpdate }) => [
   {
     field: 'full_name',
     headerName: 'Name & Email',
@@ -137,7 +137,7 @@ export const UserTableColumns = ({ onDelete }) => [
         sx={{ width: '100%', height: '100%' }}
       >
         <Tooltip title="Edit">
-          <IconButton size="small">
+          <IconButton size="small" onClick={() => onUpdate(params.row)}>
             <SvgColor
               src="/assets/icons/solar/solar--pen-bold.svg"
               sx={{ width: 20, height: 20 }}

@@ -26,8 +26,18 @@ export function useUsers() {
     return await UserService.createUser(payload);
   };
 
-  const deleteUser = async (user_data) => {
-    await UserService.deleteUser(user_data);
+  const updateUser = async (userData) => {
+    const payload = {
+      ...userData,
+      last_update_by: user.user_id,
+    };
+    console.log(payload);
+
+    await UserService.updateUser(payload);
+  };
+
+  const deleteUser = async (userData) => {
+    await UserService.deleteUser(userData);
     setUsers((prev) => prev.filter((u) => u.user_id !== user.user_id));
   };
 
@@ -35,6 +45,7 @@ export function useUsers() {
     users,
     refresh,
     createUser,
+    updateUser,
     deleteUser,
   };
 }
