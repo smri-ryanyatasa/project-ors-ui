@@ -1,26 +1,10 @@
 import { DataGrid } from '@mui/x-data-grid';
-import {
-  Stack,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from '@mui/material';
+import { Stack, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+
+import { UserActivityLogColumns } from './user-activity-log-table-columns';
 
 export function UserActivityLogsDialog({ open, onClose, user, logs, loading }) {
-  const columns = [
-    {
-      field: 'log_name',
-      headerName: 'Activity',
-      flex: 2,
-    },
-    {
-      field: 'created_at',
-      headerName: 'Date & Time',
-      flex: 1.5,
-    },
-  ];
+  const columns = UserActivityLogColumns();
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
