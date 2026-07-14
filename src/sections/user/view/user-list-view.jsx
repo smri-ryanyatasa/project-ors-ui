@@ -14,15 +14,22 @@ import { useUsers } from '../hooks/use-users';
 import { UserTable } from '../table/user-table';
 import { UserCreateMenu } from '../header/user-create-menu';
 import { UserCreateDialog } from '../dialogs/user-create-dialog';
+import { UserEditDialog } from '../dialogs/user-edit-dialog';
 import { UserDeleteDialog } from '../dialogs/user-delete-dialog';
 
 // ----------------------------------------------------------------------
 
 export function UserListView({ title = 'Blank', sx }) {
-  const { users, refresh, createUser, deleteUser } = useUsers();
+  const { users, refresh, createUser, updateUser, deleteUser } = useUsers();
   const [selectedUser, setSelectedUser] = useState([]);
   const [createOpen, setCreateOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const handleOpenEdit = async (user) => {
+    setEditOpen(true);
+    setSelectedUser(user);
+  };
 
   const handleOpenDelete = async (user) => {
     setDeleteOpen(true);
@@ -40,6 +47,12 @@ export function UserListView({ title = 'Blank', sx }) {
     toast.success('User deleted successfully');
   };
 
+  const handleUpdate = async (user) => {
+    await updateUser(user);
+    await refresh();
+    toast.success('User updated successfully');
+  };
+
   const renderContent = () => (
     <Box
       sx={[
@@ -55,7 +68,7 @@ export function UserListView({ title = 'Blank', sx }) {
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
     >
-      <UserTable users={users} onDelete={handleOpenDelete} />
+      <UserTable users={users} onDelete={handleOpenDelete} onUpdate={handleOpenEdit} />
     </Box>
   );
 
@@ -101,10 +114,16 @@ export function UserListView({ title = 'Blank', sx }) {
         onClose={() => setCreateOpen(false)}
         onSave={handleCreate}
       />
+      <UserEditDialog
+        open={editOpen}
+        onClose={() => setEditOpen(false)}
+        user={selectedUser}
+        onSave={handleUpdate}
+      />
       <UserDeleteDialog
         open={deleteOpen}
-        onClose={() => setDeleteOpen(false)}
         user={selectedUser}
+        onClose={() => setDeleteOpen(false)}
         onDelete={handleDelete}
       />
     </>

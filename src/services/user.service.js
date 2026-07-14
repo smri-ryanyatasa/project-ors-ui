@@ -10,6 +10,12 @@ class UserService {
 
   async createUser(payload) {
     const { data } = await axios.post(endpoints.user.create, payload);
+    return;
+    data;
+  }
+
+  async updateUser(payload) {
+    const { data } = await axios.put(endpoints.user.update(payload.user_id), payload);
     return data;
   }
 
