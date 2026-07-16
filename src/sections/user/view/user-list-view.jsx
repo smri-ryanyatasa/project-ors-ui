@@ -13,6 +13,7 @@ import { PageHeader } from 'src/components/page-header/page-header';
 import { useUsers } from '../hooks/use-users';
 import { UserTable } from '../table/user-table';
 import { UserCreateMenu } from '../header/user-create-menu';
+import { UserBulkUploadDialog } from '../dialogs/user-bulk-upload-dialog';
 import { UserEditDialog } from '../dialogs/user-edit-dialog';
 import { UserCreateDialog } from '../dialogs/user-create-dialog';
 import { UserDeleteDialog } from '../dialogs/user-delete-dialog';
@@ -22,10 +23,19 @@ import { UserChangePassowordDialog } from '../dialogs/user-change-password-dialo
 // ----------------------------------------------------------------------
 
 export function UserListView({ title = 'Blank', sx }) {
-  const { users, refresh, createUser, updateUser, changePassword, activityLog, deleteUser } =
-    useUsers();
+  const {
+    users,
+    refresh,
+    createUser,
+    bulkUpload,
+    updateUser,
+    changePassword,
+    activityLog,
+    deleteUser,
+  } = useUsers();
   const [selectedUser, setSelectedUser] = useState([]);
   const [createOpen, setCreateOpen] = useState(false);
+  const [bulkUploadOpen, setBulkUploadOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [changePassOpen, setChangePassOpen] = useState(false);
   const [activityLogOpen, setActivityLogOpen] = useState(false);
@@ -59,6 +69,10 @@ export function UserListView({ title = 'Blank', sx }) {
     await createUser(form);
     await refresh();
     toast.success('User created successfully');
+  };
+
+  const handleImport = async (users) => {
+    await bulkUpload(users);
   };
 
   const handleDelete = async (user) => {
@@ -122,14 +136,22 @@ export function UserListView({ title = 'Blank', sx }) {
           <Button
             variant="outlined"
             sx={{ color: 'text.secondary' }}
-            startIcon={<SvgColor src="/assets/icons/solar/solar--user-id-bold.svg" />}
+            startIcon={
+              <SvgColor
+                src="/assets/icons/solar/solar--user-id-bold.svg"
+                sx={{ width: 20, height: 20 }}
+              />
+            }
             onClick={() => {
               // Import from MMS
             }}
           >
             Select Users from MMS
           </Button>
-          <UserCreateMenu onAddSingleUser={() => setCreateOpen(true)} />
+          <UserCreateMenu
+            onAddSingleUser={() => setCreateOpen(true)}
+            onBulkUpload={() => setBulkUploadOpen(true)}
+          />
         </Stack>
       }
     />
@@ -143,6 +165,11 @@ export function UserListView({ title = 'Blank', sx }) {
         open={createOpen}
         onClose={() => setCreateOpen(false)}
         onSave={handleCreate}
+      />
+      <UserBulkUploadDialog
+        open={bulkUploadOpen}
+        onClose={() => setBulkUploadOpen(false)}
+        onImport={handleImport}
       />
       <UserEditDialog
         open={editOpen}

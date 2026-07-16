@@ -13,6 +13,22 @@ class UserService {
     return data;
   }
 
+  async bulkUpload(payload) {
+    const rows = payload.map((row) => ({
+      user_name: row['User ID'],
+      email_address: row['Email Address'],
+      full_name: row['Full Name'],
+      position: row['Position'],
+      from_mms: row['From MMS'],
+      branches: row['Branch Details'],
+      user_status: row['Status'],
+      role: row['Role'],
+    }));
+
+    const { data } = await axios.post(endpoints.user.bulkUpload, rows);
+    return data;
+  }
+
   async updateUser(payload) {
     const { data } = await axios.put(endpoints.user.update(payload.user_id), payload);
     return data;

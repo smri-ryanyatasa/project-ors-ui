@@ -66,7 +66,11 @@ export function UserCreateMenu({ onAddSingleUser, onBulkUpload }) {
           <ListItemText primary="Add Single User" />
         </MenuItem>
 
-        <MenuItem>
+        <MenuItem
+          onClick={() => {
+            onBulkUpload();
+          }}
+        >
           <ListItemIcon>
             <SvgColor
               src="/assets/icons/solar/solar--upload-bold.svg"
