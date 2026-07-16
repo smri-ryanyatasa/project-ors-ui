@@ -26,6 +26,12 @@ export function useUsers() {
     return await UserService.createUser(payload);
   };
 
+  const bulkUpload = async (userData) => {
+    const payload = userData;
+
+    return await UserService.bulkUpload(payload);
+  };
+
   const updateUser = async (userData) => {
     const payload = {
       ...userData,
@@ -61,6 +67,7 @@ export function useUsers() {
     users,
     refresh,
     createUser,
+    bulkUpload,
     updateUser,
     changePassword,
     activityLog,

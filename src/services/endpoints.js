@@ -7,5 +7,6 @@ export const endpoints = {
     delete: (id) => `/api/users/${id}`,
     changePassword: (id) => `/api/users/${id}/change-password`,
     activityLog: (id) => `/api/users/${id}/activity-logs`,
+    bulkUpload: '/api/users/bulk-upload',
   },
 };
