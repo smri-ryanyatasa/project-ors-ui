@@ -24,8 +24,7 @@ export const signInWithPassword = async ({ username, password }) => {
 
     setSession(accessToken);
   } catch (error) {
-    console.error('Error during sign in:', error);
-    throw error;
+    throw new Error(error.response?.data?.message || 'Something went wrong.');
   }
 };
 

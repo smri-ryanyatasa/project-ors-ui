@@ -17,7 +17,7 @@ export function UserActivityLogsDialog({ open, onClose, user, logs, loading }) {
             columns={columns}
             loading={loading}
             showToolbar={false}
-            getRowId={(row) => row.id}
+            getRowId={(row) => row.audit_id}
             pageSizeOptions={[5, 10, 25]}
             initialState={{
               pagination: {
