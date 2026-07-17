@@ -20,6 +20,7 @@ export function useUsers() {
   const createUser = async (form) => {
     const payload = {
       ...form,
+      mms: 'Y',
       created_by: user.user_id,
     };
 

@@ -11,7 +11,6 @@ import {
   DialogActions,
 } from '@mui/material';
 
-
 export function UserEditDialog({ open, user, onClose, onSave }) {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -147,8 +146,8 @@ export function UserEditDialog({ open, user, onClose, onSave }) {
               value={form.env}
               onChange={handleChange('env')}
             >
-              <MenuItem value="WTA">WTA</MenuItem>
-              <MenuItem value="PUP">PUP</MenuItem>
+              <MenuItem value="LSP">LSP</MenuItem>
+              <MenuItem value="SCP">SCP</MenuItem>
             </TextField>
           </Grid>
 
@@ -219,7 +218,7 @@ export function UserEditDialog({ open, user, onClose, onSave }) {
               <MenuItem value="">
                 <em>Select Business Unit</em>
               </MenuItem>
-              <MenuItem value="Bag man">Bag man</MenuItem>
+              <MenuItem value="Science">Science</MenuItem>
               <MenuItem value="Watcher">Watcher</MenuItem>
               <MenuItem value="Queue">Queue</MenuItem>
             </TextField>

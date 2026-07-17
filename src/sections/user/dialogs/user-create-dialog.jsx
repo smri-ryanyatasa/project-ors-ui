@@ -100,14 +100,26 @@ export function UserCreateDialog({
 
       onClose();
     } catch (error) {
-      const message = error.response?.data?.detail || error.response?.data?.message;
+      const responseData = error.response?.data;
 
-      if (message === 'Username already exists') {
+      const message = responseData?.detail || responseData?.message;
+
+      if (message === 'Username already exists.') {
         setErrors((prev) => ({
           ...prev,
-          user_name: 'Username already exists.',
+          user_name: message,
         }));
+
         return;
+      }
+
+      const fieldErrors = responseData?.data?.fieldErrors;
+
+      if (fieldErrors) {
+        setErrors((prev) => ({
+          ...prev,
+          ...fieldErrors,
+        }));
       }
     } finally {
       setLoading(false);
@@ -155,6 +167,8 @@ export function UserCreateDialog({
               type={showPassword ? 'text' : 'password'}
               value={form.password}
               onChange={handleChange}
+              error={!!errors.password}
+              helperText={errors.password}
               slotProps={{
                 input: {
                   endAdornment: (

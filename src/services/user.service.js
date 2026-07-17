@@ -35,7 +35,7 @@ class UserService {
   }
 
   async changePassword(payload) {
-    const { data } = await axios.put(endpoints.user.changePassword(payload.user_id), payload);
+    const { data } = await axios.patch(endpoints.user.changePassword(payload.user_id), payload);
     return data;
   }
 
