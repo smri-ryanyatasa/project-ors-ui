@@ -61,6 +61,7 @@ export function UserBulkUploadDialog({ open, onClose, onImport, onDownloadTempla
 
       setRows(data);
     } catch (err) {
+      console.log(err);
       setError('Unable to read the selected file.');
     } finally {
       setUploadExpanded(false);
@@ -85,6 +86,7 @@ export function UserBulkUploadDialog({ open, onClose, onImport, onDownloadTempla
 
       setRows(data);
     } catch (err) {
+      console.log(err);
       setError('Unable to read the selected file.');
     } finally {
       setUploadExpanded(false);
@@ -140,9 +142,9 @@ export function UserBulkUploadDialog({ open, onClose, onImport, onDownloadTempla
       await onImport(rows);
 
       handleClose();
-    } catch (error) {
-      const apiError = error.response?.data;
-      console.log(apiError.message);
+    } catch (err) {
+      const apiError = err.response?.data;
+
       if (Array.isArray(apiError?.errors)) {
         const errorsByRow = apiError.errors.reduce((acc, item) => {
           const rowNumber = item.row + 1;
@@ -157,9 +159,7 @@ export function UserBulkUploadDialog({ open, onClose, onImport, onDownloadTempla
         }, {});
 
         const errorMessage = Object.entries(errorsByRow)
-          .map(([row, errors]) => {
-            return `Row ${row}:\n- ${errors.join('\n- ')}`;
-          })
+          .map(([row, errors]) => `Row ${row}:\n- ${errors.join('\n- ')}`)
           .join('\n\n');
 
         setError(errorMessage);
