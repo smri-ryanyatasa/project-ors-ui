@@ -13,10 +13,10 @@ import { PageHeader } from 'src/components/page-header/page-header';
 import { useUsers } from '../hooks/use-users';
 import { UserTable } from '../table/user-table';
 import { UserCreateMenu } from '../header/user-create-menu';
-import { UserBulkUploadDialog } from '../dialogs/user-bulk-upload-dialog';
 import { UserEditDialog } from '../dialogs/user-edit-dialog';
 import { UserCreateDialog } from '../dialogs/user-create-dialog';
 import { UserDeleteDialog } from '../dialogs/user-delete-dialog';
+import { UserBulkUploadDialog } from '../dialogs/user-bulk-upload-dialog';
 import { UserActivityLogsDialog } from '../dialogs/user-activity-log-dialog';
 import { UserChangePassowordDialog } from '../dialogs/user-change-password-dialog';
 
@@ -71,8 +71,10 @@ export function UserListView({ title = 'Blank', sx }) {
     toast.success('User created successfully');
   };
 
-  const handleImport = async (users) => {
-    await bulkUpload(users);
+  const handleImport = async (new_users) => {
+    await bulkUpload(new_users);
+    await refresh();
+    toast.success('Users created successfully');
   };
 
   const handleDelete = async (user) => {
