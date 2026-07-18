@@ -28,9 +28,19 @@ export function useUsers() {
   };
 
   const bulkUpload = async (userData) => {
-    const payload = userData;
+    const rows = userData.map((row) => ({
+      user_name: row['User ID'],
+      email_address: row['Email Address'],
+      full_name: row['Full Name'],
+      position: row['Position'],
+      mms: row['From MMS'],
+      branches: row['Branch Details'],
+      status: row['Status'],
+      role: row['Role'],
+      created_by: user.user_id,
+    }));
 
-    return await UserService.bulkUpload(payload);
+    return await UserService.bulkUpload(rows);
   };
 
   const updateUser = async (userData) => {

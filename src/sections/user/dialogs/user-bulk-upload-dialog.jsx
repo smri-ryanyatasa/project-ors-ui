@@ -1,21 +1,20 @@
-import { useState, useRef } from 'react';
-
 import * as XLSX from 'xlsx';
+import { useRef, useState } from 'react';
 
 import {
+  Box,
   Alert,
+  Stack,
   Button,
   Dialog,
+  Backdrop,
+  Accordion,
+  IconButton,
+  Typography,
   DialogTitle,
   DialogContent,
   DialogActions,
-  IconButton,
-  Stack,
-  Typography,
-  Box,
-  Backdrop,
   CircularProgress,
-  Accordion,
   AccordionSummary,
   AccordionDetails,
 } from '@mui/material';
@@ -112,8 +111,8 @@ export function UserBulkUploadDialog({ open, onClose, onImport, onDownloadTempla
 
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  const readFile = async (file) => {
-    const buffer = await file.arrayBuffer();
+  const readFile = async (selectedFile) => {
+    const buffer = await selectedFile.arrayBuffer();
 
     const workbook = XLSX.read(buffer, {
       type: 'array',
@@ -140,9 +139,37 @@ export function UserBulkUploadDialog({ open, onClose, onImport, onDownloadTempla
 
       await onImport(rows);
 
-      //   handleClose();
-    } catch (err) {
-      setError(err?.message || 'Failed to import file.');
+      handleClose();
+    } catch (error) {
+      const apiError = error.response?.data;
+      console.log(apiError.message);
+      if (Array.isArray(apiError?.errors)) {
+        const errorsByRow = apiError.errors.reduce((acc, item) => {
+          const rowNumber = item.row + 1;
+
+          if (!acc[rowNumber]) {
+            acc[rowNumber] = [];
+          }
+
+          acc[rowNumber].push(`${item.field}: ${item.message}`);
+
+          return acc;
+        }, {});
+
+        const errorMessage = Object.entries(errorsByRow)
+          .map(([row, errors]) => {
+            return `Row ${row}:\n- ${errors.join('\n- ')}`;
+          })
+          .join('\n\n');
+
+        setError(errorMessage);
+      } else if (Array.isArray(apiError?.usernames)) {
+        const usernames = apiError.usernames.map((item) => item.user_name).join(', ');
+        console.log(usernames);
+        setError(`${apiError.message || 'Username already exists'}: ${usernames}`);
+      } else {
+        setError(apiError?.message || 'Failed to import file.');
+      }
     } finally {
       setLoading(false);
     }
@@ -156,13 +183,15 @@ export function UserBulkUploadDialog({ open, onClose, onImport, onDownloadTempla
     onClose();
   };
 
+  const isProcessing = readingFile || loading;
+
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
       <DialogTitle>Bulk Upload Users</DialogTitle>
 
       <DialogContent>
         <Backdrop
-          open={readingFile}
+          open={isProcessing}
           sx={{
             position: 'absolute',
             zIndex: (theme) => theme.zIndex.modal + 1,
@@ -175,7 +204,7 @@ export function UserBulkUploadDialog({ open, onClose, onImport, onDownloadTempla
           <CircularProgress color="inherit" />
 
           <Typography color="inherit" variant="subtitle1">
-            Reading file, please wait...
+            {readingFile ? 'Reading file, please wait...' : 'Uploading users, please wait...'}
           </Typography>
         </Backdrop>
 
@@ -184,7 +213,24 @@ export function UserBulkUploadDialog({ open, onClose, onImport, onDownloadTempla
             Upload an Excel (.xlsx) or CSV (.csv) file to import multiple users.
           </Typography>
 
-          {error && <Alert severity="error">{error}</Alert>}
+          {error && (
+            <Alert
+              severity="error"
+              sx={{
+                alignItems: 'flex-start',
+                '& .MuiAlert-message': {
+                  width: '100%',
+                  minWidth: 0,
+                  maxHeight: 300,
+                  overflowY: 'auto',
+                  pr: 1,
+                  whiteSpace: 'pre-line',
+                },
+              }}
+            >
+              {error}
+            </Alert>
+          )}
 
           <Button
             variant="outlined"
@@ -297,7 +343,7 @@ export function UserBulkUploadDialog({ open, onClose, onImport, onDownloadTempla
         <Button
           variant="contained"
           onClick={handleImport}
-          disabled={!file || loading}
+          disabled={!file || loading || error}
           sx={{
             bgcolor: '#0030ff',
             '&:hover': {
