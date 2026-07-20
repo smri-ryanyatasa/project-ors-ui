@@ -9,5 +9,6 @@ export const endpoints = {
     activityLog: (id) => `/api/users/${id}/user-history`,
     bulkUpload: '/api/users/bulk-upload',
     csvExport: '/api/users/csv-export',
+    excelExport: '/api/users/excel-export',
   },
 };

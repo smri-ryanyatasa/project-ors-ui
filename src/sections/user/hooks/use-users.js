@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 
+import { saveAs } from 'file-saver';
+
 import UserService from 'src/services/user.service';
 
 import { useAuthContext } from 'src/auth/hooks';
@@ -144,6 +146,28 @@ export function useUsers() {
     }
   };
 
+  const excelExport = async () => {
+    try {
+      setLoading(true);
+
+      const response = await UserService.excelExport({
+        search,
+        filterModel: JSON.stringify(filterModel.items),
+        sortModel: JSON.stringify(sortModel),
+      });
+
+      const blob = new Blob([response], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+
+      saveAs(blob, 'users.xlsx');
+    } catch (error) {
+      console.error('CSV export error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     users,
     refresh,
@@ -163,5 +187,6 @@ export function useUsers() {
     sortModel,
     setSortModel,
     csvExport,
+    excelExport,
   };
 }

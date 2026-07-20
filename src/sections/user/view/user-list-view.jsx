@@ -42,6 +42,7 @@ export function UserListView({ title = 'Blank', sx }) {
     sortModel,
     setSortModel,
     csvExport,
+    excelExport,
   } = useUsers();
   const [selectedUser, setSelectedUser] = useState([]);
   const [createOpen, setCreateOpen] = useState(false);
@@ -105,6 +106,12 @@ export function UserListView({ title = 'Blank', sx }) {
 
   const handleCsvExport = async () => {
     await csvExport();
+    toast.success('CSV file downloaded successfully.');
+  };
+
+  const handleExcelExport = async () => {
+    await excelExport();
+    toast.success('EXCEL file downloaded successfully.');
   };
 
   const renderContent = () => (
@@ -137,6 +144,7 @@ export function UserListView({ title = 'Blank', sx }) {
         sortModel={sortModel}
         onSortModelChange={setSortModel}
         onDownloadCsv={handleCsvExport}
+        onDownloadExcel={handleExcelExport}
       />
     </Box>
   );
