@@ -3,8 +3,10 @@ import axios from 'src/lib/axios';
 import { endpoints } from './endpoints';
 
 class UserService {
-  async getUsers() {
-    const { data } = await axios.get(endpoints.user.list);
+  async getUsers(params) {
+    const { data } = await axios.get(endpoints.user.list, {
+      params,
+    });
     return data;
   }
 
@@ -36,6 +38,14 @@ class UserService {
 
   async deleteUser(payload) {
     const { data } = await axios.delete(endpoints.user.delete(payload.user_id));
+    return data;
+  }
+
+  async csvExport(params) {
+    const { data } = await axios.get(endpoints.user.csvExport, {
+      params,
+      responseType: 'blob',
+    });
     return data;
   }
 }

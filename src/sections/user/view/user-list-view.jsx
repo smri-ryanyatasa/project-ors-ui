@@ -32,6 +32,16 @@ export function UserListView({ title = 'Blank', sx }) {
     changePassword,
     activityLog,
     deleteUser,
+    loading,
+    total,
+    paginationModel,
+    setPaginationModel,
+    setFilterModel,
+    filterModel,
+    handleFilterModelChange,
+    sortModel,
+    setSortModel,
+    csvExport,
   } = useUsers();
   const [selectedUser, setSelectedUser] = useState([]);
   const [createOpen, setCreateOpen] = useState(false);
@@ -90,7 +100,11 @@ export function UserListView({ title = 'Blank', sx }) {
 
   const handleChangePassword = async (user) => {
     await changePassword(user);
-    console.log(user);
+    toast.success('Change password successfully');
+  };
+
+  const handleCsvExport = async () => {
+    await csvExport();
   };
 
   const renderContent = () => (
@@ -114,6 +128,15 @@ export function UserListView({ title = 'Blank', sx }) {
         onUpdate={handleOpenEdit}
         onChangePassword={handleOpenChangePass}
         onActivityLog={handleOpenActivityLog}
+        loading={loading}
+        rowCount={total}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
+        onFilterModelChange={handleFilterModelChange}
+        filterModel={filterModel}
+        sortModel={sortModel}
+        onSortModelChange={setSortModel}
+        onDownloadCsv={handleCsvExport}
       />
     </Box>
   );
