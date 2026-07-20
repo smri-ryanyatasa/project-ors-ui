@@ -8,5 +8,6 @@ export const endpoints = {
     changePassword: (id) => `/api/users/${id}/change-password`,
     activityLog: (id) => `/api/users/${id}/user-history`,
     bulkUpload: '/api/users/bulk-upload',
+    csvExport: '/api/users/csv-export',
   },
 };
