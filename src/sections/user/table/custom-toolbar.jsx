@@ -10,10 +10,6 @@ import { Box } from '@mui/material';
 import { DownloadButton } from './download-button';
 
 export function CustomToolbar(props) {
-  const handleDownloadCSV = () => {
-    // Your custom CSV export function
-  };
-
   return (
     <Box sx={{ p: 2 }}>
       <GridToolbarContainer
@@ -30,7 +26,10 @@ export function CustomToolbar(props) {
         <GridToolbarColumnsButton />
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
-        <DownloadButton onDownloadCsv={props.onDownloadCsv} />
+        <DownloadButton
+          onDownloadCsv={props.onDownloadCsv}
+          onDownloadExcel={props.onDownloadExcel}
+        />
         <GridToolbarQuickFilter />
       </GridToolbarContainer>
     </Box>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, Menu, MenuItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import { SvgColor } from 'src/components/svg-color';
 
-export function DownloadButton({ onDownloadCsv }) {
+export function DownloadButton({ onDownloadCsv, onDownloadExcel }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -22,6 +22,7 @@ export function DownloadButton({ onDownloadCsv }) {
   const handleDownloadExcel = () => {
     handleClose();
     // Your Excel download function
+    onDownloadExcel();
   };
 
   return (

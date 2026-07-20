@@ -48,6 +48,14 @@ class UserService {
     });
     return data;
   }
+
+  async excelExport(params) {
+    const { data } = await axios.get(endpoints.user.excelExport, {
+      params,
+      responseType: 'blob',
+    });
+    return data;
+  }
 }
 
 export default new UserService();

@@ -41,6 +41,7 @@ export function UserTable(props) {
       slotProps={{
         toolbar: {
           onDownloadCsv: props.onDownloadCsv,
+          onDownloadExcel: props.onDownloadExcel,
         },
       }}
     />
