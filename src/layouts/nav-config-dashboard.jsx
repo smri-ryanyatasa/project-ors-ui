@@ -88,7 +88,7 @@ export const navData = [
         icon: ICONS.user,
         children: [
           { title: 'User Management', path: paths.maintenance.users },
-          { title: 'Role and Permission', path: paths.dashboard.group.five },
+          { title: 'Role and Permission', path: paths.maintenance.rolePermissions },
           { title: 'PL Approval Workflow', path: paths.dashboard.group.six },
         ],
       },

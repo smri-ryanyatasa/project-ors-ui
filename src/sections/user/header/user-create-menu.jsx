@@ -27,6 +27,12 @@ export function UserCreateMenu({ onAddSingleUser, onBulkUpload }) {
             bgcolor: '#032ad8',
           },
         }}
+        startIcon={
+          <SvgColor
+            src="/assets/icons/solar/material-symbols--add.svg"
+            sx={{ width: 20, height: 20 }}
+          />
+        }
         endIcon={
           <SvgColor
             src="/assets/icons/solar/solar--alt-arrow-down-line-duotone.svg"
