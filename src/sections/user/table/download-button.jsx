@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Button, Menu, MenuItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
+
+import { Menu, Button, MenuItem, Typography, ListItemIcon, ListItemText } from '@mui/material';
+
 import { SvgColor } from 'src/components/svg-color';
 
 export function DownloadButton({ onDownloadCsv, onDownloadExcel }) {

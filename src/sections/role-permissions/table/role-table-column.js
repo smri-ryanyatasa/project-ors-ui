@@ -1,4 +1,4 @@
-import { Box, Chip, Stack, Avatar, Tooltip, Typography, IconButton } from '@mui/material';
+import { Stack, Tooltip, IconButton } from '@mui/material';
 
 import { SvgColor } from 'src/components/svg-color';
 

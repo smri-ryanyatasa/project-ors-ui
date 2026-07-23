@@ -1,7 +1,7 @@
 import { DataGrid } from '@mui/x-data-grid';
 
-import { UserTableColumns } from './user-table-columns';
 import { CustomToolbar } from './custom-toolbar';
+import { UserTableColumns } from './user-table-columns';
 
 export function UserTable(props) {
   const columns = UserTableColumns({

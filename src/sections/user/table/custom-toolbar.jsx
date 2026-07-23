@@ -1,11 +1,11 @@
+import { Box } from '@mui/material';
 import {
   GridToolbarContainer,
   GridToolbarQuickFilter,
-  GridToolbarColumnsButton,
   GridToolbarFilterButton,
+  GridToolbarColumnsButton,
   GridToolbarDensitySelector,
 } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
 
 import { DownloadButton } from './download-button';
 

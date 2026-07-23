@@ -1,22 +1,23 @@
 import { useState, useEffect } from 'react';
 
 import {
+  Box,
   Grid,
+  Alert,
   Dialog,
   Button,
   MenuItem,
+  Checkbox,
   TextField,
+  Accordion,
+  Typography,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Box,
-  Typography,
-  Accordion,
   AccordionDetails,
   AccordionSummary,
-  Checkbox,
-  Alert,
 } from '@mui/material';
+
 import { Iconify } from 'src/components/iconify';
 
 export function RoleEditDialog({ open, role, menus, onClose, onSave }) {
@@ -125,7 +126,7 @@ export function RoleEditDialog({ open, role, menus, onClose, onSave }) {
 
     const isChecked = selectedMenuIds.includes(menu.id);
 
-    const handleChange = (event) => {
+    const handleChangeMenu = (event) => {
       const checked = event.target.checked;
 
       setSelectedMenuIds((prev) => {
@@ -169,7 +170,7 @@ export function RoleEditDialog({ open, role, menus, onClose, onSave }) {
             mb: 0.5,
           }}
         >
-          <Checkbox size="small" checked={isChecked} onChange={handleChange} />
+          <Checkbox size="small" checked={isChecked} onChange={handleChangeMenu} />
 
           <Typography variant="body2">{menu.name}</Typography>
         </Box>

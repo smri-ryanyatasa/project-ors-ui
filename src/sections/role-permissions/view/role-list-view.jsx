@@ -3,21 +3,21 @@
 import { toast } from 'sonner';
 import { useState } from 'react';
 
-import { Box, Stack, Button, Typography } from '@mui/material';
+import { Box, Stack, Button } from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
+
 import { SvgColor } from 'src/components/svg-color';
 import { PageHeader } from 'src/components/page-header/page-header';
 
-import { useRolePermissions } from '../hooks/use-roles';
 import { RoleTable } from '../table/role-table';
-import { RoleCreateDialog } from '../dialogs/role-create-dialog';
+import { useRolePermissions } from '../hooks/use-roles';
 import { RoleEditDialog } from '../dialogs/role-edit-dialog';
+import { RoleCreateDialog } from '../dialogs/role-create-dialog';
 import { RoleDeleteDialog } from '../dialogs/role-delete-dialog';
 
 export function RoleListView({ title = 'Blank', sx }) {
-  const { roles, refresh, loading, createRole, updateRole, deleteRole, menus } =
-    useRolePermissions();
+  const { roles, refresh, createRole, updateRole, deleteRole, menus } = useRolePermissions();
   const [createOpen, setCreateOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);

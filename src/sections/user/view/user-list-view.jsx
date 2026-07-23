@@ -36,7 +36,6 @@ export function UserListView({ title = 'Blank', sx }) {
     total,
     paginationModel,
     setPaginationModel,
-    setFilterModel,
     filterModel,
     handleFilterModelChange,
     sortModel,
