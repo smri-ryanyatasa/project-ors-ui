@@ -11,4 +11,11 @@ export const endpoints = {
     csvExport: '/api/users/csv-export',
     excelExport: '/api/users/excel-export',
   },
+  rolePermission: {
+    list: '/api/role-permissions',
+    create: '/api/role-permissions',
+    update: (id) => `/api/role-permissions/${id}`,
+    delete: (id) => `/api/role-permissions/${id}`,
+    getMenus: '/api/role-permissions/menus',
+  },
 };

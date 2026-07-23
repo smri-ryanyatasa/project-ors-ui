@@ -55,5 +55,6 @@ export const paths = {
   maintenance: {
     root: `${ROOTS.BASE}/maintenance`,
     users: `${ROOTS.BASE}/maintenance/users`,
+    rolePermissions: `${ROOTS.BASE}/maintenance/role-permissions`,
   },
 };
