@@ -9,9 +9,10 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Autocomplete,
 } from '@mui/material';
 
-export function UserEditDialog({ open, user, onClose, onSave }) {
+export function UserEditDialog({ open, user, roles, branches, onClose, onSave }) {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -24,13 +25,21 @@ export function UserEditDialog({ open, user, onClose, onSave }) {
     email_address: '',
     role_id: '',
     business_unit: '',
-    branches: '',
+    branches: [],
     status: '',
     description: '',
+    role_id: '',
   });
 
   useEffect(() => {
     if (user) {
+      const userBranches = Array.isArray(user.branches)
+        ? user.branches
+        : user.branches
+            ?.split(',')
+            .map((branch) => branch.trim())
+            .filter(Boolean) || [];
+
       setForm({
         user_id: user.user_id,
         user_name: user.user_name ?? '',
@@ -40,7 +49,7 @@ export function UserEditDialog({ open, user, onClose, onSave }) {
         email_address: user.email_address ?? '',
         role_id: user.role_id ?? '',
         business_unit: user.business_unit ?? '',
-        branches: user.branches ?? '',
+        branches: userBranches,
         status: user.status ?? '',
         description: user.description ?? '',
       });
@@ -130,9 +139,11 @@ export function UserEditDialog({ open, user, onClose, onSave }) {
               <MenuItem value="">
                 <em>Select Role</em>
               </MenuItem>
-              <MenuItem value={1}>Administrator</MenuItem>
-              <MenuItem value={2}>Merchandising</MenuItem>
-              <MenuItem value={3}>Business Analyst</MenuItem>
+              {roles.map((role) => (
+                <MenuItem key={role.id} value={role.id}>
+                  {role.name}
+                </MenuItem>
+              ))}
             </TextField>
           </Grid>
 
@@ -225,21 +236,20 @@ export function UserEditDialog({ open, user, onClose, onSave }) {
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6 }}>
-            <TextField
-              select
-              fullWidth
-              label="Branch"
-              name="branches"
+            <Autocomplete
+              multiple
+              options={branches.map((branch) => `${branch.branch_code} - ${branch.branch_name}`)}
               value={form.branches}
-              onChange={handleChange('branches')}
-            >
-              <MenuItem value="">
-                <em>Select Branch</em>
-              </MenuItem>
-              <MenuItem value="Science">Science</MenuItem>
-              <MenuItem value="English">English</MenuItem>
-              <MenuItem value="Mathematics">Mathematics</MenuItem>
-            </TextField>
+              onChange={(event, newValue) => {
+                setForm((prev) => ({
+                  ...prev,
+                  branches: newValue,
+                }));
+              }}
+              renderInput={(params) => (
+                <TextField {...params} label="Branches" placeholder="Search branch" />
+              )}
+            />
           </Grid>
 
           {/* ---------------- Additional Information ---------------- */}

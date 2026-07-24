@@ -17,7 +17,7 @@ export function UserTable(props) {
       loading={props.loading}
       columns={columns}
       getRowId={(row) => row.user_id}
-      rowHeight={66}
+      getRowHeight={() => 'auto'}
       checkboxSelection
       disableRowSelectionOnClick
       // server-side

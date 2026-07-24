@@ -3,6 +3,7 @@ import { Box, Chip, Stack, Avatar, Tooltip, Typography, IconButton } from '@mui/
 import { _mock } from 'src/_mock';
 
 import { SvgColor } from 'src/components/svg-color';
+import { stack } from 'src/theme/core/components/stack';
 
 export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActivityLog }) => [
   {
@@ -28,15 +29,28 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
   {
     field: 'user_name',
     headerName: 'Username',
+    align: 'center',
+    headerAlign: 'center',
     flex: 1,
+    renderCell: (params) => (
+      <Stack
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        spacing={1}
+        sx={{ height: '100%' }}
+      >
+        <Typography variant="body2">{params.row.user_name}</Typography>
+      </Stack>
+    ),
   },
   {
-    field: 'auth_domain',
+    field: 'role_name',
     headerName: 'Role',
     flex: 1,
     renderCell: (params) => (
       <Stack direction="row" spacing={2} alignItems="center" sx={{ height: '100%' }}>
-        <Typography variant="body2">Administrator</Typography>
+        <Typography variant="body2">{params.row.role_name}</Typography>
       </Stack>
     ),
   },
@@ -75,7 +89,7 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
             sx={{ color: active ? 'success.main' : 'error.main', width: 20, height: 20 }}
           />
 
-          <Typography variant="body2">{params.value}</Typography>
+          {/* <Typography variant="body2">{params.value}</Typography> */}
         </Stack>
       );
     },
@@ -83,40 +97,69 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
   {
     field: 'branches',
     headerName: 'Branch Details',
-    flex: 1,
-    renderCell: (params) => (
-      <Stack direction="row" spacing={2} alignItems="center" sx={{ height: '100%' }}>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 0.5,
-            px: 1,
-            py: 0.5,
-            borderRadius: 1,
-            bgcolor: 'grey.100',
-          }}
-        >
-          <SvgColor
-            src="/assets/icons/solar/solar--map-point-bold.svg"
-            sx={{ width: 14, height: 14, color: 'text.secondary' }}
-          />
+    width: 250,
+    renderCell: (params) => {
+      const branches = params.row.branches
+        ?.split(',')
+        .map((branch) => branch.trim())
+        .filter(Boolean);
 
-          <Typography variant="caption">{params.row.branches}</Typography>
-        </Box>
-      </Stack>
-    ),
+      return (
+        <Stack
+          direction="row"
+          spacing={1}
+          alignItems="center"
+          sx={{ height: '100%', flexWrap: 'wrap' }}
+        >
+          {branches.map((branch) => (
+            <Box
+              key={branch}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0.5,
+                px: 1,
+                py: 0.5,
+                borderRadius: 1,
+                bgcolor: 'grey.100',
+              }}
+            >
+              <SvgColor
+                src="/assets/icons/solar/solar--map-point-bold.svg"
+                sx={{
+                  width: 14,
+                  height: 14,
+                  color: 'text.secondary',
+                }}
+              />
+
+              <Typography variant="caption">{branch}</Typography>
+            </Box>
+          ))}
+        </Stack>
+      );
+    },
   },
   {
     field: 'status',
     headerName: 'Status',
+    align: 'center',
+    headerAlign: 'center',
     flex: 1,
     renderCell: (params) => (
-      <Chip
-        label={params.value}
-        color={params.value === 'Active' ? 'success' : 'error'}
-        size="small"
-      />
+      <Stack
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        spacing={1}
+        sx={{ height: '100%' }}
+      >
+        <Chip
+          label={params.value}
+          color={params.value === 'Active' ? 'success' : 'error'}
+          size="small"
+        />
+      </Stack>
     ),
   },
   {

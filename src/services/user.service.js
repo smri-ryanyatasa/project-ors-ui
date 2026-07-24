@@ -1,6 +1,7 @@
 import axios from 'src/lib/axios';
 
 import { endpoints } from './endpoints';
+import { en } from 'zod/v4/locales';
 
 class UserService {
   async getUsers(params) {
@@ -54,6 +55,11 @@ class UserService {
       params,
       responseType: 'blob',
     });
+    return data;
+  }
+
+  async getBranches() {
+    const { data } = await axios.get(endpoints.user.branches);
     return data;
   }
 }
