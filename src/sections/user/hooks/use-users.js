@@ -8,6 +8,7 @@ import { useAuthContext } from 'src/auth/hooks';
 export function useUsers() {
   const { user } = useAuthContext();
   const [users, setUsers] = useState([]);
+  const [branches, setBranches] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
@@ -53,14 +54,14 @@ export function useUsers() {
     }
   }, [paginationModel, search, filterModel, sortModel]);
 
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
-
   const createUser = async (form) => {
     const payload = {
       ...form,
       mms: 'Y',
+      branches: form.branches
+        .map((branch) => branch.trim())
+        .join(', ')
+        .trim(),
       created_by: user.user_id,
     };
 
@@ -86,6 +87,10 @@ export function useUsers() {
   const updateUser = async (userData) => {
     const payload = {
       ...userData,
+      branches: userData.branches
+        .map((branch) => branch.trim())
+        .join(', ')
+        .trim(),
       last_update_by: user.user_id,
     };
 
@@ -167,6 +172,20 @@ export function useUsers() {
     }
   };
 
+  const getBranches = useCallback(async () => {
+    try {
+      const response = await UserService.getBranches();
+      setBranches(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    refresh();
+    getBranches();
+  }, [refresh, getBranches]);
+
   return {
     users,
     refresh,
@@ -187,5 +206,6 @@ export function useUsers() {
     setSortModel,
     csvExport,
     excelExport,
+    branches,
   };
 }

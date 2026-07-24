@@ -11,6 +11,7 @@ import {
   DialogContent,
   DialogActions,
   InputAdornment,
+  Autocomplete,
 } from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
@@ -20,8 +21,8 @@ export function UserCreateDialog({
   onClose,
   onSave,
   roles = [],
-  businessUnits = [],
   branches = [],
+  businessUnits = [],
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -54,7 +55,7 @@ export function UserCreateDialog({
     email_address: 'jason.derulo@sample.com',
     role_id: 1,
     business_unit: 'Watcher',
-    branches: 'Science',
+    branches: [],
     status: 'Active',
     description: 'Best in science',
   });
@@ -193,9 +194,14 @@ export function UserCreateDialog({
               value={form.role_id}
               onChange={handleChange}
             >
-              <MenuItem value={1}>Administrator</MenuItem>
-              <MenuItem value={2}>Merchandising</MenuItem>
-              <MenuItem value={3}>Business Analyst</MenuItem>
+              <MenuItem value="">
+                <em>Select Role</em>
+              </MenuItem>
+              {roles.map((role) => (
+                <MenuItem key={role.id} value={role.id}>
+                  {role.name}
+                </MenuItem>
+              ))}
             </TextField>
           </Grid>
 
@@ -282,18 +288,20 @@ export function UserCreateDialog({
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6 }}>
-            <TextField
-              select
-              fullWidth
-              label="Branch"
-              name="branches"
+            <Autocomplete
+              multiple
+              options={branches.map((branch) => `${branch.branch_code} - ${branch.branch_name}`)}
               value={form.branches}
-              onChange={handleChange}
-            >
-              <MenuItem value="Science">Science</MenuItem>
-              <MenuItem value="English">English</MenuItem>
-              <MenuItem value="Mathematics">Mathematics</MenuItem>
-            </TextField>
+              onChange={(event, newValue) => {
+                setForm((prev) => ({
+                  ...prev,
+                  branches: newValue,
+                }));
+              }}
+              renderInput={(params) => (
+                <TextField {...params} label="Branches" placeholder="Search branch" />
+              )}
+            />
           </Grid>
 
           {/* ---------------- Additional Information ---------------- */}

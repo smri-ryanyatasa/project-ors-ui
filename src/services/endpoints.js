@@ -10,6 +10,7 @@ export const endpoints = {
     bulkUpload: '/api/users/bulk-upload',
     csvExport: '/api/users/csv-export',
     excelExport: '/api/users/excel-export',
+    branches: '/api/users/branches',
   },
   rolePermission: {
     list: '/api/role-permissions',

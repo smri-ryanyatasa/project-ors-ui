@@ -19,12 +19,14 @@ import { UserDeleteDialog } from '../dialogs/user-delete-dialog';
 import { UserBulkUploadDialog } from '../dialogs/user-bulk-upload-dialog';
 import { UserActivityLogsDialog } from '../dialogs/user-activity-log-dialog';
 import { UserChangePassowordDialog } from '../dialogs/user-change-password-dialog';
+import { useRolePermissions } from 'src/sections/role-permissions/hooks/use-roles';
 
 // ----------------------------------------------------------------------
 
 export function UserListView({ title = 'Blank', sx }) {
   const {
     users,
+    branches,
     refresh,
     createUser,
     bulkUpload,
@@ -43,6 +45,7 @@ export function UserListView({ title = 'Blank', sx }) {
     csvExport,
     excelExport,
   } = useUsers();
+  const { roles } = useRolePermissions();
   const [selectedUser, setSelectedUser] = useState([]);
   const [createOpen, setCreateOpen] = useState(false);
   const [bulkUploadOpen, setBulkUploadOpen] = useState(false);
@@ -195,6 +198,8 @@ export function UserListView({ title = 'Blank', sx }) {
       <DashboardContent maxWidth="xl">{renderContent()}</DashboardContent>
       <UserCreateDialog
         open={createOpen}
+        roles={roles}
+        branches={branches}
         onClose={() => setCreateOpen(false)}
         onSave={handleCreate}
       />
@@ -207,6 +212,8 @@ export function UserListView({ title = 'Blank', sx }) {
         open={editOpen}
         onClose={() => setEditOpen(false)}
         user={selectedUser}
+        roles={roles}
+        branches={branches}
         onSave={handleUpdate}
       />
       <UserChangePassowordDialog
