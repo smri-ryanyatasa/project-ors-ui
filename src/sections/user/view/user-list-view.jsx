@@ -10,6 +10,8 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import { SvgColor } from 'src/components/svg-color';
 import { PageHeader } from 'src/components/page-header/page-header';
 
+import { useRolePermissions } from 'src/sections/role-permissions/hooks/use-roles';
+
 import { useUsers } from '../hooks/use-users';
 import { UserTable } from '../table/user-table';
 import { UserCreateMenu } from '../header/user-create-menu';
@@ -19,7 +21,6 @@ import { UserDeleteDialog } from '../dialogs/user-delete-dialog';
 import { UserBulkUploadDialog } from '../dialogs/user-bulk-upload-dialog';
 import { UserActivityLogsDialog } from '../dialogs/user-activity-log-dialog';
 import { UserChangePassowordDialog } from '../dialogs/user-change-password-dialog';
-import { useRolePermissions } from 'src/sections/role-permissions/hooks/use-roles';
 
 // ----------------------------------------------------------------------
 

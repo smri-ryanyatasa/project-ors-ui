@@ -3,7 +3,6 @@ import { Box, Chip, Stack, Avatar, Tooltip, Typography, IconButton } from '@mui/
 import { _mock } from 'src/_mock';
 
 import { SvgColor } from 'src/components/svg-color';
-import { stack } from 'src/theme/core/components/stack';
 
 export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActivityLog }) => [
   {

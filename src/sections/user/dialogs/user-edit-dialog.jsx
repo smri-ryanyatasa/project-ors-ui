@@ -7,9 +7,9 @@ import {
   Button,
   TextField,
   DialogTitle,
+  Autocomplete,
   DialogContent,
   DialogActions,
-  Autocomplete,
 } from '@mui/material';
 
 export function UserEditDialog({ open, user, roles, branches, onClose, onSave }) {
@@ -28,7 +28,6 @@ export function UserEditDialog({ open, user, roles, branches, onClose, onSave })
     branches: [],
     status: '',
     description: '',
-    role_id: '',
   });
 
   useEffect(() => {
