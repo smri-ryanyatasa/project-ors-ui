@@ -23,9 +23,10 @@ import { MenuButton } from '../components/menu-button';
 import { AccountDrawer } from '../components/account-drawer';
 import { SettingsButton } from '../components/settings-button';
 import { WorkspacesPopover } from '../components/workspaces-popover';
-import { navData as dashboardNavData } from '../nav-config-dashboard';
+import { getNavData } from '../nav-config-dashboard';
 import { dashboardLayoutVars, dashboardNavColorVars } from './css-vars';
 import { MainSection, layoutClasses, HeaderSection, LayoutSection } from '../core';
+import { useRolePermissions } from 'src/sections/role-permissions/hooks/use-roles';
 
 // ----------------------------------------------------------------------
 
@@ -36,11 +37,16 @@ export function DashboardLayout({ sx, cssVars, children, slotProps, layoutQuery 
 
   const settings = useSettingsContext();
 
+  const { menus } = useRolePermissions();
+
   const navVars = dashboardNavColorVars(theme, settings.state.navColor, settings.state.navLayout);
 
   const { value: open, onFalse: onClose, onTrue: onOpen } = useBoolean();
 
-  const navData = slotProps?.nav?.data ?? dashboardNavData;
+  // const navData = slotProps?.nav?.data ?? dashboardNavData;
+  const parsedMenus = menus ? JSON.parse(user.menus) : [];
+
+  const navData = getNavData(menus, parsedMenus);
 
   const isNavMini = settings.state.navLayout === 'mini';
   const isNavHorizontal = settings.state.navLayout === 'horizontal';
