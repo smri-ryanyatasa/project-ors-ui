@@ -41,6 +41,7 @@ export const paths = {
       resetPassword: `${ROOTS.AUTH}/supabase/reset-password`,
     },
   },
+  base: '/ors',
   // DASHBOARD
   dashboard: {
     root: ROOTS.DASHBOARD,

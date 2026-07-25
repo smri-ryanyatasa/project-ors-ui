@@ -237,6 +237,7 @@ export function UserEditDialog({ open, user, roles, branches, onClose, onSave })
           <Grid size={{ xs: 12, sm: 6 }}>
             <Autocomplete
               multiple
+              filterSelectedOptions
               options={branches.map((branch) => `${branch.branch_code} - ${branch.branch_name}`)}
               value={form.branches}
               onChange={(event, newValue) => {
