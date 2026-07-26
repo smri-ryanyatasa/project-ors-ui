@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { merge } from 'es-toolkit';
 import { useBoolean } from 'minimal-shared/hooks';
 
@@ -11,6 +12,8 @@ import { iconButtonClasses } from '@mui/material/IconButton';
 import { Logo } from 'src/components/logo';
 import { useSettingsContext } from 'src/components/settings';
 
+import { useRolePermissions } from 'src/sections/role-permissions/hooks/use-roles';
+
 import { useMockedUser } from 'src/auth/hooks';
 
 import { NavMobile } from './nav-mobile';
@@ -18,15 +21,14 @@ import { VerticalDivider } from './content';
 import { NavVertical } from './nav-vertical';
 import { NavHorizontal } from './nav-horizontal';
 import { _account } from '../nav-config-account';
+import { getNavData } from '../nav-config-dashboard';
 import { _workspaces } from '../nav-config-workspace';
 import { MenuButton } from '../components/menu-button';
 import { AccountDrawer } from '../components/account-drawer';
 import { SettingsButton } from '../components/settings-button';
 import { WorkspacesPopover } from '../components/workspaces-popover';
-import { getNavData } from '../nav-config-dashboard';
 import { dashboardLayoutVars, dashboardNavColorVars } from './css-vars';
 import { MainSection, layoutClasses, HeaderSection, LayoutSection } from '../core';
-import { useRolePermissions } from 'src/sections/role-permissions/hooks/use-roles';
 
 // ----------------------------------------------------------------------
 
@@ -44,7 +46,20 @@ export function DashboardLayout({ sx, cssVars, children, slotProps, layoutQuery 
   const { value: open, onFalse: onClose, onTrue: onOpen } = useBoolean();
 
   // const navData = slotProps?.nav?.data ?? dashboardNavData;
-  const parsedMenus = menus ? JSON.parse(user.menus) : [];
+  // const parsedMenus = menus ? (JSON.parse(user?.menus) ?? []) : [];
+
+  const parsedMenus = useMemo(() => {
+    if (!user?.menus) {
+      return [];
+    }
+
+    try {
+      return JSON.parse(user.menus) ?? [];
+    } catch (error) {
+      console.error('Invalid menus JSON:', error);
+      return [];
+    }
+  }, [user?.menus]);
 
   const navData = getNavData(menus, parsedMenus);
 
