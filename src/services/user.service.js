@@ -1,4 +1,3 @@
-
 import axios from 'src/lib/axios';
 
 import { endpoints } from './endpoints';
