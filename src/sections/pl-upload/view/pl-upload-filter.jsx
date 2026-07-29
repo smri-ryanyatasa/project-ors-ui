@@ -1,3 +1,4 @@
+import { useState } from 'react';
 
 import {
   Box,
@@ -12,7 +13,24 @@ import {
 import { Iconify } from 'src/components/iconify';
 import { SvgColor } from 'src/components/svg-color';
 
-export function PlUploadFilter({ sx }) {
+export function PlUploadFilter({ sx, branches, onBranchChange }) {
+  const [form, setForm] = useState({
+    branches: '',
+  });
+
+  const handleBranchChange = (event) => {
+    const branchCode = event.target.value;
+
+    const selectedBranch = branches.find((branch) => branch.branch_code === branchCode);
+
+    setForm((prev) => ({
+      ...prev,
+      branches: selectedBranch,
+    }));
+
+    onBranchChange(branchCode);
+  };
+
   return (
     <Accordion
       defaultExpanded
@@ -41,10 +59,21 @@ export function PlUploadFilter({ sx }) {
       </AccordionSummary>
 
       <AccordionDetails>
-        <TextField select fullWidth label="Branches" name="branch">
-          <MenuItem value="Bag man">Bag man</MenuItem>
-          <MenuItem value="Watcher">Watcher</MenuItem>
-          <MenuItem value="Queue">Queue</MenuItem>
+        <TextField
+          select
+          fullWidth
+          label="Branches"
+          value={form.branches?.branch_code || ''}
+          onChange={handleBranchChange}
+        >
+          <MenuItem value="">
+            <em>Select Branch</em>
+          </MenuItem>
+          {branches.map((branch) => (
+            <MenuItem key={branch.branch_code} value={branch.branch_code}>
+              {branch.branch_code} - {branch.branch_name}
+            </MenuItem>
+          ))}
         </TextField>
       </AccordionDetails>
     </Accordion>

@@ -1,10 +1,9 @@
 'use client';
 
-import { Box, Grid, Stack, Button } from '@mui/material';
+import { Box } from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 
-import { SvgColor } from 'src/components/svg-color';
 import { PageHeader } from 'src/components/page-header/page-header';
 
 import { SummaryCard } from '../cards/summary-card';

@@ -1,26 +1,23 @@
 import { Chip, Stack, Typography } from '@mui/material';
 
-
-export const PlMasterfileTableColumns = () => [
+export const PlLogsColumn = () => [
   {
-    field: 'file_name',
-    headerName: 'PL File Name',
-    flex: 2,
-    cellClassName: 'first-column-cell',
-    headerClassName: 'first-column-header',
-  },
-  {
-    field: 'file_type',
-    headerName: 'Date & Time Uploaded',
-    flex: 1,
+    field: 'uploaded_date',
+    headerName: 'Date & Time',
+    flex: 1.5,
   },
   {
     field: 'uploaded_by',
     headerName: 'User',
     flex: 1,
+    renderCell: (params) => (
+      <Stack direction="row" spacing={2} alignItems="center" sx={{ height: '100%' }}>
+        <Typography variant="body2">{params.row.uploaded_by}</Typography>
+      </Stack>
+    ),
   },
   {
-    field: 'uploaded_date',
+    field: 'status',
     headerName: 'Status',
     align: 'center',
     headerAlign: 'center',
@@ -34,15 +31,15 @@ export const PlMasterfileTableColumns = () => [
         sx={{ height: '100%' }}
       >
         <Chip
-          label={params.value == '2' ? 'Available' : 'Uploaded'}
-          color={params.value == '2' ? 'success' : 'error'}
+          label={params.value}
+          color={params.value == 'Available' ? 'success' : 'error'}
           size="small"
         />
       </Stack>
     ),
   },
   {
-    field: 'status',
+    field: 'result',
     headerName: 'Result',
     flex: 2,
     renderCell: (params) => (
@@ -55,7 +52,7 @@ export const PlMasterfileTableColumns = () => [
       >
         <Typography
           variant="body2"
-          sx={{ color: params.row.uploaded_date == '2' ? 'green' : 'red' }}
+          sx={{ color: params.row.status == 'Available' ? 'green' : 'red' }}
         >
           {params.value}
         </Typography>

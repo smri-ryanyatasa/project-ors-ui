@@ -93,6 +93,7 @@ export function UserListView({ title = 'Blank', sx }) {
 
   const handleDelete = async (user) => {
     await deleteUser(user);
+    await refresh();
     toast.success('User deleted successfully');
   };
 
