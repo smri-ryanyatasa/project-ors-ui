@@ -238,12 +238,13 @@ export function UserEditDialog({ open, user, roles, branches, onClose, onSave })
             <Autocomplete
               multiple
               filterSelectedOptions
-              options={branches.map((branch) => `${branch.branch_code} - ${branch.branch_name}`)}
-              value={form.branches}
+              options={branches}
+              getOptionLabel={(option) => `${option.branch_code} - ${option.branch_name}`}
+              value={branches.filter((branch) => form.branches.includes(branch.branch_code))}
               onChange={(event, newValue) => {
                 setForm((prev) => ({
                   ...prev,
-                  branches: newValue,
+                  branches: newValue.map((branch) => branch.branch_code),
                 }));
               }}
               renderInput={(params) => (

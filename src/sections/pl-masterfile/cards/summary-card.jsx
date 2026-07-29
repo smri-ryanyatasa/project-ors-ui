@@ -54,21 +54,21 @@ export function SummaryCard() {
               position: 'relative',
               overflow: 'hidden',
 
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: 80,
-                height: '100%',
-                background: (theme) =>
-                  `linear-gradient(
-                    90deg,
-                    ${theme.palette[card.color].main}10 0%,
-                    ${theme.palette[card.color].main}10 20%,
-                    transparent 100%
-                )`,
-              },
+              //   '&::before': {
+              //     content: '""',
+              //     position: 'absolute',
+              //     top: 0,
+              //     left: 0,
+              //     width: 80,
+              //     height: '100%',
+              //     background: (theme) =>
+              //       `linear-gradient(
+              //         90deg,
+              //         ${theme.palette[card.color].main}10 0%,
+              //         ${theme.palette[card.color].main}10 20%,
+              //         transparent 100%
+              //     )`,
+              //   },
             }}
           >
             <CardContent

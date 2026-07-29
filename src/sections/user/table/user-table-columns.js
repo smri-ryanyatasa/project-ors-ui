@@ -98,7 +98,7 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
     headerName: 'Branch Details',
     width: 250,
     renderCell: (params) => {
-      const branches = params.row.branches
+      const branches = params.row.branch_names
         ?.split(',')
         .map((branch) => branch.trim())
         .filter(Boolean);
@@ -108,7 +108,7 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
           direction="row"
           spacing={1}
           alignItems="center"
-          sx={{ height: '100%', flexWrap: 'wrap' }}
+          sx={{ height: '100%', flexWrap: 'wrap', p: '3px' }}
         >
           {branches.map((branch) => (
             <Box

@@ -11,6 +11,7 @@ export const endpoints = {
     csvExport: '/api/users/csv-export',
     excelExport: '/api/users/excel-export',
     branches: '/api/users/branches',
+    assignedBranch: '/api/users/assigned-branch',
   },
   rolePermission: {
     list: '/api/role-permissions',
@@ -18,5 +19,14 @@ export const endpoints = {
     update: (id) => `/api/role-permissions/${id}`,
     delete: (id) => `/api/role-permissions/${id}`,
     getMenus: '/api/role-permissions/menus',
+  },
+  plUpload: {
+    list: '/api/pl-upload',
+    status: '/api/pl-upload/status',
+    csvExport: '/api/pl-upload/csv-export',
+    excelExport: '/api/pl-upload/excel-export',
+    plLogs: '/api/pl-upload/pl-logs',
+    plExceptions: '/api/pl-upload/pl-exceptions',
+    delete: (id) => `/api/pl-upload/${id}`,
   },
 };

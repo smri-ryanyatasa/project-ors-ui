@@ -1,8 +1,8 @@
-import { Box, Grid, Card, Stack, Typography, CardContent } from '@mui/material';
+import { Box, Grid, Card, Stack, Skeleton, Typography, CardContent } from '@mui/material';
 
 import { SvgColor } from 'src/components/svg-color';
 
-export function FileRejectedCard() {
+export function FileRejectedCard(props) {
   return (
     <Grid size={{ xs: 12, md: 6 }}>
       <Card
@@ -10,29 +10,33 @@ export function FileRejectedCard() {
           position: 'relative',
           overflow: 'hidden',
 
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: 80,
-            height: '100%',
-            background: (theme) =>
-              `linear-gradient(
-                    90deg,
-                    ${theme.palette.error.main}20 0%,
-                    ${theme.palette.error.main}10 40%,
-                    transparent 100%
-                )`,
-          },
+          //   '&::before': {
+          //     content: '""',
+          //     position: 'absolute',
+          //     top: 0,
+          //     left: 0,
+          //     width: 80,
+          //     height: '100%',
+          //     background: (theme) =>
+          //       `linear-gradient(
+          //             90deg,
+          //             ${theme.palette.error.main}20 0%,
+          //             ${theme.palette.error.main}10 40%,
+          //             transparent 100%
+          //         )`,
+          //   },
         }}
       >
         <CardContent>
           <Stack direction="row" alignItems="center" justifyContent="space-between">
             <Box>
-              <Typography variant="h4" fontWeight={700}>
-                128
-              </Typography>
+              {props.loading ? (
+                <Skeleton variant="text" width={60} height={40} />
+              ) : (
+                <Typography variant="h4" fontWeight={700}>
+                  {props?.reject}
+                </Typography>
+              )}
 
               <Typography variant="body2" color="text.secondary">
                 Total List Rejected
