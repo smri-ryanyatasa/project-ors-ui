@@ -28,5 +28,6 @@ export const endpoints = {
     plLogs: '/api/pl-upload/pl-logs',
     plExceptions: '/api/pl-upload/pl-exceptions',
     delete: (id) => `/api/pl-upload/${id}`,
+    plCreate: '/api/pl-upload/create',
   },
 };

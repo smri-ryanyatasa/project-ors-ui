@@ -57,6 +57,11 @@ class PlUploadService {
     const { data } = await axios.delete(endpoints.plUpload.delete(params.id));
     return data;
   }
+
+  async plUpload(payload) {
+    const { data } = await axios.post(endpoints.plUpload.plCreate, payload);
+    return data;
+  }
 }
 
 export default new PlUploadService();

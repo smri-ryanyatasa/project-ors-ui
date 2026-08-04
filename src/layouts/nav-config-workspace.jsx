@@ -13,4 +13,9 @@ export const _workspaces = [
     name: 'SOAR',
     logo: `${CONFIG.assetsDir}/assets/icons/workspaces/logo-2.webp`,
   },
+  {
+    id: 'team-2',
+    name: 'DC BOX',
+    logo: `${CONFIG.assetsDir}/assets/icons/workspaces/logo-3.webp`,
+  },
 ];
