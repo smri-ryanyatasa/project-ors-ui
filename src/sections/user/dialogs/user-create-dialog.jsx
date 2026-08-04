@@ -230,8 +230,8 @@ export function UserCreateDialog({
               value={form.status}
               onChange={handleChange}
             >
-              <MenuItem value="Active">Active</MenuItem>
-              <MenuItem value="Inactive">Inactive</MenuItem>
+              <MenuItem value="Y">Active</MenuItem>
+              <MenuItem value="N">Inactive</MenuItem>
             </TextField>
           </Grid>
 

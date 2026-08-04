@@ -154,8 +154,8 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
         sx={{ height: '100%' }}
       >
         <Chip
-          label={params.value}
-          color={params.value === 'Active' ? 'success' : 'error'}
+          label={params.value === 'Y' ? 'Active' : 'Inactive'}
+          color={params.value === 'Y' ? 'success' : 'error'}
           size="small"
         />
       </Stack>

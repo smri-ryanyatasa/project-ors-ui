@@ -174,8 +174,8 @@ export function UserEditDialog({ open, user, roles, branches, onClose, onSave })
               <MenuItem value="">
                 <em>Select Status</em>
               </MenuItem>
-              <MenuItem value="Active">Active</MenuItem>
-              <MenuItem value="Inactive">Inactive</MenuItem>
+              <MenuItem value="Y">Active</MenuItem>
+              <MenuItem value="N">Inactive</MenuItem>
             </TextField>
           </Grid>
 
