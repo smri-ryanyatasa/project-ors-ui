@@ -157,8 +157,6 @@ export function usePlUpload() {
     if (!user) return;
 
     try {
-      setLoading(true);
-
       const response = await PlUploadService.getPlUploadExceptions({
         env: user.env,
         filename: file.filename,
@@ -171,14 +169,46 @@ export function usePlUpload() {
       saveAs(blob, 'pl_upload_exceptions.xlsx');
     } catch (error) {
       console.error('Logs error:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
   const deletePlFile = async (file) => {
     await PlUploadService.deletePlFile(file);
     setPlsUplad((prev) => prev.filter((p) => p.id !== file.id));
+  };
+
+  const plUpload = async (file) => {
+    const rows = file.rows.map((row) => ({
+      document_no: row['DD No'],
+      sales_invoice_no: row['SI'],
+      ship_to_code: row['Ship To Code'],
+      consignee: row['Consignee'],
+      uom: row['UOM'],
+      material: row['Material'],
+      size: row['Size No'],
+      description: row['Description'],
+      served_qty: row['Served Qty'],
+      carton_qty: row['Carton Qty'],
+      branch_code: row['Branch'],
+      vendor_code: row['Vendor'],
+    }));
+
+    const filenameParts = file.file.name.replace(/\.[^/.]+$/, '').split('_');
+
+    const cleanData = {
+      rows,
+      row_count: rows.length,
+      vendor_code: filenameParts[0],
+      branch_code: filenameParts[2],
+      sales_invoice_no: filenameParts[1],
+      filename: file.file.name,
+      file_size: file.file.size,
+      uploaded_by: user.user_id,
+      created_by: user.user_id,
+      env: user.env,
+    };
+
+    return await PlUploadService.plUpload(cleanData);
   };
 
   useEffect(() => {
@@ -208,5 +238,6 @@ export function usePlUpload() {
     plLogs,
     plUploadExceptions,
     deletePlFile,
+    plUpload,
   };
 }
