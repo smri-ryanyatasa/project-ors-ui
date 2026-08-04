@@ -64,7 +64,7 @@ export function PlUploadPreviewTable(props) {
     },
   ];
 
-  const rows = props.rows.map((row) => ({
+  const rows = props.rows.map((row, index) => ({
     document_no: row['DD No'],
     sales_invoice_no: row['SI'],
     ship_to_code: row['Ship To Code'],
@@ -77,13 +77,14 @@ export function PlUploadPreviewTable(props) {
     carton_qty: row['Carton Qty'],
     branch_code: row['Branch'],
     vendor_code: row['Vendor'],
+    unique_id: `${Date.now()}-${index}`,
   }));
 
   return (
     <DataGrid
       rows={rows}
       columns={columns}
-      getRowId={(row) => row.material}
+      getRowId={(row) => row.unique_id}
       rowHeight={66}
       showToolbar={false}
       disableRowSelectionOnClick
