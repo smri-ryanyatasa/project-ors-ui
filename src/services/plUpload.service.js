@@ -62,6 +62,11 @@ class PlUploadService {
     const { data } = await axios.post(endpoints.plUpload.plCreate, payload);
     return data;
   }
+
+  async plReUpload(payload) {
+    const { data } = await axios.post(endpoints.plUpload.reUpload, payload);
+    return data;
+  }
 }
 
 export default new PlUploadService();

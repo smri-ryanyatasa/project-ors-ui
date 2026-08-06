@@ -29,5 +29,6 @@ export const endpoints = {
     plExceptions: '/api/pl-upload/pl-exceptions',
     delete: (id) => `/api/pl-upload/${id}`,
     plCreate: '/api/pl-upload/create',
+    reUpload: '/api/pl-upload/re-upload',
   },
 };

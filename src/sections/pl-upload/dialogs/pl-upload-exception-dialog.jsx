@@ -24,7 +24,14 @@ import { SvgColor } from 'src/components/svg-color';
 
 import { PlUploadPreviewTable } from './pl-upload-preview-dialog';
 
-export function PlUploadDialog({ open, onClose, onImport, onDownloadTemplate, branch }) {
+export function PlUploadExceptionDialog({
+  open,
+  pl,
+  onClose,
+  onImport,
+  onDownloadTemplate,
+  branch,
+}) {
   const inputRef = useRef(null);
   const [rows, setRows] = useState([]);
   const [file, setFile] = useState(null);
@@ -42,6 +49,12 @@ export function PlUploadDialog({ open, onClose, onImport, onDownloadTemplate, br
 
     if (!['xlsx', 'xls'].includes(extension ?? '')) {
       setError('Please select a valid Excel (.xlsx, .xls) file.');
+      setFile(null);
+      return false;
+    }
+
+    if (pl.filename != selectedFile.name) {
+      setError('Mismatch file name');
       setFile(null);
       return false;
     }
@@ -162,8 +175,6 @@ export function PlUploadDialog({ open, onClose, onImport, onDownloadTemplate, br
       setIsValid(errors.length > 0);
       setValidationErrors(errors);
       setRows(data);
-
-      console.log(errors);
     } catch (err) {
       console.error(err);
       setError('Unable to read the selected file.');
@@ -247,6 +258,8 @@ export function PlUploadDialog({ open, onClose, onImport, onDownloadTemplate, br
       const data = {
         rows,
         file,
+        pl,
+        branch,
       };
 
       await onImport(data);
@@ -263,7 +276,6 @@ export function PlUploadDialog({ open, onClose, onImport, onDownloadTemplate, br
             acc[rowNumber] = [];
           }
 
-          //   acc[rowNumber].push(`${item.field}: ${item.message}`);
           acc[rowNumber].push(`${item.message}`);
 
           return acc;
@@ -298,7 +310,7 @@ export function PlUploadDialog({ open, onClose, onImport, onDownloadTemplate, br
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
-      <DialogTitle>PL File Upload</DialogTitle>
+      <DialogTitle>Re-Upload PL File - {pl.filename}</DialogTitle>
 
       <DialogContent>
         <Backdrop

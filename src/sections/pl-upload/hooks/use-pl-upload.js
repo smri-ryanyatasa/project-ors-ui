@@ -166,7 +166,7 @@ export function usePlUpload() {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
 
-      saveAs(blob, 'pl_upload_exceptions.xlsx');
+      saveAs(blob, 'pl_upload_exceptions.xls');
     } catch (error) {
       console.error('Logs error:', error);
     }
@@ -211,6 +211,42 @@ export function usePlUpload() {
     return await PlUploadService.plUpload(cleanData);
   };
 
+  const plReUpload = async (file) => {
+    const rows = file.rows.map((row) => ({
+      document_no: row['DD No'],
+      sales_invoice_no: row['SI'],
+      ship_to_code: row['Ship To Code'],
+      consignee: row['Consignee'],
+      uom: row['UOM'],
+      material: row['Material'],
+      size: row['Size No'],
+      description: row['Description'],
+      served_qty: row['Served Qty'],
+      carton_qty: row['Carton Qty'],
+      branch_code: row['Branch'],
+      vendor_code: row['Vendor'],
+    }));
+
+    const filenameParts = file.file.name.replace(/\.[^/.]+$/, '').split('_');
+
+    const cleanData = {
+      rows,
+      row_count: rows.length,
+      vendor_code: filenameParts[0],
+      branch_code: filenameParts[2],
+      sales_invoice_no: filenameParts[1],
+      filename: file.file.name,
+      file_size: file.file.size,
+      uploaded_by: user.user_id,
+      created_by: user.user_id,
+      env: user.env,
+      source_file_id: file.pl.id,
+      uploaded_attempts: file.pl.upload_attempts + 1,
+    };
+
+    return await PlUploadService.plReUpload(cleanData);
+  };
+
   useEffect(() => {
     if (!user) return;
 
@@ -239,5 +275,6 @@ export function usePlUpload() {
     plUploadExceptions,
     deletePlFile,
     plUpload,
+    plReUpload,
   };
 }

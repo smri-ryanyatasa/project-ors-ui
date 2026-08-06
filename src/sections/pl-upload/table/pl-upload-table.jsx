@@ -9,6 +9,7 @@ export function PlUploadTable(props) {
     onPlUploadLog: props.onPlUploadLog,
     onPlUploadException: props.onPlUploadException,
     onDelete: props.onDelete,
+    onPlReUpload: props.onPlReUpload,
   });
 
   return (
