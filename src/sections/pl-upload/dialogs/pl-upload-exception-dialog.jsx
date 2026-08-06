@@ -17,6 +17,7 @@ import {
   CircularProgress,
   AccordionSummary,
   AccordionDetails,
+  Divider,
 } from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
@@ -298,6 +299,22 @@ export function PlUploadExceptionDialog({
     }
   };
 
+  const formatFileSize = (bytes) => {
+    if (bytes < 1024) {
+      return `${bytes} B`;
+    }
+
+    if (bytes < 1024 * 1024) {
+      return `${(bytes / 1024).toFixed(2)} KB`;
+    }
+
+    if (bytes < 1024 * 1024 * 1024) {
+      return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+    }
+
+    return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+  };
+
   const handleClose = () => {
     setFile(null);
     setRows([]);
@@ -310,7 +327,25 @@ export function PlUploadExceptionDialog({
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
-      <DialogTitle>Re-Upload PL File - {pl.filename}</DialogTitle>
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <DialogTitle>Uploading Packing List - {pl.filename}</DialogTitle>
+
+        <Button
+          variant="outlined"
+          startIcon={
+            <SvgColor
+              src="/assets/icons/solar/solar--download-bold.svg"
+              sx={{ width: 20, height: 20 }}
+            />
+          }
+          sx={{ mr: 3 }}
+          onClick={onDownloadTemplate}
+        >
+          Download Template
+        </Button>
+      </Stack>
+
+      <Divider />
 
       <DialogContent>
         <Backdrop
@@ -331,11 +366,7 @@ export function PlUploadExceptionDialog({
           </Typography>
         </Backdrop>
 
-        <Stack spacing={3} sx={{ mt: 1 }}>
-          <Typography variant="body2" color="text.secondary">
-            Upload an Excel (.xlsx) or (.xls) file to import.
-          </Typography>
-
+        <Stack spacing={2} sx={{ mt: 2 }}>
           {(error || isValid) && (
             <Alert
               severity="error"
@@ -355,19 +386,6 @@ export function PlUploadExceptionDialog({
             </Alert>
           )}
 
-          <Button
-            variant="outlined"
-            startIcon={
-              <SvgColor
-                src="/assets/icons/solar/solar--download-bold.svg"
-                sx={{ width: 20, height: 20 }}
-              />
-            }
-            onClick={onDownloadTemplate}
-          >
-            Download Template
-          </Button>
-
           <Accordion
             expanded={uploadExpanded}
             onChange={(_, expanded) => setUploadExpanded(expanded)}
@@ -378,12 +396,10 @@ export function PlUploadExceptionDialog({
                 <SvgColor src="/assets/icons/solar/solar--alt-arrow-down-line-duotone.svg" />
               }
             >
-              <Typography variant="subtitle2">
-                Filename: Vendor Code_Sales Invoice_Branch Code.xlsx
-              </Typography>
+              <Typography variant="subtitle2">Collapse / Expand</Typography>
             </AccordionSummary>
 
-            <AccordionDetails>
+            <AccordionDetails onClick={handleBrowse}>
               <Box
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
@@ -401,31 +417,36 @@ export function PlUploadExceptionDialog({
                   },
                 }}
               >
-                <SvgColor
-                  src="/assets/icons/solar/solar--upload-minimalistic-bold-duotone.svg"
+                <Box
+                  component="img"
+                  src="/assets/icons/solar/illustration-upload.svg"
                   sx={{
-                    width: 48,
-                    height: 48,
                     color: file ? 'primary.main' : 'text.secondary',
-                    mb: 1,
                   }}
                 />
 
                 <Typography variant="subtitle1">
-                  {file ? file.name : 'Drag & Drop Excel File'}
+                  {file ? file.name : 'Drop or select File'}
                 </Typography>
 
-                <Typography variant="body2" color="text.secondary" sx={{ my: 1 }}>
-                  or
-                </Typography>
-
-                <Button variant="outlined" onClick={handleBrowse}>
-                  Choose File
-                </Button>
-
-                <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 2 }}>
-                  Supported formats: .xlsx, .xls, .csv
-                </Typography>
+                <Stack>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    display="block"
+                    sx={{ mt: 1 }}
+                  >
+                    Allowed Filetype: *xls, xlsx
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    display="block"
+                    sx={{ mb: 3 }}
+                  >
+                    Filename Format: Vendor Code_Sales Invoice_Branch Code.xlsx
+                  </Typography>
+                </Stack>
 
                 <input
                   ref={inputRef}
@@ -449,7 +470,22 @@ export function PlUploadExceptionDialog({
                 p: 1.5,
               }}
             >
-              <Typography variant="body2">{file.name}</Typography>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <Box
+                  component="img"
+                  src="/assets/icons/solar/excel.svg"
+                  sx={{
+                    width: 48,
+                    height: 48,
+                  }}
+                />
+                <Stack>
+                  <Typography variant="body2">{file.name}</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {formatFileSize(file.size)}
+                  </Typography>
+                </Stack>
+              </Stack>
 
               <IconButton color="error" onClick={handleRemoveFile}>
                 <Iconify icon="solar:trash-bin-trash-bold" />
