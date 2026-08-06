@@ -2,7 +2,12 @@ import { Chip, Stack, Tooltip, Typography, IconButton } from '@mui/material';
 
 import { SvgColor } from 'src/components/svg-color';
 
-export const PlUploadTableColumns = ({ onPlUploadLog, onPlUploadException, onDelete }) => [
+export const PlUploadTableColumns = ({
+  onPlUploadLog,
+  onPlUploadException,
+  onDelete,
+  onPlReUpload,
+}) => [
   {
     field: 'filename',
     headerName: 'PL File Name',
@@ -57,7 +62,7 @@ export const PlUploadTableColumns = ({ onPlUploadLog, onPlUploadException, onDel
     renderCell: (params) => (
       <Stack
         direction="row"
-        justifyContent="center"
+        // justifyContent="center"
         alignItems="center"
         spacing={1}
         sx={{ height: '100%' }}
@@ -89,25 +94,33 @@ export const PlUploadTableColumns = ({ onPlUploadLog, onPlUploadException, onDel
         sx={{ width: '100%', height: '100%' }}
       >
         <Tooltip title="Download PL Exception">
-          <IconButton
-            size="small"
-            disabled={params.row.status == 'Available' ? true : false}
-            onClick={() => onPlUploadException(params.row)}
-          >
-            <SvgColor
-              src="/assets/icons/solar/solar--file-download-bold.svg"
-              sx={{ width: 20, height: 20 }}
-            />
-          </IconButton>
+          <span>
+            <IconButton
+              size="small"
+              disabled={params.row.status == 'Available' ? true : false}
+              onClick={() => onPlUploadException(params.row)}
+            >
+              <SvgColor
+                src="/assets/icons/solar/solar--file-download-bold.svg"
+                sx={{ width: 20, height: 20 }}
+              />
+            </IconButton>
+          </span>
         </Tooltip>
 
         <Tooltip title="Reupload Packing List">
-          <IconButton size="small">
-            <SvgColor
-              src="/assets/icons/solar/solar--cloud-upload-bold.svg"
-              sx={{ width: 20, height: 20 }}
-            />
-          </IconButton>
+          <span>
+            <IconButton
+              size="small"
+              disabled={params.row.status == 'Available' ? true : false}
+              onClick={() => onPlReUpload(params.row)}
+            >
+              <SvgColor
+                src="/assets/icons/solar/solar--cloud-upload-bold.svg"
+                sx={{ width: 20, height: 20 }}
+              />
+            </IconButton>
+          </span>
         </Tooltip>
 
         <Tooltip title="View Logs">

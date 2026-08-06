@@ -18,6 +18,7 @@ import { PlUploadDialog } from '../dialogs/pl-upload-dialog';
 import { FileRejectedCard } from '../cards/file-rejected-card';
 import { PlUploadLogsDialog } from '../dialogs/pl-upload-logs-dialog';
 import { PlUploadDeleteDialog } from '../dialogs/pl-upload-delete-dialog';
+import { PlUploadExceptionDialog } from '../dialogs/pl-upload-exception-dialog';
 
 export function PlUploadListView({ title = 'Blank', sx }) {
   const {
@@ -40,6 +41,7 @@ export function PlUploadListView({ title = 'Blank', sx }) {
     plUploadExceptions,
     deletePlFile,
     plUpload,
+    plReUpload,
   } = usePlUpload();
 
   const [selectedPl, setSelectedPl] = useState([]);
@@ -50,6 +52,7 @@ export function PlUploadListView({ title = 'Blank', sx }) {
   const [uploadButton, setUploadButton] = useState(true);
   const [branch, setBranch] = useState();
   const [exportLoading, setExportLoading] = useState(false);
+  const [plUploadExceptionOpen, setPlUploadExceptionOpen] = useState(false);
 
   useEffect(() => {
     if (exportLoading) {
@@ -83,6 +86,11 @@ export function PlUploadListView({ title = 'Blank', sx }) {
     setLogs(getLogs);
   };
 
+  const handlePlUploadException = async (file) => {
+    setPlUploadExceptionOpen(true);
+    setSelectedPl(file);
+  };
+
   const handlePlExceptionsExcelExport = async (file) => {
     setExportLoading(true);
     await plUploadExceptions(file);
@@ -110,6 +118,12 @@ export function PlUploadListView({ title = 'Blank', sx }) {
     await plUpload(file);
     await refresh();
     toast.success('PL File uploaded successfully');
+  };
+
+  const handleExceptionImport = async (file) => {
+    await plReUpload(file);
+    await refresh();
+    toast.success('Re-Upload PL File uploaded successfully');
   };
 
   const renderContent = () => (
@@ -159,6 +173,7 @@ export function PlUploadListView({ title = 'Blank', sx }) {
         onPlUploadLog={handleOpenPlUploadLog}
         onPlUploadException={handlePlExceptionsExcelExport}
         onDelete={handleOpenDelete}
+        onPlReUpload={handlePlUploadException}
       />
     </Box>
   );
@@ -224,6 +239,13 @@ export function PlUploadListView({ title = 'Blank', sx }) {
         open={bulkUploadOpen}
         onClose={() => setBulkUploadOpen(false)}
         onImport={handleImport}
+        branch={branch}
+      />
+      <PlUploadExceptionDialog
+        open={plUploadExceptionOpen}
+        pl={selectedPl}
+        onClose={() => setPlUploadExceptionOpen(false)}
+        onImport={handleExceptionImport}
         branch={branch}
       />
     </>
