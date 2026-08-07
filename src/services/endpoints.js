@@ -31,4 +31,9 @@ export const endpoints = {
     plCreate: '/api/pl-upload/create',
     reUpload: '/api/pl-upload/re-upload',
   },
+  branch: {
+    list: '/api/branch',
+    csvExport: '/api/branch/csv-export',
+    excelExport: '/api/branch/excel-export',
+  },
 };
