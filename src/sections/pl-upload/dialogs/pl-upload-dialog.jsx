@@ -96,7 +96,19 @@ export function PlUploadDialog({ open, onClose, onImport, onDownloadTemplate, br
         'Vendor',
       ];
 
-      const actualHeaders = Object.keys(data[0] ?? {});
+      const normalizeHeader = (header) => {
+        const value = String(header ?? '').trim();
+
+        if (!value || /^__EMPTY(?:_\d+)?$/.test(value)) {
+          return null;
+        }
+
+        return value;
+      };
+
+      const actualHeaders = Object.keys(data[0] ?? {})
+        .map(normalizeHeader)
+        .filter(Boolean);
 
       const isValidTemplate =
         actualHeaders.length === expectedHeaders.length &&
