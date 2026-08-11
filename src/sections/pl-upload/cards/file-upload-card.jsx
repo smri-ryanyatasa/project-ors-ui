@@ -10,21 +10,21 @@ export function FileUploadedCard(props) {
           position: 'relative',
           overflow: 'hidden',
 
-          //   '&::before': {
-          //     content: '""',
-          //     position: 'absolute',
-          //     top: 0,
-          //     left: 0,
-          //     width: 80,
-          //     height: '100%',
-          //     background: (theme) =>
-          //       `linear-gradient(
-          //             90deg,
-          //             ${theme.palette.success.main}20 0%,
-          //             ${theme.palette.success.main}10 40%,
-          //             transparent 100%
-          //         )`,
-          //   },
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: (theme) =>
+              `linear-gradient(
+                      90deg,
+                      ${theme.palette.success.main}20 0%,
+                      ${theme.palette.success.main}10 40%,
+                      transparent 100%
+                  )`,
+          },
         }}
       >
         <CardContent>

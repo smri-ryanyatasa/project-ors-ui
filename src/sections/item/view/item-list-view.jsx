@@ -9,15 +9,17 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import { SvgColor } from 'src/components/svg-color';
 import { PageHeader } from 'src/components/page-header/page-header';
 
-import { useBranch } from '../hooks/use-branch';
-import { BranchTable } from '../table/branch-table';
+import { useItem } from '../hooks/use-item';
+import { ItemTable } from '../table/item-table';
+import { useState } from 'react';
 
 // ----------------------------------------------------------------------
 
-export function BranchListView({ title = 'Blank', sx }) {
+export function ItemListView({ title = 'Blank', sx }) {
   const {
+    refresh,
     loading,
-    branches,
+    items,
     total,
     paginationModel,
     setPaginationModel,
@@ -27,7 +29,48 @@ export function BranchListView({ title = 'Blank', sx }) {
     setSortModel,
     csvExport,
     excelExport,
-  } = useBranch();
+    itemRowsUpdate,
+  } = useItem();
+  const [editedRows, setEditedRows] = useState({});
+
+  const handleRowUpdate = async (newRow) => {
+    const originalRow = items.find((item) => item.id === newRow.id);
+    if (!originalRow) {
+      return newRow;
+    }
+
+    const originalAltVendorCode = originalRow.alt_vendor_code ?? '';
+    const newAltVendorCode = newRow.alt_vendor_code ?? '';
+
+    const originalAltVendorName = originalRow.alt_vendor_name ?? '';
+    const newAltVendorName = newRow.alt_vendor_name ?? '';
+
+    const hasChanges =
+      newAltVendorCode !== originalAltVendorCode || originalAltVendorName !== newAltVendorName;
+
+    setEditedRows((prev) => {
+      const next = { ...prev };
+
+      if (hasChanges) {
+        next[newRow.id] = newRow;
+      } else {
+        delete next[newRow.id];
+      }
+
+      return next;
+    });
+
+    return newRow;
+  };
+
+  const handleSave = async () => {
+    await itemRowsUpdate(editedRows);
+    await refresh();
+
+    setEditedRows({});
+
+    toast.success('Item rows updated successfully.');
+  };
 
   const handleCsvExport = async () => {
     await csvExport();
@@ -54,10 +97,11 @@ export function BranchListView({ title = 'Blank', sx }) {
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
     >
-      <BranchTable
+      <ItemTable
         loading={loading}
-        branches={branches}
+        items={items}
         rowCount={total}
+        hasRowChanges={Object.keys(editedRows).length > 0}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
         onFilterModelChange={handleFilterModelChange}
@@ -66,6 +110,8 @@ export function BranchListView({ title = 'Blank', sx }) {
         onSortModelChange={setSortModel}
         onDownloadCsv={handleCsvExport}
         onDownloadExcel={handleExcelExport}
+        onRowUpdate={handleRowUpdate}
+        onSave={handleSave}
       />
     </Box>
   );
@@ -82,7 +128,7 @@ export function BranchListView({ title = 'Blank', sx }) {
           label: 'MMS Masterfile',
         },
         {
-          label: 'Branch',
+          label: 'Item',
         },
       ]}
       action={
@@ -105,7 +151,7 @@ export function BranchListView({ title = 'Blank', sx }) {
               // Import from MMS
             }}
           >
-            Trigger Branch Interface
+            Trigger Item Interface
           </Button>
         </Stack>
       }

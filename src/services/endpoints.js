@@ -36,4 +36,10 @@ export const endpoints = {
     csvExport: '/api/branch/csv-export',
     excelExport: '/api/branch/excel-export',
   },
+  item: {
+    list: '/api/item/item-fetch',
+    csvExport: '/api/item/csv-export',
+    excelExport: '/api/item/excel-export',
+    rowsUpdate: '/api/item/update-rows',
+  },
 };
