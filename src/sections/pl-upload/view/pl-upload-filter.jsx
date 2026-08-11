@@ -8,6 +8,9 @@ import {
   Typography,
   AccordionSummary,
   AccordionDetails,
+  Card,
+  CardContent,
+  Stack,
 } from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
@@ -32,50 +35,37 @@ export function PlUploadFilter({ sx, branches, onBranchChange }) {
   };
 
   return (
-    <Accordion
-      defaultExpanded
-      sx={[
-        (theme) => ({
-          mb: 2,
-          width: 1,
-          bgcolor: 'background.paper',
-          borderRadius: 2,
-          border: '1px solid',
-          borderColor: 'divider',
-          boxShadow: '0px 8px 24px rgba(171, 179, 188, 0.12)',
-        }),
-        ...(Array.isArray(sx) ? sx : [sx]),
-      ]}
-    >
-      <AccordionSummary expandIcon={<Iconify icon="eva:chevron-down-fill" />}>
-        <Box display="flex" alignItems="center" gap={1}>
-          <SvgColor
-            src="/assets/icons/solar/ri--equalizer-line.svg"
-            sx={{ width: 20, height: 20, color: '#637381' }}
-          />
+    <Card variant="outlined" sx={{ height: '100%' }}>
+      <CardContent>
+        <Stack spacing={2}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <SvgColor
+              src="/assets/icons/solar/ri--equalizer-line.svg"
+              sx={{ width: 20, height: 20, color: '#637381' }}
+            />
+            <Typography variant="subtitle2" fontWeight={600}>
+              Advanced Filter
+            </Typography>
+          </Stack>
 
-          <Typography fontWeight={600}>Advance Filter</Typography>
-        </Box>
-      </AccordionSummary>
-
-      <AccordionDetails>
-        <TextField
-          select
-          fullWidth
-          label="Branches"
-          value={form.branches?.branch_code || ''}
-          onChange={handleBranchChange}
-        >
-          <MenuItem value="">
-            <em>Select Branch</em>
-          </MenuItem>
-          {branches.map((branch) => (
-            <MenuItem key={branch.branch_code} value={branch.branch_code}>
-              {branch.branch_code} - {branch.branch_name}
+          <TextField
+            select
+            fullWidth
+            label="Branches"
+            value={form.branches?.branch_code || ''}
+            onChange={handleBranchChange}
+          >
+            <MenuItem value="">
+              <em>Select Branch</em>
             </MenuItem>
-          ))}
-        </TextField>
-      </AccordionDetails>
-    </Accordion>
+            {branches.map((branch) => (
+              <MenuItem key={branch.branch_code} value={branch.branch_code}>
+                {branch.branch_code} - {branch.branch_name}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Stack>
+      </CardContent>
+    </Card>
   );
 }

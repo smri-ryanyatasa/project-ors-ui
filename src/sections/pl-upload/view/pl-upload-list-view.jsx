@@ -3,7 +3,19 @@
 import { toast } from 'sonner';
 import { useState, useEffect } from 'react';
 
-import { Box, Grid, Stack, Button, Backdrop, Typography, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Grid,
+  Stack,
+  Button,
+  Backdrop,
+  Typography,
+  CircularProgress,
+  Card,
+  CardContent,
+  TextField,
+  MenuItem,
+} from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 
@@ -153,11 +165,47 @@ export function PlUploadListView({ title = 'Blank', sx }) {
           Downloading file, please wait...
         </Typography>
       </Backdrop>
-      <PlUploadFilter branches={branches} onBranchChange={handleBranchChange} />
-      <Grid container spacing={2} sx={{ mb: 2 }}>
-        <FileRejectedCard loading={loading} reject={plsUplaodStatus?.[0]?.total_pl_errors ?? 0} />
-        <FileUploadedCard loading={loading} uploaded={plsUplaodStatus?.[0]?.total_available ?? 0} />
-      </Grid>
+
+      <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ mb: 2 }}>
+        {/* Filter */}
+        <Box
+          sx={{
+            width: {
+              xs: '100%',
+              md: '50%',
+            },
+          }}
+        >
+          <PlUploadFilter branches={branches} onBranchChange={handleBranchChange} />
+        </Box>
+
+        {/* Status Cards */}
+        <Box
+          sx={{
+            width: {
+              xs: '100%',
+              md: '50%',
+            },
+          }}
+        >
+          <Grid container spacing={2} sx={{ height: '100%' }}>
+            <Grid size={{ xs: 12, sm: 6 }} sx={{ display: 'flex' }}>
+              <FileRejectedCard
+                loading={loading}
+                reject={plsUplaodStatus?.[0]?.total_pl_errors ?? 0}
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12, sm: 6 }} sx={{ display: 'flex' }}>
+              <FileUploadedCard
+                loading={loading}
+                uploaded={plsUplaodStatus?.[0]?.total_available ?? 0}
+              />
+            </Grid>
+          </Grid>
+        </Box>
+      </Stack>
+
       <PlUploadTable
         loading={loading}
         pls={plsUplaod}

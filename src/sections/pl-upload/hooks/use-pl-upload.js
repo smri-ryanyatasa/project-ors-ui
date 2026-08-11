@@ -163,7 +163,7 @@ export function usePlUpload() {
       });
 
       const blob = new Blob([response], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        type: 'application/vnd.ms-excel',
       });
 
       saveAs(blob, 'pl_upload_exceptions.xls');
