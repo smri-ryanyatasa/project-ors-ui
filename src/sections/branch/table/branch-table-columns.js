@@ -1,8 +1,5 @@
-import { Box, Chip, Stack, Avatar, Tooltip, Typography, IconButton } from '@mui/material';
+import { Chip, Stack } from '@mui/material';
 
-import { _mock } from 'src/_mock';
-
-import { SvgColor } from 'src/components/svg-color';
 
 export const BranchTableColumns = () => [
   {

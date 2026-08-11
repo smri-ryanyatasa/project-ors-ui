@@ -10,21 +10,21 @@ export function FileRejectedCard(props) {
           position: 'relative',
           overflow: 'hidden',
 
-          //   '&::before': {
-          //     content: '""',
-          //     position: 'absolute',
-          //     top: 0,
-          //     left: 0,
-          //     width: 80,
-          //     height: '100%',
-          //     background: (theme) =>
-          //       `linear-gradient(
-          //             90deg,
-          //             ${theme.palette.error.main}20 0%,
-          //             ${theme.palette.error.main}10 40%,
-          //             transparent 100%
-          //         )`,
-          //   },
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: (theme) =>
+              `linear-gradient(
+                      90deg,
+                      ${theme.palette.error.main}20 0%,
+                      ${theme.palette.error.main}10 40%,
+                      transparent 100%
+                  )`,
+          },
         }}
       >
         <CardContent>
@@ -39,7 +39,7 @@ export function FileRejectedCard(props) {
               )}
 
               <Typography variant="body2" color="text.secondary">
-                Total List Rejected
+                Total PLs with errors
               </Typography>
             </Box>
 

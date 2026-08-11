@@ -7,6 +7,7 @@ import {
   Stack,
   Button,
   Dialog,
+  Divider,
   Backdrop,
   Accordion,
   IconButton,
@@ -17,7 +18,6 @@ import {
   CircularProgress,
   AccordionSummary,
   AccordionDetails,
-  Divider,
 } from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
