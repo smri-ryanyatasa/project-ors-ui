@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { Box, Button } from '@mui/material';
 import {
   GridToolbarContainer,
@@ -8,8 +10,8 @@ import {
 } from '@mui/x-data-grid';
 
 import { SvgColor } from 'src/components/svg-color';
+
 import { DownloadButton } from './download-button';
-import { useState } from 'react';
 
 export function CustomToolbar(props) {
   const [loading, setLoading] = useState(false);
@@ -19,7 +21,7 @@ export function CustomToolbar(props) {
       setLoading(true);
       await props.onSave();
     } catch (error) {
-      throw error;
+      console.log(error);
     } finally {
       setLoading(false);
     }

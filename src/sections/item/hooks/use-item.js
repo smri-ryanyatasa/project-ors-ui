@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react';
 import ItemService from 'src/services/item.service';
 
 import { useAuthContext } from 'src/auth/hooks';
-import { set } from 'nprogress';
 
 export function useItem() {
   const { user } = useAuthContext();
@@ -124,10 +123,10 @@ export function useItem() {
         alt_vendor_code,
         alt_vendor_name,
       }));
-      const result = ItemService.updateRows(values);
-      return result;
+
+      await ItemService.updateRows(values);
     } catch (error) {
-      console.log(errr);
+      console.log(error);
     } finally {
       setLoading(false);
     }

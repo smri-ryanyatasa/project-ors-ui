@@ -1,4 +1,4 @@
-import { Box, Grid, Card, Stack, Skeleton, Typography, CardContent } from '@mui/material';
+import { Box, Card, Stack, Skeleton, Typography, CardContent } from '@mui/material';
 
 import { SvgColor } from 'src/components/svg-color';
 

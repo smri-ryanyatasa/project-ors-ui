@@ -1,19 +1,14 @@
 import { useState } from 'react';
 
 import {
-  Box,
+  Card,
+  Stack,
   MenuItem,
-  Accordion,
   TextField,
   Typography,
-  AccordionSummary,
-  AccordionDetails,
-  Card,
   CardContent,
-  Stack,
 } from '@mui/material';
 
-import { Iconify } from 'src/components/iconify';
 import { SvgColor } from 'src/components/svg-color';
 
 export function PlUploadFilter({ sx, branches, onBranchChange }) {
