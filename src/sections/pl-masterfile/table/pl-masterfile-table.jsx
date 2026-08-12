@@ -4,46 +4,45 @@ import { DataGrid } from '@mui/x-data-grid';
 import { CustomToolbar } from './custom-toolbar';
 import { PlMasterfileTableColumns } from './pl-masterfile-column';
 
-const rows = [
-  {
-    id: 1,
-    file_name: 'users-january-07252026.xlsx',
-    file_type: '2026-07-25',
-    uploaded_by: 'John Doe',
-    uploaded_date: '1',
-    status: '2 out of 8 lines have errors',
-  },
-  {
-    id: 2,
-    file_name: 'users-february-07252026.xlsx',
-    file_type: '2026-07-24',
-    uploaded_by: 'Jane Smith',
-    uploaded_date: '2',
-    status: 'Successfully uploaded with no error',
-  },
-  {
-    id: 3,
-    file_name: 'users-march-07252026.csv',
-    file_type: '2026-07-23',
-    uploaded_by: 'Mark Wilson',
-    uploaded_date: '2',
-    status: 'Successfully uploaded with no error',
-  },
-];
-
-export function PlMasterfileTable() {
+export function PlMasterfileTable(props) {
   const columns = PlMasterfileTableColumns();
 
   return (
     <Card>
       <Box sx={{ width: '100%' }}>
         <DataGrid
-          rows={rows}
+          loading={props.loading}
+          rows={props.pls}
           columns={columns}
-          pageSizeOptions={[5, 10, 25]}
           disableRowSelectionOnClick
+          // server-side
+          paginationMode="server"
+          filterMode="server"
+          rowCount={props.rowCount}
+          pageSizeOptions={[5, 10, 25]}
+          // pagination
+          paginationModel={props.paginationModel}
+          onPaginationModelChange={props.onPaginationModelChange}
+          // server-side sorting
+          onFilterModelChange={props.onFilterModelChange}
+          filterModel={props.filterModel}
+          // sort
+          sortingMode="server"
+          sortingOrder={['asc', 'desc']}
+          sortModel={props.sortModel}
+          onSortModelChange={props.onSortModelChange}
           slots={{
             toolbar: CustomToolbar,
+          }}
+          slotProps={{
+            toolbar: {
+              onDownloadCsv: props.onDownloadCsv,
+              onDownloadExcel: props.onDownloadExcel,
+            },
+            loadingOverlay: {
+              variant: 'linear-progress',
+              noRowsVariant: 'linear-progress',
+            },
           }}
           sx={{
             '& .first-column-header': {
