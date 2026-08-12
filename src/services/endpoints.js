@@ -31,6 +31,12 @@ export const endpoints = {
     plCreate: '/api/pl-upload/create',
     reUpload: '/api/pl-upload/re-upload',
   },
+  plMasterfile: {
+    list: '/api/pl-masterfile',
+    status: '/api/pl-masterfile/status',
+    csvExport: '/api/pl-masterfile/csv-export',
+    excelExport: '/api/pl-masterfile/excel-export',
+  },
   branch: {
     list: '/api/branch',
     csvExport: '/api/branch/csv-export',

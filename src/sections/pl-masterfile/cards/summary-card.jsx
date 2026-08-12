@@ -1,44 +1,54 @@
-import { Box, Grid, Card, Stack, Typography, CardContent } from '@mui/material';
+import { Box, Grid, Card, Stack, Typography, CardContent, Skeleton } from '@mui/material';
 
 import { SvgColor } from 'src/components/svg-color';
 
-export function SummaryCard() {
+export function SummaryCard(props) {
+  console.log(props.summary);
+  const {
+    total_pl,
+    total_uploaded,
+    total_available,
+    total_initial_receipt,
+    total_approved_receipt,
+    total_po_generated,
+  } = props.summary[0] ?? 0;
+
   const summaryCards = [
     {
-      value: 128,
+      value: total_pl,
       label: 'Total Pls',
+      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      color: 'primary',
+    },
+    {
+      value: total_uploaded,
+      label: 'Total Pls in Uploaded Status',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'error',
     },
     {
-      value: 256,
-      label: 'Total Pls in Uploaded Status',
+      value: total_available,
+      label: 'Total Pls in Available Status',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'success',
     },
     {
-      value: 84,
-      label: 'Total Pls in Available Status',
+      value: total_initial_receipt,
+      label: 'Total Pls in Initial Receipt Status',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'warning',
     },
     {
-      value: 1024,
-      label: 'Total Pls in Initial Receipt Status',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
-      color: 'info',
-    },
-    {
-      value: 32,
+      value: total_approved_receipt,
       label: 'Total Pls in Approved Receipt Status',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'error',
     },
     {
-      value: 1440,
+      value: total_po_generated,
       label: 'Total Pls in PO Generated Status',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
-      color: 'primary',
+      color: 'info',
     },
   ];
   return (
@@ -88,9 +98,13 @@ export function SummaryCard() {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <Typography variant="h4" fontWeight={700}>
-                    {card.value}
-                  </Typography>
+                  {props.loading ? (
+                    <Skeleton variant="text" width={60} height={40} />
+                  ) : (
+                    <Typography variant="h4" fontWeight={700}>
+                      {card.value}
+                    </Typography>
+                  )}
 
                   <Typography variant="body2" color="text.secondary">
                     {card.label}

@@ -1,12 +1,13 @@
 import { Box } from '@mui/material';
 import {
-  GridToolbarExport,
   GridToolbarContainer,
   GridToolbarQuickFilter,
   GridToolbarFilterButton,
   GridToolbarColumnsButton,
   GridToolbarDensitySelector,
 } from '@mui/x-data-grid';
+
+import { DownloadButton } from './download-button';
 
 export function CustomToolbar(props) {
   return (
@@ -25,7 +26,10 @@ export function CustomToolbar(props) {
         <GridToolbarColumnsButton />
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
-        <GridToolbarExport />
+        <DownloadButton
+          onDownloadCsv={props.onDownloadCsv}
+          onDownloadExcel={props.onDownloadExcel}
+        />
         <GridToolbarQuickFilter />
       </GridToolbarContainer>
     </Box>

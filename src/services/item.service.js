@@ -1,16 +1,12 @@
-
 import axios from 'src/lib/axios';
 
 import { endpoints } from './endpoints';
 
 class ItemService {
   async getItems(params) {
-    console.log(params);
-
     const { data } = await axios.get(endpoints.item.list, {
       params,
     });
-    console.log(data);
     return data;
   }
 
