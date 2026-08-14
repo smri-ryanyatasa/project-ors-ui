@@ -1,9 +1,8 @@
-import { Box, Grid, Card, Stack, Typography, CardContent, Skeleton } from '@mui/material';
+import { Box, Grid, Card, Stack, Skeleton, Typography, CardContent } from '@mui/material';
 
 import { SvgColor } from 'src/components/svg-color';
 
 export function SummaryCard(props) {
-  console.log(props.summary);
   const {
     total_pl,
     total_uploaded,
