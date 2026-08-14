@@ -28,8 +28,8 @@ export function PlUploadDeleteDialog({ open, pl, onClose, onDelete }) {
   };
 
   return (
-    <Dialog open={open} onClose={loading ? undefined : onClose} fullWidth maxWidth="xs">
-      <DialogTitle>Delete Packing List File</DialogTitle>
+    <Dialog open={open} onClose={loading ? undefined : onClose} fullWidth maxWidth="sm">
+      <DialogTitle>Delete Uploaded PL</DialogTitle>
 
       <DialogContent>
         <Typography variant="body2" color="text.secondary">

@@ -1,4 +1,4 @@
-import { Chip, Stack, Typography } from '@mui/material';
+import { Chip, Stack } from '@mui/material';
 
 export const PlMasterfileTableColumns = () => [
   {

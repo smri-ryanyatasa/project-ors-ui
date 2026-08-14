@@ -66,6 +66,8 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
   {
     field: 'mms',
     headerName: 'From MMS?',
+    sortable: false,
+    filterable: false,
     align: 'center',
     headerAlign: 'center',
     flex: 1,
@@ -96,6 +98,8 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
   {
     field: 'branches',
     headerName: 'Branch Details',
+    sortable: false,
+    filterable: false,
     width: 250,
     renderCell: (params) => {
       const branches = params.row.branch_names

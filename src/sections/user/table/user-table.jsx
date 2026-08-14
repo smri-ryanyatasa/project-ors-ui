@@ -44,6 +44,11 @@ export function UserTable(props) {
           onDownloadExcel: props.onDownloadExcel,
         },
       }}
+      sx={{
+        '& .MuiDataGrid-row': {
+          minHeight: '52px !important',
+        },
+      }}
     />
   );
 }

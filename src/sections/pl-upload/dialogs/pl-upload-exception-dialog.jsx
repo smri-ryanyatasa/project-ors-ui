@@ -20,7 +20,6 @@ import {
   AccordionDetails,
 } from '@mui/material';
 
-import { Iconify } from 'src/components/iconify';
 import { SvgColor } from 'src/components/svg-color';
 
 import { PlUploadPreviewTable } from './pl-upload-preview-dialog';
@@ -500,7 +499,7 @@ export function PlUploadExceptionDialog({
               </Stack>
 
               <IconButton color="error" onClick={handleRemoveFile}>
-                <Iconify icon="solar:trash-bin-trash-bold" />
+                <SvgColor src="/assets/icons/solar/material-symbols--close.svg" />
               </IconButton>
             </Stack>
           )}
