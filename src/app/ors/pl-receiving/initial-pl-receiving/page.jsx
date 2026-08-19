@@ -7,5 +7,5 @@ import { InitialPlReceivingListView } from 'src/sections/initial-pl-receiving/vi
 export const metadata = { title: `PL Receiving | Initial PL Receiving - ${CONFIG.appName}` };
 
 export default function Page() {
-  return <InitialPlReceivingListView title="PL Receiving" />;
+  return <InitialPlReceivingListView title="Initial PL Receiving" />;
 }
