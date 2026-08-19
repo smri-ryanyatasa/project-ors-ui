@@ -2,58 +2,53 @@
 
 export const InitialPlReceivingTableColumns = () => [
   {
-    field: 'uploaded_at',
-    headerName: 'Uploaded Date & Time',
-    width: 190,
+    field: 'material_code',
+    headerName: 'Material Code',
+    flex: 1,
     cellClassName: 'first-column-cell',
     headerClassName: 'first-column-header',
   },
   {
-    field: 'filename',
-    headerName: 'Filename',
-    width: 220,
+    field: 'material_name',
+    headerName: 'Material Description',
+    flex: 1,
   },
   {
-    field: 'branch',
-    headerName: 'Branch',
-    width: 100,
+    field: 'mms_sku_code',
+    headerName: 'MMS SKU Code',
+    flex: 1,
+  },
+  {
+    field: 'size',
+    headerName: 'Size/Dim',
+    flex: 1,
+  },
+  {
+    field: 'uom',
+    headerName: 'UOM',
+    flex: 1,
+  },
+  {
+    field: 'received_by',
+    headerName: 'Received By',
+    flex: 1,
+    type: 'number',
+  },
+  {
+    field: 'actual_received',
+    headerName: 'Actual Received',
+    flex: 1,
+    type: 'number',
   },
   {
     field: 'vendor_code',
-    headerName: 'Vendor Code',
-    width: 130,
-  },
-  {
-    field: 'vendor_name',
-    headerName: 'Vendor Name',
-    width: 200,
-  },
-  {
-    field: 'total_items',
-    headerName: 'Total Items',
-    width: 120,
+    headerName: 'Date & Time Uploaded',
+    flex: 1,
     type: 'number',
-  },
-  {
-    field: 'processed_items',
-    headerName: 'Processed',
-    width: 120,
-    type: 'number',
-  },
-  {
-    field: 'failed_items',
-    headerName: 'Failed',
-    width: 100,
-    type: 'number',
-  },
-  {
-    field: 'uploaded_by',
-    headerName: 'Uploaded By',
-    width: 160,
   },
   {
     field: 'status',
     headerName: 'Status',
-    width: 130,
+    flex: 1,
   },
 ];

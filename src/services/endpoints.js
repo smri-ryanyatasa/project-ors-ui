@@ -48,4 +48,12 @@ export const endpoints = {
     excelExport: '/api/item/excel-export',
     rowsUpdate: '/api/item/update-rows',
   },
+  initialPlReceiving: {
+    list: '/api/initial-pl-receiving',
+    status: '/api/initial-pl-receiving/status',
+    csvExport: '/api/initial-pl-receiving/csv-export',
+    excelExport: '/api/initial-pl-receiving/excel-export',
+    fileSI: '/api/initial-pl-receiving/filename-si_number',
+    plsFiles: (branch_id) => `/api/initial-pl-receiving/branch/${branch_id}/filenames`,
+  },
 };
