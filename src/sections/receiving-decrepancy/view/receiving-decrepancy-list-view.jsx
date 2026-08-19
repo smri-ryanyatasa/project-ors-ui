@@ -9,13 +9,8 @@ import { DashboardContent } from 'src/layouts/dashboard';
 // import { SvgColor } from 'src/components/svg-color';
 import { PageHeader } from 'src/components/page-header/page-header';
 
-// import { usePlUpload } from 'src/sections/pl-upload/hooks/use-pl-upload';
-
-// import { UniqueSkuReceivedCard } from '../cards/unique-sku-received';
-// import { InitialPlReceivingFilter } from './initial-pl-receiving-filter';
-// import { useInitialPLReceiving } from '../hooks/use-initial-pl-receiving';
-// import { InitialPlReceivingTable } from '../table/initial-pl-receiving-table';
-// import { ActualReceivedQuantityCard } from '../cards/actual-received-quantity';
+import { SummaryCard } from '../cards/summary-card';
+import { ReceivingDecrepancyFilter } from './receiving-decrepancy-filter';
 
 export function ReceivingDecrepancyListView({ title = 'Blank', sx }) {
   const renderContent = () => (
@@ -26,7 +21,10 @@ export function ReceivingDecrepancyListView({ title = 'Blank', sx }) {
         }),
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
-     />
+    >
+      <ReceivingDecrepancyFilter />
+      <SummaryCard />
+    </Box>
   );
 
   const renderPageHeader = () => (

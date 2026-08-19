@@ -54,18 +54,18 @@ export function DateRangeFilter({
     const [year, month, day] = date.split('-');
 
     const months = [
-      'JAN',
-      'FEV',
-      'MAR',
-      'APR',
-      'MAY',
-      'JUNE',
-      'JULY',
-      'AUG',
-      'SEP',
-      'OCT',
-      'NOV',
-      'DEC',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
 
     return `${day} ${months[Number(month) - 1]} ${year}`;
@@ -94,7 +94,7 @@ export function DateRangeFilter({
               ),
               renderValue: () => {
                 if (value.type === 'custom' && value.startDate && value.endDate) {
-                  return `${formatDate(value.startDate)} to ${formatDate(value.endDate)}`;
+                  return `${formatDate(value.startDate)} -  ${formatDate(value.endDate)}`;
                 }
 
                 return 'All';
