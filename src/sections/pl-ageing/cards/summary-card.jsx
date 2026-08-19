@@ -1,0 +1,121 @@
+import { Box, Grid, Card, Stack, Skeleton, Typography, CardContent } from '@mui/material';
+
+import { SvgColor } from 'src/components/svg-color';
+
+export function SummaryCard(props) {
+  const summaryCards = [
+    {
+      value: 23,
+      label: 'Longest Aging (Days) from Uploaded to Available',
+      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      color: 'primary',
+    },
+    {
+      value: 1,
+      label: 'Longest Aging (Days) from Available to Initial Report',
+      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      color: 'primary',
+    },
+    {
+      value: 11,
+      label: 'Longest Aging (Days) from Initial Receipt to Approved',
+      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      color: 'primary',
+    },
+    {
+      value: 4,
+      label: 'Longest Aging (Days) from Approved Rept. to PO Gen.',
+      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      color: 'primary',
+    },
+  ];
+  return (
+    <Grid container spacing={2} sx={{ mb: 2 }}>
+      {summaryCards.map((card) => (
+        <Grid key={card.label} size={{ xs: 12, sm: 6, md: 3 }} sx={{ display: 'flex' }}>
+          <Card
+            sx={{
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              overflow: 'hidden',
+
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                background: (theme) =>
+                  `linear-gradient(
+                      90deg,
+                      ${theme.palette[card.color].main}10 0%,
+                      ${theme.palette[card.color].main}10 20%,
+                      transparent 100%
+                  )`,
+              },
+            }}
+          >
+            <CardContent
+              sx={{
+                flexGrow: 1,
+                display: 'flex',
+                alignItems: 'stretch',
+              }}
+            >
+              <Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
+                {/* Number + Text */}
+                <Box
+                  sx={{
+                    minHeight: 70,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  {props.loading ? (
+                    <Skeleton variant="text" width={60} height={40} />
+                  ) : (
+                    <Typography variant="h4" fontWeight={700}>
+                      {card.value}
+                    </Typography>
+                  )}
+
+                  <Typography variant="body2" color="text.secondary">
+                    {card.label}
+                  </Typography>
+                </Box>
+
+                {/* Icon */}
+                <Box
+                  sx={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 1.5,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    bgcolor: `${card.color}.lighter`,
+                    flexShrink: 0,
+                  }}
+                >
+                  <SvgColor
+                    src={card.icon}
+                    sx={{
+                      width: 28,
+                      height: 28,
+                      color: `${card.color}.main`,
+                    }}
+                  />
+                </Box>
+              </Stack>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+  );
+}
