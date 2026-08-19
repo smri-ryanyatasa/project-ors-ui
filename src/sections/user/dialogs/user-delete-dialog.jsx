@@ -28,7 +28,7 @@ export function UserDeleteDialog({ open, user, onClose, onDelete }) {
   };
 
   return (
-    <Dialog open={open} onClose={loading ? undefined : onClose} fullWidth maxWidth="xs">
+    <Dialog open={open} onClose={loading ? undefined : onClose} fullWidth maxWidth="sm">
       <DialogTitle>Delete User</DialogTitle>
 
       <DialogContent>

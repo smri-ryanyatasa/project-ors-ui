@@ -6,25 +6,31 @@ export function SummaryCard(props) {
   const summaryCards = [
     {
       value: 23,
-      label: 'Longest Aging (Days) from Uploaded to Available',
+      label: 'Total Unique PLs',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'primary',
     },
     {
       value: 1,
-      label: 'Longest Aging (Days) from Available to Initial Report',
+      label: 'Total Unique SKUs',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'primary',
     },
     {
       value: 11,
-      label: 'Longest Aging (Days) from Initial Receipt to Approved',
+      label: 'Total PL Quantity',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'primary',
     },
     {
       value: 4,
-      label: 'Longest Aging (Days) from Approved Rept. to PO Gen.',
+      label: 'Total Initial Received Quantity',
+      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      color: 'primary',
+    },
+    {
+      value: 2,
+      label: 'Total Final Received Quantity',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'primary',
     },
@@ -32,7 +38,7 @@ export function SummaryCard(props) {
   return (
     <Grid container spacing={2} sx={{ mb: 2 }}>
       {summaryCards.map((card) => (
-        <Grid key={card.label} size={{ xs: 12, sm: 6, md: 3 }} sx={{ display: 'flex' }}>
+        <Grid key={card.label} size={{ xs: 12, sm: 6, md: 2.4 }} sx={{ display: 'flex' }}>
           <Card
             sx={{
               width: '100%',

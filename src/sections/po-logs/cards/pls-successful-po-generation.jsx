@@ -45,8 +45,8 @@ export function PlsSuccessfulPOgenerationCard(props) {
 
             <Box
               sx={{
-                width: 48,
-                height: 48,
+                width: 45,
+                height: 45,
                 borderRadius: 1.5,
                 display: 'flex',
                 alignItems: 'center',

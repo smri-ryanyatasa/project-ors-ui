@@ -7,5 +7,5 @@ import { PlAgeingListView } from 'src/sections/pl-ageing/view/pl-ageing-list-vie
 export const metadata = { title: `Reports | PL Ageing - ${CONFIG.appName}` };
 
 export default function Page() {
-  return <PlAgeingListView title="PL Ageing" />;
+  return <PlAgeingListView title="PL Ageing Report" />;
 }

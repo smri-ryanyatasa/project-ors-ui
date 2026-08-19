@@ -7,5 +7,5 @@ import { ReceivingDecrepancyListView } from 'src/sections/receiving-decrepancy/v
 export const metadata = { title: `Reports | Receiving Decrepancy - ${CONFIG.appName}` };
 
 export default function Page() {
-  return <ReceivingDecrepancyListView title="Receiving Decrepancy" />;
+  return <ReceivingDecrepancyListView title="Receiving Decrepancy Report" />;
 }
