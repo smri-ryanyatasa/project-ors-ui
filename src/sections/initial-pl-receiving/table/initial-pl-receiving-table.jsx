@@ -1,3 +1,4 @@
+
 import { Box, Card } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
@@ -15,6 +16,10 @@ export function InitialPlReceivingTable(props) {
           rows={props.rows}
           columns={columns}
           disableRowSelectionOnClick
+          processRowUpdate={props.onRowUpdate}
+          onProcessRowUpdateError={(error) => {
+            console.error('Row update failed:', error);
+          }}
           // server-side
           paginationMode="server"
           filterMode="server"
@@ -38,6 +43,9 @@ export function InitialPlReceivingTable(props) {
             toolbar: {
               onDownloadCsv: props.onDownloadCsv,
               onDownloadExcel: props.onDownloadExcel,
+              onConfirmReceipt: props.onConfirmReceipt,
+              onPending: props.onPending,
+              onRowsCount: props.rows.length,
             },
             loadingOverlay: {
               variant: 'linear-progress',

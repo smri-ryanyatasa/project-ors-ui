@@ -12,6 +12,7 @@ export function useInitialPLReceiving() {
   const [pls, setPls] = useState([]);
   const [files, setFiles] = useState([]);
   const [status, setStatus] = useState([]);
+  const [zero, setZero] = useState(false);
 
   // Filter
   const [branch, setBranch] = useState();
@@ -48,20 +49,20 @@ export function useInitialPLReceiving() {
           filterModel: JSON.stringify(filterModel.items),
           sortModel: JSON.stringify(sortModel),
           env: user.env,
-          branch,
-          filename,
-          vendor_code: vendorCode,
-          si_number: siNumber,
+          branch: filename ? branch : null,
+          filename: filename ? filename : undefined,
+          vendor_code: vendorCode ? vendorCode : undefined,
+          si_number: siNumber ? siNumber : undefined,
         }),
         InitialPlReceivingService.getPlsStatus({
           search,
           filterModel: JSON.stringify(filterModel.items),
           sortModel: JSON.stringify(sortModel),
           env: user.env,
-          branch,
-          filename,
-          vendor_code: vendorCode,
-          si_number: siNumber,
+          branch: filename ? branch : null,
+          filename: filename ? filename : undefined,
+          vendor_code: vendorCode ? vendorCode : undefined,
+          si_number: siNumber ? siNumber : undefined,
         }),
       ]);
 
@@ -166,6 +167,52 @@ export function useInitialPLReceiving() {
     }
   };
 
+  const rowsUpdate = async (row) => {
+    try {
+      setLoading(true);
+      await InitialPlReceivingService.rowsUpdate(row);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const hasZero = async () => {
+    const data = await InitialPlReceivingService.hasZero({
+      search,
+      filterModel: JSON.stringify(filterModel.items),
+      sortModel: JSON.stringify(sortModel),
+      env: user.env,
+      branch: filename ? branch : null,
+      filename: filename ? filename : undefined,
+      vendor_code: vendorCode ? vendorCode : undefined,
+      si_number: siNumber ? siNumber : undefined,
+    });
+
+    const hasPending = data.some((pl) => pl.status === 'Pending');
+
+    const packingList = data.some((pl) => pl.actual_received === 0);
+    setZero(packingList);
+
+    // kulang pa ng computation for actual received
+    return {
+      hasPending,
+      packingList: data,
+    };
+  };
+
+  const toConfirm = async (row) => {
+    try {
+      setLoading(true);
+      await InitialPlReceivingService.toConfirm(row);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const formatDate = (date = new Date()) => {
     const pad = (value) => String(value).padStart(2, '0');
 
@@ -208,5 +255,9 @@ export function useInitialPLReceiving() {
     setFilename,
     setVendorCode,
     setSiNumber,
+    rowsUpdate,
+    hasZero,
+    zero,
+    toConfirm,
   };
 }

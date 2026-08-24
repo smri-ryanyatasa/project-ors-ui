@@ -44,6 +44,23 @@ class InitialPLReceivingService {
     });
     return data;
   }
+
+  async rowsUpdate(payload) {
+    const { data } = await axios.put(endpoints.initialPlReceiving.rowsUpdate, payload);
+    return data;
+  }
+
+  async hasZero(params) {
+    const { data } = await axios.get(endpoints.initialPlReceiving.hasZero, {
+      params,
+    });
+    return data;
+  }
+
+  async toConfirm(payload) {
+    const { data } = await axios.put(endpoints.initialPlReceiving.toConfirm, payload);
+    return data;
+  }
 }
 
 export default new InitialPLReceivingService();

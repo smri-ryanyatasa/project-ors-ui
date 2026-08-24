@@ -1,7 +1,7 @@
 'use client';
 
 import { toast } from 'sonner';
-// import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { Box, Grid } from '@mui/material';
 
@@ -14,13 +14,14 @@ import { usePlUpload } from 'src/sections/pl-upload/hooks/use-pl-upload';
 
 import { UniqueSkuReceivedCard } from '../cards/unique-sku-received';
 import { InitialPlReceivingFilter } from './initial-pl-receiving-filter';
+import { ConfirmReceiptDialog } from '../dialogs/confirm-receipt-dialog';
 import { useInitialPLReceiving } from '../hooks/use-initial-pl-receiving';
 import { InitialPlReceivingTable } from '../table/initial-pl-receiving-table';
 import { ActualReceivedQuantityCard } from '../cards/actual-received-quantity';
 
 export function InitialPlReceivingListView({ title = 'Blank', sx }) {
-  const { branches } = usePlUpload();
   const {
+    refresh,
     loading,
     pls,
     status,
@@ -39,7 +40,28 @@ export function InitialPlReceivingListView({ title = 'Blank', sx }) {
     setFilename,
     setVendorCode,
     setSiNumber,
+    rowsUpdate,
+    hasZero,
+    zero,
+    toConfirm,
   } = useInitialPLReceiving();
+
+  const { branches } = usePlUpload();
+  const [editedRows, setEditedRows] = useState({});
+  const [confirmReceiptOpen, setConfirmReceiptOpen] = useState(false);
+  const [packingList, setPackingList] = useState([]);
+
+  const handleOpenConfirmReceipt = async () => {
+    const result = await hasZero();
+
+    setPackingList(result.packingList);
+
+    if (result.hasPending) {
+      toast.warning('Some items has still on Pending.');
+      return;
+    }
+    setConfirmReceiptOpen(true);
+  };
 
   const handleCsvExport = async () => {
     await csvExport();
@@ -60,6 +82,43 @@ export function InitialPlReceivingListView({ title = 'Blank', sx }) {
     setFilename(form.filename);
     setVendorCode(form.vendor_code.split(' - ')[0]);
     setSiNumber(form.si_number);
+  };
+
+  const handleRowUpdate = async (newRow) => {
+    const originalRow = pls.find((item) => item.id === newRow.id);
+    if (!originalRow) {
+      return newRow;
+    }
+
+    const originalValue = originalRow.actual_received ?? '';
+    const newValue = newRow.actual_received ?? '';
+
+    const hasChanges = newValue !== originalValue;
+
+    setEditedRows((prev) => {
+      const next = { ...prev };
+
+      if (hasChanges) {
+        next[newRow.id] = newRow;
+      } else {
+        delete next[newRow.id];
+      }
+
+      return next;
+    });
+
+    if (hasChanges) {
+      await rowsUpdate(newRow);
+      await refresh();
+    }
+
+    return newRow;
+  };
+
+  const handleToConfirm = async () => {
+    await toConfirm(packingList);
+    await refresh();
+    toast.success('Successfully updated.');
   };
 
   const renderContent = () => (
@@ -86,6 +145,7 @@ export function InitialPlReceivingListView({ title = 'Blank', sx }) {
         loading={loading}
         rows={pls}
         rowCount={total}
+        hasRowChanges={Object.keys(editedRows).length > 0}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
         onFilterModelChange={handleFilterModelChange}
@@ -94,6 +154,8 @@ export function InitialPlReceivingListView({ title = 'Blank', sx }) {
         onSortModelChange={setSortModel}
         onDownloadCsv={handleCsvExport}
         onDownloadExcel={handleExcelExport}
+        onRowUpdate={handleRowUpdate}
+        onConfirmReceipt={handleOpenConfirmReceipt}
       />
     </Box>
   );
@@ -120,6 +182,12 @@ export function InitialPlReceivingListView({ title = 'Blank', sx }) {
     <>
       {renderPageHeader()}
       <DashboardContent maxWidth="xl">{renderContent()}</DashboardContent>
+      <ConfirmReceiptDialog
+        open={confirmReceiptOpen}
+        hasZero={zero}
+        onConfirm={handleToConfirm}
+        onClose={() => setConfirmReceiptOpen(false)}
+      />
     </>
   );
 }

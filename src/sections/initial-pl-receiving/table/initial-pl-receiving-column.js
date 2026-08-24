@@ -1,4 +1,6 @@
-// import { Chip, Stack, Typography } from '@mui/material';
+import { Box, Stack } from '@mui/material';
+
+import { SvgColor } from 'src/components/svg-color';
 
 export const InitialPlReceivingTableColumns = () => [
   {
@@ -37,11 +39,63 @@ export const InitialPlReceivingTableColumns = () => [
   {
     field: 'actual_received',
     headerName: 'Actual Received',
+    align: 'center',
+    headerAlign: 'center',
     flex: 1,
     type: 'number',
+    editable: true,
+    renderCell: (params) => {
+      const value = params.value;
+
+      let backgroundColor = null;
+      let color = null;
+
+      if (value === 0) {
+        backgroundColor = '#eb834f';
+        color = '#ffffff';
+      } else if (value === null || value === undefined || value === '') {
+        backgroundColor = '#ffc000';
+      }
+
+      return (
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            width: '100%',
+            height: '100%',
+          }}
+        >
+          <Box
+            sx={{
+              minWidth: 50,
+              height: 40,
+              px: 1,
+              backgroundColor,
+              color,
+              borderRadius: '5px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxSizing: 'border-box',
+            }}
+          >
+            {value || value === 0 ? (
+              value
+            ) : (
+              <SvgColor
+                src="/assets/icons/solar/solar--pen-bold.svg"
+                sx={{ width: 16, height: 16, color: '#ffffff' }}
+              />
+            )}
+          </Box>
+        </Stack>
+      );
+    },
   },
   {
-    field: 'vendor_code',
+    field: 'received_date',
     headerName: 'Date & Time Uploaded',
     flex: 1,
     type: 'number',
