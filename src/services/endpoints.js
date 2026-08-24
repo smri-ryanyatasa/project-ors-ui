@@ -50,10 +50,13 @@ export const endpoints = {
   },
   initialPlReceiving: {
     list: '/api/initial-pl-receiving',
+    hasZero: '/api/initial-pl-receiving/has-zero',
     status: '/api/initial-pl-receiving/status',
     csvExport: '/api/initial-pl-receiving/csv-export',
     excelExport: '/api/initial-pl-receiving/excel-export',
     fileSI: '/api/initial-pl-receiving/filename-si_number',
+    rowsUpdate: '/api/initial-pl-receiving/rows-update',
+    toConfirm: '/api/initial-pl-receiving/to-confirm',
     plsFiles: (branch_id) => `/api/initial-pl-receiving/branch/${branch_id}/filenames`,
   },
 };

@@ -121,7 +121,10 @@ export function InitialPlReceivingFilter({ sx, branches, onGetFiles, files = [],
               onChange={async (_, newValue) => {
                 const newFilename = newValue?.filename || '';
                 const newSINumber = newValue?.sales_invoice_no || '';
-                const newVendorCode = `${newValue?.vendor_code} - ${newValue?.vendor_name}`;
+                const newVendorCode =
+                  newValue?.vendor_code == null && newValue?.vendor_name == null
+                    ? ''
+                    : `${newValue?.vendor_code ?? ''} - ${newValue?.vendor_name ?? ''}`;
 
                 const updatedForm = {
                   ...form,
@@ -152,7 +155,10 @@ export function InitialPlReceivingFilter({ sx, branches, onGetFiles, files = [],
               onChange={async (_, newValue) => {
                 const newFilename = newValue?.filename || '';
                 const newSINumber = newValue?.sales_invoice_no || '';
-                const newVendorCode = `${newValue?.vendor_code} - ${newValue?.vendor_name}`;
+                const newVendorCode =
+                  newValue?.vendor_code == null && newValue?.vendor_name == null
+                    ? ''
+                    : `${newValue?.vendor_code ?? ''} - ${newValue?.vendor_name ?? ''}`;
 
                 const updatedForm = {
                   ...form,

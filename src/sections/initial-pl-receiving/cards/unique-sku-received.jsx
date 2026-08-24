@@ -55,7 +55,7 @@ export function UniqueSkuReceivedCard(props) {
               }}
             >
               <SvgColor
-                src="/assets/icons/solar/lucide--file-x-corner.svg"
+                src="/assets/icons/solar/lucide--file-check-corner.svg"
                 sx={{
                   width: 28,
                   height: 28,
