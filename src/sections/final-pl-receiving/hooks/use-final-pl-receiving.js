@@ -1,18 +1,16 @@
 import { saveAs } from 'file-saver';
 import { useState, useEffect, useCallback } from 'react';
 
-import InitialPlReceivingService from 'src/services/initialPlReceiving.service';
+import FinalPlReceivingService from 'src/services/finalPlReceiving.service';
 
 import { useAuthContext } from 'src/auth/hooks';
 
-export function useInitialPLReceiving() {
+export function useFinalPLReceiving() {
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
   const [pls, setPls] = useState([]);
-  const [files, setFiles] = useState([]);
   const [status, setStatus] = useState([]);
-  const [zero, setZero] = useState(false);
 
   // Filter
   const [branch, setBranch] = useState();
@@ -42,7 +40,7 @@ export function useInitialPLReceiving() {
       setLoading(true);
 
       const [response, count] = await Promise.all([
-        InitialPlReceivingService.getPls({
+        FinalPlReceivingService.getPls({
           page: paginationModel.page + 1,
           pageSize: paginationModel.pageSize,
           search,
@@ -54,7 +52,7 @@ export function useInitialPLReceiving() {
           vendor_code: vendorCode ? vendorCode : undefined,
           si_number: siNumber ? siNumber : undefined,
         }),
-        InitialPlReceivingService.getPlsStatus({
+        FinalPlReceivingService.getPlsStatus({
           search,
           filterModel: JSON.stringify(filterModel.items),
           sortModel: JSON.stringify(sortModel),
@@ -92,7 +90,7 @@ export function useInitialPLReceiving() {
     try {
       setLoading(true);
 
-      const blob = await InitialPlReceivingService.csvExport({
+      const blob = await FinalPlReceivingService.csvExport({
         search,
         filterModel: JSON.stringify(filterModel.items),
         sortModel: JSON.stringify(sortModel),
@@ -104,7 +102,7 @@ export function useInitialPLReceiving() {
       const link = document.createElement('a');
 
       link.href = url;
-      link.download = `InitialRec_${formatDate()}.csv`;
+      link.download = `FinalRec_${formatDate()}.csv`;
 
       document.body.appendChild(link);
 
@@ -126,7 +124,7 @@ export function useInitialPLReceiving() {
     try {
       setLoading(true);
 
-      const response = await InitialPlReceivingService.excelExport({
+      const response = await FinalPlReceivingService.excelExport({
         search,
         filterModel: JSON.stringify(filterModel.items),
         sortModel: JSON.stringify(sortModel),
@@ -137,7 +135,7 @@ export function useInitialPLReceiving() {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
 
-      saveAs(blob, `InitialRec_${formatDate()}.xlsx`);
+      saveAs(blob, `FinalRec_${formatDate()}.xlsx`);
     } catch (error) {
       console.error('CSV export error:', error);
     } finally {
@@ -145,42 +143,22 @@ export function useInitialPLReceiving() {
     }
   };
 
-  const plsFiles = async (branch_code) => {
+  const rowsUpdate = async (rows) => {
     try {
-      const response = await InitialPlReceivingService.plsFiles({ branch_code });
-      setFiles(response);
+      const values = Object.values(rows).map(({ pl_id, initial_qty, final_qty }) => ({
+        pl_id,
+        initial_qty,
+        final_qty,
+      }));
+
+      await FinalPlReceivingService.rowsUpdate(values);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getPlsFiles = async (branch_code, type = 2) => {
-    try {
-      const response = await InitialPlReceivingService.getPlsFiles({
-        branch_id: branch_code,
-        env: user.env,
-        type,
-      });
-
-      setFiles(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const rowsUpdate = async (row) => {
-    try {
-      setLoading(true);
-      await InitialPlReceivingService.rowsUpdate(row);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const hasZero = async () => {
-    const data = await InitialPlReceivingService.hasZero({
+  const toApproved = async () => {
+    await FinalPlReceivingService.toApproved({
       search,
       filterModel: JSON.stringify(filterModel.items),
       sortModel: JSON.stringify(sortModel),
@@ -190,28 +168,6 @@ export function useInitialPLReceiving() {
       vendor_code: vendorCode ? vendorCode : undefined,
       si_number: siNumber ? siNumber : undefined,
     });
-
-    const hasPending = data.some((pl) => pl.status === 'Pending');
-
-    const packingList = data.some((pl) => pl.actual_received === 0);
-    setZero(packingList);
-
-    // kulang pa ng computation for actual received
-    return {
-      hasPending,
-      packingList: data,
-    };
-  };
-
-  const toConfirm = async (row) => {
-    try {
-      setLoading(true);
-      await InitialPlReceivingService.toConfirm(row);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   const formatDate = (date = new Date()) => {
@@ -249,16 +205,11 @@ export function useInitialPLReceiving() {
     setSortModel,
     csvExport,
     excelExport,
-    plsFiles,
-    getPlsFiles,
-    files,
     setBranch,
     setFilename,
     setVendorCode,
     setSiNumber,
     rowsUpdate,
-    hasZero,
-    zero,
-    toConfirm,
+    toApproved,
   };
 }

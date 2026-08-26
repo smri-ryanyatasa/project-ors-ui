@@ -40,28 +40,27 @@ export function CustomToolbar(props) {
           },
         }}
       >
-        {props.onRowChanges && (
-          <Button
-            variant="contained"
-            disabled={loading}
-            sx={{
-              bgcolor: '#0030ff',
-              '&:hover': {
-                bgcolor: '#032ad8',
-              },
-              color: 'white !important',
-            }}
-            startIcon={
-              <SvgColor
-                src="/assets/icons/solar/lucide-lab--save.svg"
-                sx={{ width: 20, height: 20 }}
-              />
-            }
-            onClick={handleSave}
-          >
-            {loading ? 'Saving...' : 'Save'}
-          </Button>
-        )}
+        <Button
+          variant="contained"
+          loading={loading}
+          sx={{
+            bgcolor: '#0030ff',
+            '&:hover': {
+              bgcolor: '#032ad8',
+            },
+            color: 'white !important',
+          }}
+          startIcon={
+            <SvgColor
+              src="/assets/icons/solar/lucide-lab--save.svg"
+              sx={{ width: 20, height: 20 }}
+            />
+          }
+          disabled={props.onRowChanges ? false : true}
+          onClick={handleSave}
+        >
+          {loading ? 'Saving...' : 'Save'}
+        </Button>
 
         <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center' }}>
           <GridToolbarColumnsButton />
