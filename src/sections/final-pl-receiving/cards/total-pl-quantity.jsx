@@ -34,7 +34,7 @@ export function TotalPlQuantityCard(props) {
                 <Skeleton variant="text" width={60} height={40} />
               ) : (
                 <Typography variant="h4" fontWeight={700}>
-                  4
+                  {props.status}
                 </Typography>
               )}
 
@@ -55,7 +55,7 @@ export function TotalPlQuantityCard(props) {
               }}
             >
               <SvgColor
-                src="/assets/icons/solar/lucide--file-x-corner.svg"
+                src="/assets/icons/solar/lucide--file-check-corner.svg"
                 sx={{
                   width: 28,
                   height: 28,

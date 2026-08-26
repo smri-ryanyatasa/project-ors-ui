@@ -57,7 +57,7 @@ export function InitialPlReceivingListView({ title = 'Blank', sx }) {
     setPackingList(result.packingList);
 
     if (result.hasPending) {
-      toast.warning('Some items has still on Pending.');
+      toast.warning('Some items are still on Pending.');
       return;
     }
     setConfirmReceiptOpen(true);

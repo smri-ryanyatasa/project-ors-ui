@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { Box, Button } from '@mui/material';
 import {
   GridToolbarContainer,
@@ -12,6 +14,16 @@ import { SvgColor } from 'src/components/svg-color';
 import { DownloadButton } from './download-button';
 
 export function CustomToolbar(props) {
+  const [loading, setLoading] = useState(false);
+
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      await props.onSave();
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <Box sx={{ p: 2 }}>
       <GridToolbarContainer
@@ -40,6 +52,8 @@ export function CustomToolbar(props) {
               sx={{ width: 20, height: 20 }}
             />
           }
+          disabled={props.onRowsCount ? false : true}
+          onClick={props.onApprovedReceipt}
         >
           Approved Receipt
         </Button>
@@ -51,6 +65,9 @@ export function CustomToolbar(props) {
               sx={{ width: 20, height: 20 }}
             />
           }
+          loading={loading}
+          disabled={props.onRowChanges ? false : true}
+          onClick={handleSave}
         >
           Save
         </Button>
@@ -62,6 +79,8 @@ export function CustomToolbar(props) {
               sx={{ width: 20, height: 20 }}
             />
           }
+          disabled={props.onRowChanges ? false : true}
+          onClick={props.onDiscard}
         >
           Discard
         </Button>
@@ -73,6 +92,8 @@ export function CustomToolbar(props) {
               sx={{ width: 20, height: 20 }}
             />
           }
+          disabled={props.onRowChanges ? false : true}
+          onClick={props.onUndo}
         >
           Undo
         </Button>
@@ -84,6 +105,8 @@ export function CustomToolbar(props) {
               sx={{ width: 20, height: 20 }}
             />
           }
+          disabled={props.onRowChanges ? false : true}
+          onClick={props.onRedo}
         >
           Redo
         </Button>

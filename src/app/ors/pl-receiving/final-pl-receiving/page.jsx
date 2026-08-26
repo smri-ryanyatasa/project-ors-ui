@@ -7,5 +7,5 @@ import { FinalPlReceivingListView } from 'src/sections/final-pl-receiving/view/f
 export const metadata = { title: `PL Receiving | Final PL Receiving - ${CONFIG.appName}` };
 
 export default function Page() {
-  return <FinalPlReceivingListView title="PL Receiving" />;
+  return <FinalPlReceivingListView title="Final PL Receiving" />;
 }

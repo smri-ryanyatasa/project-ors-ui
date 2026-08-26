@@ -59,4 +59,12 @@ export const endpoints = {
     toConfirm: '/api/initial-pl-receiving/to-confirm',
     plsFiles: (branch_id) => `/api/initial-pl-receiving/branch/${branch_id}/filenames`,
   },
+  finalPlReceiving: {
+    list: '/api/final-pl-receiving',
+    status: '/api/final-pl-receiving/status',
+    csvExport: '/api/final-pl-receiving/csv-export',
+    excelExport: '/api/final-pl-receiving/excel-export',
+    rowsUpdate: '/api/final-pl-receiving/rows-update',
+    toApproved: '/api/final-pl-receiving/to-approved',
+  },
 };
