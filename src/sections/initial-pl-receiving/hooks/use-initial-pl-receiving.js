@@ -97,6 +97,10 @@ export function useInitialPLReceiving() {
         filterModel: JSON.stringify(filterModel.items),
         sortModel: JSON.stringify(sortModel),
         env: user.env,
+        branch: filename ? branch : null,
+        filename: filename ? filename : undefined,
+        vendor_code: vendorCode ? vendorCode : undefined,
+        si_number: siNumber ? siNumber : undefined,
       });
 
       const url = window.URL.createObjectURL(blob);
@@ -131,6 +135,10 @@ export function useInitialPLReceiving() {
         filterModel: JSON.stringify(filterModel.items),
         sortModel: JSON.stringify(sortModel),
         env: user.env,
+        branch: filename ? branch : null,
+        filename: filename ? filename : undefined,
+        vendor_code: vendorCode ? vendorCode : undefined,
+        si_number: siNumber ? siNumber : undefined,
       });
 
       const blob = new Blob([response], {

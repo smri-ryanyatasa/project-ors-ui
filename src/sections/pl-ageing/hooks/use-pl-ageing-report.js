@@ -1,28 +1,32 @@
 import { saveAs } from 'file-saver';
 import { useState, useEffect, useCallback } from 'react';
 
-import FinalPlReceivingService from 'src/services/finalPlReceiving.service';
+import PlAgeingReportService from 'src/services/plAgeingReport.service';
 
 import { useAuthContext } from 'src/auth/hooks';
 
-export function useFinalPLReceiving() {
+export function usePlAgeingReport() {
   const { user } = useAuthContext();
 
   const [loading, setLoading] = useState(false);
   const [pls, setPls] = useState([]);
   const [status, setStatus] = useState([]);
 
-  // Filter
-  const [branch, setBranch] = useState();
-  const [filename, setFilename] = useState();
-  const [vendorCode, setVendorCode] = useState();
-  const [siNumber, setSiNumber] = useState();
+  const [uploadedStarDate, setUploadedStarDate] = useState();
+  const [uploadedEndDate, setUploadedEndDate] = useState();
+  const [approvedReceiptStartDate, setApprovedReceiptStartDate] = useState();
+  const [approvedReceiptEndDate, setApprovedReceiptEndDate] = useState();
+  const [initialReceiptStartDate, setInitialReceiptStartDate] = useState();
+  const [initialReceiptEndDate, setInitialReceiptEndDate] = useState();
+  const [poGeneratedStartDate, setPoGeneratedStartDate] = useState();
+  const [poGeneratedEndDate, setPoGeneratedEndDate] = useState();
 
+  // Filter
   const [total, setTotal] = useState(0);
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 5 });
   const [filterModel, setFilterModel] = useState({ items: [], quickFilterValues: [] });
   const search = filterModel.quickFilterValues?.[0] || '';
-  const [sortModel, setSortModel] = useState([{ field: 'material_code', sort: 'desc' }]);
+  const [sortModel, setSortModel] = useState([{ field: 'filename', sort: 'desc' }]);
 
   const handleFilterModelChange = useCallback((model) => {
     setFilterModel(model);
@@ -40,27 +44,27 @@ export function useFinalPLReceiving() {
       setLoading(true);
 
       const [response, count] = await Promise.all([
-        FinalPlReceivingService.getPls({
+        PlAgeingReportService.getPlsReport({
           page: paginationModel.page + 1,
           pageSize: paginationModel.pageSize,
           search,
           filterModel: JSON.stringify(filterModel.items),
           sortModel: JSON.stringify(sortModel),
           env: user.env,
-          branch: filename ? branch : null,
-          filename: filename ? filename : undefined,
-          vendor_code: vendorCode ? vendorCode : undefined,
-          si_number: siNumber ? siNumber : undefined,
+          uploadedStartDate: uploadedStarDate,
+          uploadedEndDate,
+          initialStartDate: initialReceiptStartDate,
+          initialEndDate: initialReceiptEndDate,
+          approveReceiptStartDate: approvedReceiptStartDate,
+          approveReceiptEndDate: approvedReceiptEndDate,
+          poGeneratedStartDate,
+          poGeneratedEndDate,
         }),
-        FinalPlReceivingService.getPlsStatus({
+        PlAgeingReportService.getPlsStatus({
           search,
           filterModel: JSON.stringify(filterModel.items),
           sortModel: JSON.stringify(sortModel),
           env: user.env,
-          branch: filename ? branch : null,
-          filename: filename ? filename : undefined,
-          vendor_code: vendorCode ? vendorCode : undefined,
-          si_number: siNumber ? siNumber : undefined,
         }),
       ]);
 
@@ -74,14 +78,18 @@ export function useFinalPLReceiving() {
     }
   }, [
     user,
-    branch,
-    filename,
-    vendorCode,
-    siNumber,
     paginationModel,
     search,
     filterModel,
     sortModel,
+    uploadedStarDate,
+    uploadedEndDate,
+    approvedReceiptStartDate,
+    approvedReceiptEndDate,
+    initialReceiptStartDate,
+    initialReceiptEndDate,
+    poGeneratedStartDate,
+    poGeneratedEndDate,
   ]);
 
   const csvExport = async () => {
@@ -90,15 +98,11 @@ export function useFinalPLReceiving() {
     try {
       setLoading(true);
 
-      const blob = await FinalPlReceivingService.csvExport({
+      const blob = await PlAgeingReportService.csvExport({
         search,
         filterModel: JSON.stringify(filterModel.items),
         sortModel: JSON.stringify(sortModel),
         env: user.env,
-        branch: filename ? branch : null,
-        filename: filename ? filename : undefined,
-        vendor_code: vendorCode ? vendorCode : undefined,
-        si_number: siNumber ? siNumber : undefined,
       });
 
       const url = window.URL.createObjectURL(blob);
@@ -106,7 +110,7 @@ export function useFinalPLReceiving() {
       const link = document.createElement('a');
 
       link.href = url;
-      link.download = `FinalRec_${formatDate()}.csv`;
+      link.download = `InitialRec_${formatDate()}.csv`;
 
       document.body.appendChild(link);
 
@@ -128,54 +132,23 @@ export function useFinalPLReceiving() {
     try {
       setLoading(true);
 
-      const response = await FinalPlReceivingService.excelExport({
+      const response = await PlAgeingReportService.excelExport({
         search,
         filterModel: JSON.stringify(filterModel.items),
         sortModel: JSON.stringify(sortModel),
         env: user.env,
-        branch: filename ? branch : null,
-        filename: filename ? filename : undefined,
-        vendor_code: vendorCode ? vendorCode : undefined,
-        si_number: siNumber ? siNumber : undefined,
       });
 
       const blob = new Blob([response], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
 
-      saveAs(blob, `FinalRec_${formatDate()}.xlsx`);
+      saveAs(blob, `InitialRec_${formatDate()}.xlsx`);
     } catch (error) {
       console.error('CSV export error:', error);
     } finally {
       setLoading(false);
     }
-  };
-
-  const rowsUpdate = async (rows) => {
-    try {
-      const values = Object.values(rows).map(({ pl_id, initial_qty, final_qty }) => ({
-        pl_id,
-        initial_qty,
-        final_qty,
-      }));
-
-      await FinalPlReceivingService.rowsUpdate(values);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const toApproved = async () => {
-    await FinalPlReceivingService.toApproved({
-      search,
-      filterModel: JSON.stringify(filterModel.items),
-      sortModel: JSON.stringify(sortModel),
-      env: user.env,
-      branch: filename ? branch : null,
-      filename: filename ? filename : undefined,
-      vendor_code: vendorCode ? vendorCode : undefined,
-      si_number: siNumber ? siNumber : undefined,
-    });
   };
 
   const formatDate = (date = new Date()) => {
@@ -213,11 +186,13 @@ export function useFinalPLReceiving() {
     setSortModel,
     csvExport,
     excelExport,
-    setBranch,
-    setFilename,
-    setVendorCode,
-    setSiNumber,
-    rowsUpdate,
-    toApproved,
+    setUploadedStarDate,
+    setUploadedEndDate,
+    setApprovedReceiptStartDate,
+    setApprovedReceiptEndDate,
+    setInitialReceiptStartDate,
+    setInitialReceiptEndDate,
+    setPoGeneratedStartDate,
+    setPoGeneratedEndDate,
   };
 }

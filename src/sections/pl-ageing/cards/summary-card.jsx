@@ -3,27 +3,34 @@ import { Box, Grid, Card, Stack, Skeleton, Typography, CardContent } from '@mui/
 import { SvgColor } from 'src/components/svg-color';
 
 export function SummaryCard(props) {
+  const {
+    longest_aging_approve_po_gen,
+    longest_aging_available_initial,
+    longest_aging_initial_approve,
+    longest_aging_upload_available,
+  } = props.summary[0] ?? 0;
+
   const summaryCards = [
     {
-      value: 23,
+      value: longest_aging_upload_available,
       label: 'Longest Aging (Days) from Uploaded to Available',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'primary',
     },
     {
-      value: 1,
+      value: longest_aging_available_initial,
       label: 'Longest Aging (Days) from Available to Initial Report',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'primary',
     },
     {
-      value: 11,
+      value: longest_aging_initial_approve,
       label: 'Longest Aging (Days) from Initial Receipt to Approved',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'primary',
     },
     {
-      value: 4,
+      value: longest_aging_approve_po_gen,
       label: 'Longest Aging (Days) from Approved Rept. to PO Gen.',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'primary',

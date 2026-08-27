@@ -74,6 +74,10 @@ export function PlAgeingTable(props) {
               textUnderlineOffset: '3px',
               cursor: 'pointer',
             },
+            '& .wrapped-header .MuiDataGrid-columnHeaderTitle': {
+              whiteSpace: 'normal',
+              lineHeight: 1.2,
+            },
           }}
         />
       </Box>

@@ -14,7 +14,7 @@ import { SvgColor } from 'src/components/svg-color';
 
 import { DateRangeFilter } from './date';
 
-export function PlAgeingFilter({ sx }) {
+export function PlAgeingFilter({ sx, onFilter }) {
   const [filters, setFilters] = useState({
     uploadedDate: {
       type: 'all',
@@ -22,24 +22,34 @@ export function PlAgeingFilter({ sx }) {
       endDate: '',
     },
 
-    approvedDate: {
+    initialReceiptDate: {
       type: 'all',
       startDate: '',
       endDate: '',
     },
 
-    rejectedDate: {
+    approvedReceiptDate: {
       type: 'all',
       startDate: '',
       endDate: '',
     },
 
-    completedDate: {
+    poGeneratedDate: {
       type: 'all',
       startDate: '',
       endDate: '',
     },
   });
+
+  const handleFilterChange = async (name, value) => {
+    const newFilters = {
+      ...filters,
+      [name]: value,
+    };
+
+    setFilters(newFilters);
+    await onFilter(newFilters);
+  };
 
   return (
     <Accordion
@@ -74,12 +84,7 @@ export function PlAgeingFilter({ sx }) {
               label="Upload Date"
               textFieldLabel="Start & End Date"
               value={filters.uploadedDate}
-              onChange={(value) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  uploadedDate: value,
-                }))
-              }
+              onChange={(value) => handleFilterChange('uploadedDate', value)}
             />
           </Grid>
 
@@ -87,26 +92,16 @@ export function PlAgeingFilter({ sx }) {
             <DateRangeFilter
               label="Initial Receipt"
               textFieldLabel="Start & End Date"
-              value={filters.approvedDate}
-              onChange={(value) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  approvedDate: value,
-                }))
-              }
+              value={filters.initialReceiptDate}
+              onChange={(value) => handleFilterChange('initialReceiptDate', value)}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
             <DateRangeFilter
               label="Approved Receipt"
               textFieldLabel="Start & End Date"
-              value={filters.rejectedDate}
-              onChange={(value) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  rejectedDate: value,
-                }))
-              }
+              value={filters.approvedReceiptDate}
+              onChange={(value) => handleFilterChange('approvedReceiptDate', value)}
             />
           </Grid>
 
@@ -114,13 +109,8 @@ export function PlAgeingFilter({ sx }) {
             <DateRangeFilter
               label="PO Generated"
               textFieldLabel="Start & End Date"
-              value={filters.completedDate}
-              onChange={(value) =>
-                setFilters((prev) => ({
-                  ...prev,
-                  completedDate: value,
-                }))
-              }
+              value={filters.poGeneratedDate}
+              onChange={(value) => handleFilterChange('poGeneratedDate', value)}
             />
           </Grid>
         </Grid>
