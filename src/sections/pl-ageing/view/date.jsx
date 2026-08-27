@@ -26,9 +26,9 @@ export function DateRangeFilter({
   const handleSelect = (event) => {
     const selected = event.target.value;
 
-    if (selected === 'all') {
+    if (selected === 'All') {
       onChange({
-        type: 'all',
+        type: 'All',
         startDate: '',
         endDate: '',
       });
@@ -107,7 +107,7 @@ export function DateRangeFilter({
             },
           }}
         >
-          <MenuItem value="all">All</MenuItem>
+          <MenuItem value="All">All</MenuItem>
 
           <MenuItem
             value="custom"
