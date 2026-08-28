@@ -109,13 +109,21 @@ export function UserListView({ title = 'Blank', sx }) {
   };
 
   const handleCsvExport = async () => {
-    await csvExport();
-    toast.success('CSV file downloaded successfully.');
+    try {
+      await csvExport();
+      toast.success('CSV file downloaded successfully.');
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to download the file.');
+    }
   };
 
   const handleExcelExport = async () => {
-    await excelExport();
-    toast.success('EXCEL file downloaded successfully.');
+    try {
+      await excelExport();
+      toast.success('EXCEL file downloaded successfully.');
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to download the file.');
+    }
   };
 
   const renderContent = () => (

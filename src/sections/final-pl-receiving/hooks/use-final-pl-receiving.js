@@ -144,29 +144,25 @@ export function useFinalPLReceiving() {
       });
 
       saveAs(blob, `FinalRec_${formatDate()}.xlsx`);
-    } catch (error) {
-      console.error('CSV export error:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const rowsUpdate = async (rows) => {
-    try {
-      const values = Object.values(rows).map(({ pl_id, initial_qty, final_qty }) => ({
-        pl_id,
-        initial_qty,
-        final_qty,
-      }));
+    const values = Object.values(rows).map(({ pl_id, initial_qty, final_qty, source_file_id }) => ({
+      pl_id,
+      initial_qty,
+      final_qty,
+      source_file_id,
+    }));
 
-      await FinalPlReceivingService.rowsUpdate(values);
-    } catch (error) {
-      console.log(error);
-    }
+    const result = await FinalPlReceivingService.rowsUpdate(values);
+    return result;
   };
 
   const toApproved = async () => {
-    await FinalPlReceivingService.toApproved({
+    const result = await FinalPlReceivingService.toApproved({
       search,
       filterModel: JSON.stringify(filterModel.items),
       sortModel: JSON.stringify(sortModel),
@@ -176,6 +172,8 @@ export function useFinalPLReceiving() {
       vendor_code: vendorCode ? vendorCode : undefined,
       si_number: siNumber ? siNumber : undefined,
     });
+
+    return result;
   };
 
   const formatDate = (date = new Date()) => {

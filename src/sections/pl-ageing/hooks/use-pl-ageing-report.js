@@ -103,6 +103,14 @@ export function usePlAgeingReport() {
         filterModel: JSON.stringify(filterModel.items),
         sortModel: JSON.stringify(sortModel),
         env: user.env,
+        uploadedStartDate: uploadedStarDate,
+        uploadedEndDate,
+        initialStartDate: initialReceiptStartDate,
+        initialEndDate: initialReceiptEndDate,
+        approveReceiptStartDate: approvedReceiptStartDate,
+        approveReceiptEndDate: approvedReceiptEndDate,
+        poGeneratedStartDate,
+        poGeneratedEndDate,
       });
 
       const url = window.URL.createObjectURL(blob);
@@ -110,7 +118,7 @@ export function usePlAgeingReport() {
       const link = document.createElement('a');
 
       link.href = url;
-      link.download = `InitialRec_${formatDate()}.csv`;
+      link.download = `PLAgeingReport_${formatDate()}.csv`;
 
       document.body.appendChild(link);
 
@@ -119,8 +127,6 @@ export function usePlAgeingReport() {
       link.remove();
 
       window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('CSV export error:', error);
     } finally {
       setLoading(false);
     }
@@ -137,15 +143,21 @@ export function usePlAgeingReport() {
         filterModel: JSON.stringify(filterModel.items),
         sortModel: JSON.stringify(sortModel),
         env: user.env,
+        uploadedStartDate: uploadedStarDate,
+        uploadedEndDate,
+        initialStartDate: initialReceiptStartDate,
+        initialEndDate: initialReceiptEndDate,
+        approveReceiptStartDate: approvedReceiptStartDate,
+        approveReceiptEndDate: approvedReceiptEndDate,
+        poGeneratedStartDate,
+        poGeneratedEndDate,
       });
 
       const blob = new Blob([response], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
 
-      saveAs(blob, `InitialRec_${formatDate()}.xlsx`);
-    } catch (error) {
-      console.error('CSV export error:', error);
+      saveAs(blob, `PLAgeingReport_${formatDate()}.xlsx`);
     } finally {
       setLoading(false);
     }

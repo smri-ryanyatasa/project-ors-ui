@@ -143,8 +143,6 @@ export function useUsers() {
       link.remove();
 
       window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('CSV export error:', error);
     } finally {
       setLoading(false);
     }
@@ -165,8 +163,6 @@ export function useUsers() {
       });
 
       saveAs(blob, 'users.xlsx');
-    } catch (error) {
-      console.error('CSV export error:', error);
     } finally {
       setLoading(false);
     }

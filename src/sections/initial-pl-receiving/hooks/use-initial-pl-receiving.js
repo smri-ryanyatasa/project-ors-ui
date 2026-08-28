@@ -117,8 +117,6 @@ export function useInitialPLReceiving() {
       link.remove();
 
       window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('CSV export error:', error);
     } finally {
       setLoading(false);
     }
@@ -146,8 +144,6 @@ export function useInitialPLReceiving() {
       });
 
       saveAs(blob, `InitialRec_${formatDate()}.xlsx`);
-    } catch (error) {
-      console.error('CSV export error:', error);
     } finally {
       setLoading(false);
     }

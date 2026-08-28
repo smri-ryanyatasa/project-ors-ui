@@ -43,6 +43,10 @@ export function UserTable(props) {
           onDownloadCsv: props.onDownloadCsv,
           onDownloadExcel: props.onDownloadExcel,
         },
+        loadingOverlay: {
+          variant: 'linear-progress',
+          noRowsVariant: 'linear-progress',
+        },
       }}
       sx={{
         '& .MuiDataGrid-row': {

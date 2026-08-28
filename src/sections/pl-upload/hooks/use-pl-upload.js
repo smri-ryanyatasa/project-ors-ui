@@ -111,8 +111,6 @@ export function usePlUpload() {
       link.remove();
 
       window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('CSV export error:', error);
     } finally {
       setLoading(false);
     }
@@ -137,8 +135,6 @@ export function usePlUpload() {
       });
 
       saveAs(blob, 'pl_upload.xlsx');
-    } catch (error) {
-      console.error('CSV export error:', error);
     } finally {
       setLoading(false);
     }
