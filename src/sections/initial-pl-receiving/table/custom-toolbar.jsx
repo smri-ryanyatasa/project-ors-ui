@@ -41,9 +41,9 @@ export function CustomToolbar(props) {
         <Button
           variant="contained"
           sx={{
-            bgcolor: '#0030ff',
+            bgcolor: props.onRowsCount ? '#0030ff !important' : '#1C1C1C',
             '&:hover': {
-              bgcolor: '#032ad8',
+              bgcolor: '#032ad8 !important',
             },
             color: 'white !important',
           }}

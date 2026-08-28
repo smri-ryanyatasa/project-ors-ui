@@ -54,10 +54,11 @@ export function POLogsListView({ title = 'Blank', sx }) {
           <Button
             variant="contained"
             sx={{
-              bgcolor: '#0030ff',
+              bgcolor: '#0030ff !important',
               '&:hover': {
-                bgcolor: '#032ad8',
+                bgcolor: '#032ad8 !important',
               },
+              color: 'white !important',
             }}
             startIcon={
               <SvgColor

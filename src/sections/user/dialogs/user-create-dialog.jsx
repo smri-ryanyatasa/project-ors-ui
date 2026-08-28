@@ -329,10 +329,11 @@ export function UserCreateDialog({
           loading={loading}
           type="submit"
           sx={{
-            bgcolor: '#0030ff',
+            bgcolor: '#0030ff !important',
             '&:hover': {
-              bgcolor: '#032ad8',
+              bgcolor: '#032ad8 !important',
             },
+            color: 'white !important',
           }}
         >
           Create

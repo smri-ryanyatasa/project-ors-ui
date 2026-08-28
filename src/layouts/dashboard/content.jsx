@@ -2,8 +2,8 @@
 
 import { mergeClasses } from 'minimal-shared/utils';
 
-import { styled } from '@mui/material/styles';
 import Container from '@mui/material/Container';
+import { styled , useColorScheme } from '@mui/material/styles';
 
 import { useSettingsContext } from 'src/components/settings';
 
@@ -21,6 +21,9 @@ export function DashboardContent({
   ...other
 }) {
   const settings = useSettingsContext();
+  const { mode } = useColorScheme();
+
+  const color = mode === 'dark' ? '#1C1C1C' : '#F8F9FA';
 
   const isNavHorizontal = settings.state.navLayout === 'horizontal';
 
@@ -30,7 +33,7 @@ export function DashboardContent({
       maxWidth={settings.state.compactLayout ? maxWidth : false}
       sx={[
         (theme) => ({
-          bgcolor: '#F8F9FA',
+          bgcolor: color,
           display: 'flex',
           flex: '1 1 auto',
           flexDirection: 'column',

@@ -506,10 +506,11 @@ export function PlUploadDialog({ open, onClose, onImport, onDownloadTemplate, br
           onClick={handleImport}
           disabled={!file || loading || error || isValid}
           sx={{
-            bgcolor: '#0030ff',
+            bgcolor: !file || loading || error || isValid ? '#1C1C1C' : '#0030ff !important',
             '&:hover': {
-              bgcolor: '#032ad8',
+              bgcolor: '#032ad8 !important',
             },
+            color: 'white !important',
           }}
         >
           {loading ? 'Uploading...' : 'Upload'}
