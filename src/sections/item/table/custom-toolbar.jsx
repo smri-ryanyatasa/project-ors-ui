@@ -44,9 +44,9 @@ export function CustomToolbar(props) {
           variant="contained"
           loading={loading}
           sx={{
-            bgcolor: '#0030ff',
+            bgcolor: props.onRowChanges ? '#0030ff !important' : '#1C1C1C',
             '&:hover': {
-              bgcolor: '#032ad8',
+              bgcolor: '#032ad8 !important',
             },
             color: 'white !important',
           }}

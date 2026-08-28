@@ -1,4 +1,3 @@
-
 import { Box, Card } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
@@ -81,6 +80,20 @@ export function InitialPlReceivingTable(props) {
               textDecoration: 'underline dashed',
               textUnderlineOffset: '3px',
               cursor: 'pointer',
+            },
+            '& .wrapped-header .MuiDataGrid-columnHeaderTitle': {
+              whiteSpace: 'normal',
+              lineHeight: 1.2,
+            },
+            '& .MuiDataGrid-cell': {
+              whiteSpace: 'normal',
+              wordBreak: 'break-word',
+              lineHeight: '1.5',
+              py: 1,
+            },
+
+            '& .MuiDataGrid-columnHeaderTitle': {
+              whiteSpace: 'nowrap',
             },
           }}
         />

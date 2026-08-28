@@ -124,7 +124,8 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
                 px: 1,
                 py: 0.5,
                 borderRadius: 1,
-                bgcolor: 'grey.100',
+                bgcolor: '#F8F9FA',
+                color: 'black',
               }}
             >
               <SvgColor

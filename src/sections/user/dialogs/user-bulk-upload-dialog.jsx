@@ -383,10 +383,11 @@ export function UserBulkUploadDialog({ open, onClose, onImport, onDownloadTempla
           onClick={handleImport}
           disabled={!file || loading || error}
           sx={{
-            bgcolor: '#0030ff',
+            bgcolor: !file || loading || error ? '#1C1C1C' : '#0030ff !important',
             '&:hover': {
-              bgcolor: '#032ad8',
+              bgcolor: '#032ad8 !important',
             },
+            color: 'white !important',
           }}
         >
           {loading ? 'Importing...' : 'Import'}
