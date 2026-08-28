@@ -176,8 +176,6 @@ export function useInitialPLReceiving() {
     try {
       setLoading(true);
       await InitialPlReceivingService.rowsUpdate(row);
-    } catch (error) {
-      console.log(error);
     } finally {
       setLoading(false);
     }

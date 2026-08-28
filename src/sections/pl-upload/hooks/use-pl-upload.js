@@ -169,8 +169,9 @@ export function usePlUpload() {
   };
 
   const deletePlFile = async (file) => {
-    await PlUploadService.deletePlFile(file);
+    const result = await PlUploadService.deletePlFile(file);
     setPlsUplad((prev) => prev.filter((p) => p.id !== file.id));
+    return result;
   };
 
   const plUpload = async (file) => {

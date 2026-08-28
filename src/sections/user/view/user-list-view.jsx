@@ -92,15 +92,23 @@ export function UserListView({ title = 'Blank', sx }) {
   };
 
   const handleDelete = async (user) => {
-    await deleteUser(user);
-    await refresh();
-    toast.success('User deleted successfully');
+    try {
+      await deleteUser(user);
+      await refresh();
+      toast.success('User deleted successfully');
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to delete.');
+    }
   };
 
   const handleUpdate = async (user) => {
-    await updateUser(user);
-    await refresh();
-    toast.success('User updated successfully');
+    try {
+      await updateUser(user);
+      await refresh();
+      toast.success('User updated successfully');
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to update.');
+    }
   };
 
   const handleChangePassword = async (user) => {
