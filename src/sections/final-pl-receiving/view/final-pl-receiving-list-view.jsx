@@ -50,20 +50,28 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
   const [redoStack, setRedoStack] = useState([]);
   const [editedRows, setEditedRows] = useState({});
   const [approvedReceiptOpen, setApprovedReceiptOpen] = useState(false);
-  console.log(pls);
+
   const handleGetFiles = async (branch) => {
     const type = 3;
     await getPlsFiles(branch, type);
   };
 
   const handleCsvExport = async () => {
-    await csvExport();
-    toast.success('CSV file downloaded successfully.');
+    try {
+      await csvExport();
+      toast.success('CSV file downloaded successfully.');
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to download the file.');
+    }
   };
 
   const handleExcelExport = async () => {
-    await excelExport();
-    toast.success('Excel file downloaded successfully.');
+    try {
+      await excelExport();
+      toast.success('Excel file downloaded successfully.');
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to download the file.');
+    }
   };
 
   const handleOpenApprovedReceipt = async () => {
@@ -122,10 +130,14 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
   };
 
   const handleSave = async () => {
-    await rowsUpdate(editedRows);
-    await refresh();
-    setEditedRows({});
-    toast.success('Save successfully.');
+    try {
+      const result = await rowsUpdate(editedRows);
+      await refresh();
+      setEditedRows({});
+      toast.success(result?.message || 'Save successfully.');
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to save.');
+    }
   };
 
   const handleDiscard = async () => {
@@ -215,9 +227,13 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
   };
 
   const handleApproved = async () => {
-    await toApproved();
-    await refresh();
-    toast.success('Successfully updated.');
+    try {
+      const result = await toApproved();
+      await refresh();
+      toast.success(result?.message || 'Successfully updated.');
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to approve.');
+    }
   };
 
   useEffect(() => {

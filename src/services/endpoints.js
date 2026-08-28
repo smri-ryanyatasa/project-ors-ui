@@ -73,4 +73,10 @@ export const endpoints = {
     csvExport: '/api/pl-ageing-report/csv-export',
     excelExport: '/api/pl-ageing-report/excel-export',
   },
+  receivingReport: {
+    list: '/api/receiving-report',
+    status: '/api/receiving-report/status',
+    csvExport: '/api/receiving-report/csv-export',
+    excelExport: '/api/receiving-report/excel-export',
+  },
 };

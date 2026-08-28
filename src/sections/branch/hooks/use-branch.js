@@ -80,8 +80,6 @@ export function useBranch() {
       link.remove();
 
       window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('CSV export error:', error);
     } finally {
       setLoading(false);
     }
@@ -105,8 +103,6 @@ export function useBranch() {
       });
 
       saveAs(blob, 'branch_masterfile.xlsx');
-    } catch (error) {
-      console.error('EXCEL export error:', error);
     } finally {
       setLoading(false);
     }

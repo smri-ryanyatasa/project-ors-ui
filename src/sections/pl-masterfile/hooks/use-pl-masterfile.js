@@ -89,8 +89,6 @@ export function usePlMasterfile() {
       link.remove();
 
       window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('CSV export error:', error);
     } finally {
       setLoading(false);
     }
@@ -114,8 +112,6 @@ export function usePlMasterfile() {
       });
 
       saveAs(blob, 'pl_masterfile.xlsx');
-    } catch (error) {
-      console.error('CSV export error:', error);
     } finally {
       setLoading(false);
     }

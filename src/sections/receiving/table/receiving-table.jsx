@@ -15,6 +15,7 @@ export function ReceivingTable(props) {
           rows={props.rows}
           columns={columns}
           disableRowSelectionOnClick
+          getRowHeight={() => 'auto'}
           // server-side
           paginationMode="server"
           filterMode="server"
@@ -73,6 +74,20 @@ export function ReceivingTable(props) {
               textDecoration: 'underline dashed',
               textUnderlineOffset: '3px',
               cursor: 'pointer',
+            },
+            '& .wrapped-header .MuiDataGrid-columnHeaderTitle': {
+              whiteSpace: 'normal',
+              lineHeight: 1.2,
+            },
+            '& .MuiDataGrid-cell': {
+              whiteSpace: 'normal',
+              wordBreak: 'break-word',
+              lineHeight: '1.4',
+              py: 1,
+            },
+
+            '& .MuiDataGrid-columnHeaderTitle': {
+              whiteSpace: 'nowrap',
             },
           }}
         />

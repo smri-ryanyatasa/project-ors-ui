@@ -4,7 +4,7 @@ export const PlAgeingTableColumns = () => [
   {
     field: 'filename',
     headerName: 'PL Filename',
-    width: 270,
+    width: 230,
     cellClassName: 'first-column-cell',
     headerClassName: 'first-column-header',
   },

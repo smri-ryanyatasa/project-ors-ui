@@ -30,13 +30,21 @@ export function BranchListView({ title = 'Blank', sx }) {
   } = useBranch();
 
   const handleCsvExport = async () => {
-    await csvExport();
-    toast.success('CSV file downloaded successfully.');
+    try {
+      await csvExport();
+      toast.success('CSV file downloaded successfully.');
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to download the file.');
+    }
   };
 
   const handleExcelExport = async () => {
-    await excelExport();
-    toast.success('Excel file downloaded successfully.');
+    try {
+      await excelExport();
+      toast.success('Excel file downloaded successfully.');
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to download the file.');
+    }
   };
 
   const renderContent = () => (

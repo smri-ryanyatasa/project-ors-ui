@@ -3,15 +3,7 @@
 import { toast } from 'sonner';
 import { useState, useEffect } from 'react';
 
-import {
-  Box,
-  Grid,
-  Stack,
-  Button,
-  Backdrop,
-  Typography,
-  CircularProgress,
-} from '@mui/material';
+import { Box, Grid, Stack, Button, Backdrop, Typography, CircularProgress } from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 
@@ -107,13 +99,21 @@ export function PlUploadListView({ title = 'Blank', sx }) {
   };
 
   const handleCsvExport = async () => {
-    await csvExport();
-    toast.success('CSV file downloaded successfully.');
+    try {
+      await csvExport();
+      toast.success('CSV file downloaded successfully.');
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to download the file.');
+    }
   };
 
   const handleExcelExport = async () => {
-    await excelExport();
-    toast.success('Excel file downloaded successfully.');
+    try {
+      await excelExport();
+      toast.success('Excel file downloaded successfully.');
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to download the file.');
+    }
   };
 
   const handleDelete = async (file) => {
