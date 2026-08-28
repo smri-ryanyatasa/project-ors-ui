@@ -116,8 +116,12 @@ export function InitialPlReceivingListView({ title = 'Blank', sx }) {
     });
 
     if (hasChanges) {
-      await rowsUpdate(newRow);
-      await refresh();
+      try {
+        await rowsUpdate(newRow);
+        await refresh();
+      } catch (error) {
+        toast.error(error?.response?.data?.message || 'Failed to save.');
+      }
     }
 
     return newRow;

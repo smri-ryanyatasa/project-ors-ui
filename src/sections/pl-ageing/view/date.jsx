@@ -166,7 +166,17 @@ export function DateRangeFilter({
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
               <Button onClick={() => setOpen(false)}>Cancel</Button>
 
-              <Button variant="contained" disabled={!tempStart || !tempEnd} onClick={handleApply}>
+              <Button
+                variant="contained"
+                disabled={!tempStart || !tempEnd}
+                onClick={handleApply}
+                sx={{
+                  bgcolor: '#0030ff',
+                  '&:hover': {
+                    bgcolor: '#032ad8',
+                  },
+                }}
+              >
                 Apply
               </Button>
             </Stack>

@@ -117,9 +117,15 @@ export function PlUploadListView({ title = 'Blank', sx }) {
   };
 
   const handleDelete = async (file) => {
-    await deletePlFile(file);
-    await refresh();
-    toast.success('PL File deleted successfully');
+    try {
+      await deletePlFile(file);
+      await refresh();
+      toast.success('PL File deleted successfully');
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message || 'Something went wrong. Please contact your Administrator.'
+      );
+    }
   };
 
   const handleImport = async (file) => {
