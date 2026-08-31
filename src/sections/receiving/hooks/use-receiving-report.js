@@ -12,10 +12,11 @@ export function useReceivingReport() {
   const [receivingPls, setPlsReceiving] = useState([]);
   const [status, setStatus] = useState([]);
 
-  const [approvedReceiptStartDate, setApprovedReceiptStartDate] = useState();
-  const [approvedReceiptEndDate, setApprovedReceiptEndDate] = useState();
+  const [branch, setBranch] = useState();
   const [initialReceiptStartDate, setInitialReceiptStartDate] = useState();
   const [initialReceiptEndDate, setInitialReceiptEndDate] = useState();
+  const [finalReceiptStartDate, setFinalReceiptStartDate] = useState();
+  const [finalReceiptEndDate, setFinalReceiptEndDate] = useState();
 
   // Filter
   const [total, setTotal] = useState(0);
@@ -39,7 +40,7 @@ export function useReceivingReport() {
     try {
       setLoading(true);
 
-      const [response] = await Promise.all([
+      const [response, count] = await Promise.all([
         ReceivingReportService.getPlsReport({
           page: paginationModel.page + 1,
           pageSize: paginationModel.pageSize,
@@ -47,24 +48,45 @@ export function useReceivingReport() {
           filterModel: JSON.stringify(filterModel.items),
           sortModel: JSON.stringify(sortModel),
           env: user.env,
+          branch: branch,
+          initialReceiptStartDate: initialReceiptStartDate,
+          initialReceiptEndDate: initialReceiptEndDate,
+          finalReceiptStartDate: finalReceiptStartDate,
+          finalReceiptEndDate: finalReceiptEndDate,
         }),
-        // ReceivingReportService.getPlsStatus({
-        //   search,
-        //   filterModel: JSON.stringify(filterModel.items),
-        //   sortModel: JSON.stringify(sortModel),
-        //   env: user.env,
-        // }),
+        ReceivingReportService.getPlsStatus({
+          search,
+          filterModel: JSON.stringify(filterModel.items),
+          sortModel: JSON.stringify(sortModel),
+          env: user.env,
+          branch: branch,
+          initialReceiptStartDate: initialReceiptStartDate,
+          initialReceiptEndDate: initialReceiptEndDate,
+          finalReceiptStartDate: finalReceiptStartDate,
+          finalReceiptEndDate: finalReceiptEndDate,
+        }),
       ]);
 
       setPlsReceiving(response);
-      //   setStatus(count);
+      setStatus(count);
       setTotal(response?.[0]?.total_rows || 0);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
-  }, [user, paginationModel, search, filterModel, sortModel]);
+  }, [
+    user,
+    paginationModel,
+    search,
+    filterModel,
+    sortModel,
+    branch,
+    initialReceiptStartDate,
+    initialReceiptEndDate,
+    finalReceiptStartDate,
+    finalReceiptEndDate,
+  ]);
 
   const csvExport = async () => {
     if (!user) return;
@@ -77,6 +99,11 @@ export function useReceivingReport() {
         filterModel: JSON.stringify(filterModel.items),
         sortModel: JSON.stringify(sortModel),
         env: user.env,
+        branch: branch,
+        initialReceiptStartDate: initialReceiptStartDate,
+        initialReceiptEndDate: initialReceiptEndDate,
+        finalReceiptStartDate: finalReceiptStartDate,
+        finalReceiptEndDate: finalReceiptEndDate,
       });
 
       const url = window.URL.createObjectURL(blob);
@@ -111,6 +138,11 @@ export function useReceivingReport() {
         filterModel: JSON.stringify(filterModel.items),
         sortModel: JSON.stringify(sortModel),
         env: user.env,
+        branch: branch,
+        initialReceiptStartDate: initialReceiptStartDate,
+        initialReceiptEndDate: initialReceiptEndDate,
+        finalReceiptStartDate: finalReceiptStartDate,
+        finalReceiptEndDate: finalReceiptEndDate,
       });
 
       const blob = new Blob([response], {
@@ -160,9 +192,10 @@ export function useReceivingReport() {
     setSortModel,
     csvExport,
     excelExport,
-    setApprovedReceiptStartDate,
-    setApprovedReceiptEndDate,
+    setBranch,
     setInitialReceiptStartDate,
     setInitialReceiptEndDate,
+    setFinalReceiptStartDate,
+    setFinalReceiptEndDate,
   };
 }
