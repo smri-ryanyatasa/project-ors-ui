@@ -3,33 +3,36 @@ import { Box, Grid, Card, Stack, Skeleton, Typography, CardContent } from '@mui/
 import { SvgColor } from 'src/components/svg-color';
 
 export function SummaryCard(props) {
+  const { total_uq_pls, total_uq_skus, total_pl_qty, total_pl_initial_qty, total_pl_final_qty } =
+    props.summary[0] ?? 0;
+
   const summaryCards = [
     {
-      value: 23,
+      value: total_uq_pls,
       label: 'Total Unique PLs',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'primary',
     },
     {
-      value: 1,
+      value: total_uq_skus,
       label: 'Total Unique SKUs',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'primary',
     },
     {
-      value: 11,
+      value: total_pl_qty,
       label: 'Total PL Quantity',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'primary',
     },
     {
-      value: 4,
+      value: total_pl_initial_qty,
       label: 'Total Initial Received Quantity',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'primary',
     },
     {
-      value: 2,
+      value: total_pl_final_qty,
       label: 'Total Final Received Quantity',
       icon: '/assets/icons/solar/lucide--file-check-corner.svg',
       color: 'primary',

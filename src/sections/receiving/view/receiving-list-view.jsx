@@ -11,6 +11,8 @@ import { DashboardContent } from 'src/layouts/dashboard';
 // import { SvgColor } from 'src/components/svg-color';
 import { PageHeader } from 'src/components/page-header/page-header';
 
+import { usePlUpload } from 'src/sections/pl-upload/hooks/use-pl-upload';
+
 import { SummaryCard } from '../cards/summary-card';
 import { ReceivingFilter } from './receiving-filter';
 import { ReceivingTable } from '../table/receiving-table';
@@ -30,11 +32,14 @@ export function ReceivingListView({ title = 'Blank', sx }) {
     setSortModel,
     csvExport,
     excelExport,
-    setApprovedReceiptStartDate,
-    setApprovedReceiptEndDate,
+    setBranch,
     setInitialReceiptStartDate,
     setInitialReceiptEndDate,
+    setFinalReceiptStartDate,
+    setFinalReceiptEndDate,
   } = useReceivingReport();
+
+  const { branches } = usePlUpload();
 
   const handleCsvExport = async () => {
     await csvExport();
@@ -46,6 +51,22 @@ export function ReceivingListView({ title = 'Blank', sx }) {
     toast.success('Excel file downloaded successfully.');
   };
 
+  const handleDateFilter = async (filter) => {
+    setBranch(filter.branches);
+    setInitialReceiptStartDate(formatDate(filter.initialReceiptDate.startDate));
+    setInitialReceiptEndDate(formatDate(filter.initialReceiptDate.endDate));
+    setFinalReceiptStartDate(formatDate(filter.finalReceiptDate.startDate));
+    setFinalReceiptEndDate(formatDate(filter.finalReceiptDate.endDate));
+  };
+
+  const formatDate = (date) => {
+    if (!date) return 'All';
+
+    const [year, month, day] = date.split('-');
+
+    return `${month}/${day}/${year}`;
+  };
+
   const renderContent = () => (
     <Box
       sx={[
@@ -55,8 +76,8 @@ export function ReceivingListView({ title = 'Blank', sx }) {
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
     >
-      <ReceivingFilter />
-      <SummaryCard />
+      <ReceivingFilter branches={branches} onFilter={handleDateFilter} />
+      <SummaryCard summary={status} />
       <ReceivingTable
         loading={loading}
         rows={receivingPls}
