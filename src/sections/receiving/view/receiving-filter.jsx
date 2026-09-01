@@ -3,13 +3,12 @@ import { useState } from 'react';
 import {
   Box,
   Grid,
-  MenuItem,
   Accordion,
   TextField,
   Typography,
+  Autocomplete,
   AccordionSummary,
   AccordionDetails,
-  Autocomplete,
 } from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
