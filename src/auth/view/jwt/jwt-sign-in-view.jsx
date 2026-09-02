@@ -127,10 +127,11 @@ export function JwtSignInView() {
         fullWidth
         color="inherit"
         sx={{
-          backgroundColor: '#0030ff',
+          bgcolor: '#0030ff !important',
           '&:hover': {
-            backgroundColor: '#0025c7',
+            bgcolor: '#032ad8 !important',
           },
+          color: 'white !important',
         }}
         size="large"
         type="submit"

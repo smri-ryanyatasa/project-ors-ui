@@ -16,38 +16,38 @@ export function SummaryCard(props) {
     {
       value: total_pl,
       label: 'Total Pls',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--files.svg',
       color: 'primary',
     },
     {
       value: total_uploaded,
       label: 'Total Pls in Uploaded Status',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--file-up.svg',
       color: 'error',
     },
     {
       value: total_available,
       label: 'Total Pls in Available Status',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--file-check-2.svg',
       color: 'success',
     },
     {
       value: total_initial_receipt,
       label: 'Total Pls in Initial Receipt Status',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--package-check.svg',
       color: 'warning',
     },
     {
       value: total_approved_receipt,
       label: 'Total Pls in Approved Receipt Status',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
-      color: 'error',
+      icon: '/assets/icons/solar/lucide--badge-check.svg',
+      color: 'info', // Purple
     },
     {
       value: total_po_generated,
       label: 'Total Pls in PO Generated Status',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
-      color: 'info',
+      icon: '/assets/icons/solar/lucide--file-text.svg',
+      color: 'success',
     },
   ];
   return (

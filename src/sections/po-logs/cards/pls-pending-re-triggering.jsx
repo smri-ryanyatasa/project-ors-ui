@@ -55,7 +55,7 @@ export function PlsPendingReTriggeringCard(props) {
               }}
             >
               <SvgColor
-                src="/assets/icons/solar/lucide--file-x-corner.svg"
+                src="/assets/icons/solar/lucide--refresh-cw.svg"
                 sx={{
                   width: 28,
                   height: 28,

@@ -55,7 +55,7 @@ export function TotalPlQuantityCard(props) {
               }}
             >
               <SvgColor
-                src="/assets/icons/solar/lucide--file-check-corner.svg"
+                src="/assets/icons/solar/lucide--clipboard-list.svg"
                 sx={{
                   width: 28,
                   height: 28,
