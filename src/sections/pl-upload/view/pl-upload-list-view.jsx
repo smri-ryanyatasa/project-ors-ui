@@ -140,6 +140,18 @@ export function PlUploadListView({ title = 'Blank', sx }) {
     toast.success('Re-Upload PL File uploaded successfully');
   };
 
+  const onDownloadTemplate = () => {
+    console.log('sdasdad');
+    const link = document.createElement('a');
+
+    link.href = '/assets/templates/Vendor Code_Sales Invoice_Branch Code.xlsx';
+    link.download = 'Vendor Code_Sales Invoice_Branch Code.xlsx';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const renderContent = () => (
     <Box
       sx={[
@@ -290,6 +302,7 @@ export function PlUploadListView({ title = 'Blank', sx }) {
         open={bulkUploadOpen}
         onClose={() => setBulkUploadOpen(false)}
         onImport={handleImport}
+        onDownloadTemplate={onDownloadTemplate}
         branch={branch}
       />
       <PlUploadExceptionDialog
@@ -297,6 +310,7 @@ export function PlUploadListView({ title = 'Blank', sx }) {
         pl={selectedPl}
         onClose={() => setPlUploadExceptionOpen(false)}
         onImport={handleExceptionImport}
+        onDownloadTemplate={onDownloadTemplate}
         branch={branch}
       />
     </>
