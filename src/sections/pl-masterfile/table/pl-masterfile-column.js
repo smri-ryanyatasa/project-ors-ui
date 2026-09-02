@@ -14,21 +14,44 @@ export const PlMasterfileTableColumns = () => [
     align: 'center',
     headerAlign: 'center',
     flex: 1,
-    renderCell: (params) => (
-      <Stack
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        spacing={1}
-        sx={{ height: '100%' }}
-      >
-        <Chip
-          label={params.value}
-          color={params.value.trim() == 'Available' ? 'success' : 'error'}
-          size="small"
-        />
-      </Stack>
-    ),
+    renderCell: (params) => {
+      const colorStatus = (status) => {
+        switch (status) {
+          case 'Uploaded':
+            return 'error';
+
+          case 'Initial Receipt':
+            return 'warning';
+
+          case 'Approved Receipt':
+            return 'info';
+
+          case 'MMS PO Generated':
+            return 'success';
+
+          case 'Pending':
+            return 'error';
+
+          case 'Received':
+            return 'primary';
+
+          default:
+            return 'success';
+        }
+      };
+
+      return (
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={1}
+          sx={{ height: '100%' }}
+        >
+          <Chip label={params.value} color={colorStatus(params.value.trim())} size="small" />
+        </Stack>
+      );
+    },
   },
   {
     field: 'si_number',

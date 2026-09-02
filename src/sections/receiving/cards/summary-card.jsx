@@ -10,31 +10,31 @@ export function SummaryCard(props) {
     {
       value: total_uq_pls,
       label: 'Total Unique PLs',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--files.svg',
       color: 'primary',
     },
     {
       value: total_uq_skus,
       label: 'Total Unique SKUs',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--tags.svg',
       color: 'primary',
     },
     {
       value: total_pl_qty,
       label: 'Total PL Quantity',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--clipboard-list.svg',
       color: 'primary',
     },
     {
       value: total_pl_initial_qty,
       label: 'Total Initial Received Quantity',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--package-plus.svg',
       color: 'primary',
     },
     {
       value: total_pl_final_qty,
       label: 'Total Final Received Quantity',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--package-check.svg',
       color: 'primary',
     },
   ];

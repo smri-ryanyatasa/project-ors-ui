@@ -74,6 +74,20 @@ export function ReceivingDecrepancyTable(props) {
               textUnderlineOffset: '3px',
               cursor: 'pointer',
             },
+            '& .wrapped-header .MuiDataGrid-columnHeaderTitle': {
+              whiteSpace: 'normal',
+              lineHeight: 1.2,
+            },
+            '& .MuiDataGrid-cell': {
+              whiteSpace: 'normal',
+              wordBreak: 'break-word',
+              lineHeight: '1.4',
+              py: 1,
+            },
+
+            '& .MuiDataGrid-columnHeaderTitle': {
+              whiteSpace: 'nowrap',
+            },
           }}
         />
       </Box>

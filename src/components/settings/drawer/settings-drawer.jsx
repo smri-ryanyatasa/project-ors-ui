@@ -18,10 +18,8 @@ import { settingIcons } from './icons';
 import { Iconify } from '../../iconify';
 import { BaseOption } from './base-option';
 import { Scrollbar } from '../../scrollbar';
-import { SmallBlock, LargeBlock } from './styles';
 import { FullScreenButton } from './fullscreen-button';
 import { useSettingsContext } from '../context/use-settings-context';
-import { NavColorOptions, NavLayoutOptions } from './nav-layout-option';
 
 // ----------------------------------------------------------------------
 
@@ -169,72 +167,72 @@ export function SettingsDrawer({ sx, defaultSettings }) {
   //     </LargeBlock>
   //   );
 
-  const renderNav = () => (
-    <LargeBlock title="Nav" tooltip="Dashboard only" sx={{ gap: 2.5 }}>
-      {visibility.navLayout && (
-        <SmallBlock
-          label="Layout"
-          canReset={settings.state.navLayout !== defaultSettings.navLayout}
-          onReset={() => {
-            settings.setState({ navLayout: defaultSettings.navLayout });
-          }}
-        >
-          <NavLayoutOptions
-            value={settings.state.navLayout}
-            onChangeOption={(newOption) => {
-              settings.setState({ navLayout: newOption });
-            }}
-            options={[
-              {
-                value: 'vertical',
-                icon: (
-                  <SvgIcon sx={{ width: 1, height: 'auto' }}>{settingIcons.navVertical}</SvgIcon>
-                ),
-              },
-              {
-                value: 'horizontal',
-                icon: (
-                  <SvgIcon sx={{ width: 1, height: 'auto' }}>{settingIcons.navHorizontal}</SvgIcon>
-                ),
-              },
-              {
-                value: 'mini',
-                icon: <SvgIcon sx={{ width: 1, height: 'auto' }}>{settingIcons.navMini}</SvgIcon>,
-              },
-            ]}
-          />
-        </SmallBlock>
-      )}
-      {visibility.navColor && (
-        <SmallBlock
-          label="Color"
-          canReset={settings.state.navColor !== defaultSettings.navColor}
-          onReset={() => {
-            settings.setState({ navColor: defaultSettings.navColor });
-          }}
-        >
-          <NavColorOptions
-            value={settings.state.navColor}
-            onChangeOption={(newOption) => {
-              settings.setState({ navColor: newOption });
-            }}
-            options={[
-              {
-                label: 'Integrate',
-                value: 'integrate',
-                icon: <SvgIcon>{settingIcons.sidebarOutline}</SvgIcon>,
-              },
-              {
-                label: 'Apparent',
-                value: 'apparent',
-                icon: <SvgIcon>{settingIcons.sidebarFill}</SvgIcon>,
-              },
-            ]}
-          />
-        </SmallBlock>
-      )}
-    </LargeBlock>
-  );
+  //   const renderNav = () => (
+  //     <LargeBlock title="Nav" tooltip="Dashboard only" sx={{ gap: 2.5 }}>
+  //       {visibility.navLayout && (
+  //         <SmallBlock
+  //           label="Layout"
+  //           canReset={settings.state.navLayout !== defaultSettings.navLayout}
+  //           onReset={() => {
+  //             settings.setState({ navLayout: defaultSettings.navLayout });
+  //           }}
+  //         >
+  //           <NavLayoutOptions
+  //             value={settings.state.navLayout}
+  //             onChangeOption={(newOption) => {
+  //               settings.setState({ navLayout: newOption });
+  //             }}
+  //             options={[
+  //               {
+  //                 value: 'vertical',
+  //                 icon: (
+  //                   <SvgIcon sx={{ width: 1, height: 'auto' }}>{settingIcons.navVertical}</SvgIcon>
+  //                 ),
+  //               },
+  //               {
+  //                 value: 'horizontal',
+  //                 icon: (
+  //                   <SvgIcon sx={{ width: 1, height: 'auto' }}>{settingIcons.navHorizontal}</SvgIcon>
+  //                 ),
+  //               },
+  //               {
+  //                 value: 'mini',
+  //                 icon: <SvgIcon sx={{ width: 1, height: 'auto' }}>{settingIcons.navMini}</SvgIcon>,
+  //               },
+  //             ]}
+  //           />
+  //         </SmallBlock>
+  //       )}
+  //       {visibility.navColor && (
+  //         <SmallBlock
+  //           label="Color"
+  //           canReset={settings.state.navColor !== defaultSettings.navColor}
+  //           onReset={() => {
+  //             settings.setState({ navColor: defaultSettings.navColor });
+  //           }}
+  //         >
+  //           <NavColorOptions
+  //             value={settings.state.navColor}
+  //             onChangeOption={(newOption) => {
+  //               settings.setState({ navColor: newOption });
+  //             }}
+  //             options={[
+  //               {
+  //                 label: 'Integrate',
+  //                 value: 'integrate',
+  //                 icon: <SvgIcon>{settingIcons.sidebarOutline}</SvgIcon>,
+  //               },
+  //               {
+  //                 label: 'Apparent',
+  //                 value: 'apparent',
+  //                 icon: <SvgIcon>{settingIcons.sidebarFill}</SvgIcon>,
+  //               },
+  //             ]}
+  //           />
+  //         </SmallBlock>
+  //       )}
+  //     </LargeBlock>
+  //   );
 
   //   const renderFont = () => (
   //     <LargeBlock title="Font" sx={{ gap: 2.5 }}>
@@ -321,7 +319,7 @@ export function SettingsDrawer({ sx, defaultSettings }) {
             {/* {visibility.compactLayout && renderCompactLayout()} */}
           </Box>
 
-          {(visibility.navColor || visibility.navLayout) && renderNav()}
+          {/* {(visibility.navColor || visibility.navLayout) && renderNav()} */}
           {/* {visibility.primaryColor && renderPresets()} */}
           {/* {(visibility.fontFamily || visibility.fontSize) && renderFont()} */}
         </Box>

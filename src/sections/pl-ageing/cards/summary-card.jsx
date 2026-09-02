@@ -14,25 +14,25 @@ export function SummaryCard(props) {
     {
       value: longest_aging_upload_available,
       label: 'Longest Aging (Days) from Uploaded to Available',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--clock-arrow-up.svg',
       color: 'primary',
     },
     {
       value: longest_aging_available_initial,
       label: 'Longest Aging (Days) from Available to Initial Report',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--clock-3.svg',
       color: 'primary',
     },
     {
       value: longest_aging_initial_approve,
       label: 'Longest Aging (Days) from Initial Receipt to Approved',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--clock-check.svg',
       color: 'primary',
     },
     {
       value: longest_aging_approve_po_gen,
       label: 'Longest Aging (Days) from Approved Rept. to PO Gen.',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--calendar-clock.svg',
       color: 'primary',
     },
   ];

@@ -79,4 +79,10 @@ export const endpoints = {
     csvExport: '/api/receiving-report/csv-export',
     excelExport: '/api/receiving-report/excel-export',
   },
+  receivingDecrepancyReport: {
+    list: '/api/receiving-decrepancy-report',
+    status: '/api/receiving-decrepancy-report/status',
+    csvExport: '/api/receiving-decrepancy-report/csv-export',
+    excelExport: '/api/receiving-decrepancy-report/excel-export',
+  },
 };

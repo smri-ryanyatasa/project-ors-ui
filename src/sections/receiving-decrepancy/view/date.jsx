@@ -1,5 +1,9 @@
+import dayjs from 'dayjs';
 import { useRef, useState } from 'react';
 
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Box, Stack, Button, Popover, MenuItem, TextField, Typography } from '@mui/material';
 
 import { SvgColor } from 'src/components/svg-color';
@@ -11,6 +15,7 @@ export function DateRangeFilter({
   onChange,
 }) {
   const anchorRef = useRef(null);
+  const startDateRef = useRef(null);
 
   const [open, setOpen] = useState(false);
 
@@ -21,9 +26,9 @@ export function DateRangeFilter({
   const handleSelect = (event) => {
     const selected = event.target.value;
 
-    if (selected === 'all') {
+    if (selected === 'All') {
       onChange({
-        type: 'all',
+        type: 'All',
         startDate: '',
         endDate: '',
       });
@@ -54,18 +59,18 @@ export function DateRangeFilter({
     const [year, month, day] = date.split('-');
 
     const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
+      'JAN',
+      'FEV',
+      'MAR',
+      'APR',
+      'MAY',
+      'JUNE',
+      'JULY',
+      'AUG',
+      'SEP',
+      'OCT',
+      'NOV',
+      'DEC',
     ];
 
     return `${day} ${months[Number(month) - 1]} ${year}`;
@@ -94,7 +99,7 @@ export function DateRangeFilter({
               ),
               renderValue: () => {
                 if (value.type === 'custom' && value.startDate && value.endDate) {
-                  return `${formatDate(value.startDate)} -  ${formatDate(value.endDate)}`;
+                  return `${formatDate(value.startDate)} to ${formatDate(value.endDate)}`;
                 }
 
                 return 'All';
@@ -102,7 +107,7 @@ export function DateRangeFilter({
             },
           }}
         >
-          <MenuItem value="all">All</MenuItem>
+          <MenuItem value="All">All</MenuItem>
 
           <MenuItem
             value="custom"
@@ -110,6 +115,10 @@ export function DateRangeFilter({
               setTempStart(value.startDate || '');
               setTempEnd(value.endDate || '');
               setOpen(true);
+
+              setTimeout(() => {
+                startDateRef.current?.showPicker?.();
+              }, 100);
             }}
           >
             Custom
@@ -126,38 +135,48 @@ export function DateRangeFilter({
           horizontal: 'left',
         }}
       >
-        <Box sx={{ p: 2, width: 320 }}>
+        <Box sx={{ p: 2 }}>
           <Stack spacing={2}>
-            <TextField
-              fullWidth
-              label="Start Date"
-              type="date"
-              value={tempStart}
-              onChange={(e) => setTempStart(e.target.value)}
-              slotProps={{
-                inputLabel: {
-                  shrink: true,
-                },
-              }}
-            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Stack direction="row">
+                <Box>
+                  <Typography sx={{ px: 1, pt: 1 }}>Start Date</Typography>
 
-            <TextField
-              fullWidth
-              label="End Date"
-              type="date"
-              value={tempEnd}
-              onChange={(e) => setTempEnd(e.target.value)}
-              slotProps={{
-                inputLabel: {
-                  shrink: true,
-                },
-              }}
-            />
+                  <DateCalendar
+                    value={tempStart ? dayjs(tempStart) : null}
+                    onChange={(date) => {
+                      setTempStart(date?.format('YYYY-MM-DD') || '');
+                    }}
+                  />
+                </Box>
+
+                <Box>
+                  <Typography sx={{ px: 1, pt: 1 }}>End Date</Typography>
+
+                  <DateCalendar
+                    value={tempEnd ? dayjs(tempEnd) : null}
+                    onChange={(date) => {
+                      setTempEnd(date?.format('YYYY-MM-DD') || '');
+                    }}
+                  />
+                </Box>
+              </Stack>
+            </LocalizationProvider>
 
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
               <Button onClick={() => setOpen(false)}>Cancel</Button>
 
-              <Button variant="contained" disabled={!tempStart || !tempEnd} onClick={handleApply}>
+              <Button
+                variant="contained"
+                disabled={!tempStart || !tempEnd}
+                onClick={handleApply}
+                sx={{
+                  bgcolor: '#0030ff',
+                  '&:hover': {
+                    bgcolor: '#032ad8',
+                  },
+                }}
+              >
                 Apply
               </Button>
             </Stack>

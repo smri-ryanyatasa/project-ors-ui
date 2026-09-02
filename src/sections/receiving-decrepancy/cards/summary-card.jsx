@@ -3,47 +3,57 @@ import { Box, Grid, Card, Stack, Skeleton, Typography, CardContent } from '@mui/
 import { SvgColor } from 'src/components/svg-color';
 
 export function SummaryCard(props) {
+  const {
+    total_pl_initial_discrepancy_qty,
+    total_initial_final_discrepancy_qty,
+    total_uq_pls,
+    total_uq_skus,
+    total_pl_qty,
+    total_pl_initial_qty,
+    total_pl_final_qty,
+  } = props.summary[0] ?? 0;
+
   const summaryCards = [
     {
-      value: 23,
+      value: total_pl_initial_discrepancy_qty,
       label: 'Total PL-Initial Discr.',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--file-warning.svg',
       color: 'primary',
     },
     {
-      value: 1,
+      value: total_initial_final_discrepancy_qty,
       label: 'Total Initial-Final Discr.',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--triangle-alert.svg',
       color: 'primary',
     },
     {
-      value: 11,
+      value: total_uq_pls,
       label: 'Total Unique PLs',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--files.svg',
       color: 'primary',
     },
     {
-      value: 4,
+      value: total_uq_skus,
       label: 'Total Unique SKUs',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--tags.svg',
       color: 'primary',
     },
     {
-      value: 2,
+      value: total_pl_qty,
       label: 'Total PL Quantity',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--clipboard-list.svg',
       color: 'primary',
     },
     {
-      value: 13,
+      value: total_pl_initial_qty,
       label: 'Total Initial Received Qty',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--package-plus.svg',
       color: 'primary',
     },
     {
-      value: 20,
+      value: total_pl_final_qty,
       label: 'Total Final Received Qty',
-      icon: '/assets/icons/solar/lucide--file-check-corner.svg',
+      icon: '/assets/icons/solar/lucide--package-check.svg',
       color: 'primary',
     },
   ];
