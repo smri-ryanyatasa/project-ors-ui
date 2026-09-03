@@ -28,6 +28,11 @@ export function UserCreateDialog({
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
+  const environments = [
+    { value: 'LSP', label: 'LSP' },
+    { value: 'SCP', label: 'SCP' },
+  ];
+
   const isValidEmail = (email) => {
     if (!email) return true; // Optional field
 
@@ -50,7 +55,7 @@ export function UserCreateDialog({
     user_name: 'json123',
     password: 'password',
     full_name: 'Jason Derulo',
-    env: 'WTA',
+    env: [],
     position: 'Chief Snatcher',
     email_address: 'jason.derulo@sample.com',
     role_id: 1,
@@ -205,22 +210,7 @@ export function UserCreateDialog({
             </TextField>
           </Grid>
 
-          <Grid size={{ xs: 12, sm: 3 }}>
-            <TextField
-              select
-              fullWidth
-              required
-              label="Environment"
-              name="env"
-              value={form.env}
-              onChange={handleChange}
-            >
-              <MenuItem value="WTA">WTA</MenuItem>
-              <MenuItem value="PUP">PUP</MenuItem>
-            </TextField>
-          </Grid>
-
-          <Grid size={{ xs: 12, sm: 3 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               select
               fullWidth
@@ -272,7 +262,7 @@ export function UserCreateDialog({
 
           {/* ---------------- Organization ---------------- */}
 
-          <Grid size={{ xs: 12, sm: 6 }}>
+          {/* <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               select
               fullWidth
@@ -285,6 +275,37 @@ export function UserCreateDialog({
               <MenuItem value="Watcher">Watcher</MenuItem>
               <MenuItem value="Queue">Queue</MenuItem>
             </TextField>
+          </Grid> */}
+
+          <Grid size={{ xs: 12 }}>
+            <TextField
+              fullWidth
+              multiline
+              rows={3}
+              label="Description"
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <Autocomplete
+              multiple
+              filterSelectedOptions
+              options={environments}
+              getOptionLabel={(option) => option.label}
+              value={environments.filter((env) => form.env.includes(env.value))}
+              onChange={(event, newValue) => {
+                setForm((prev) => ({
+                  ...prev,
+                  env: newValue.map((env) => env.value),
+                }));
+              }}
+              renderInput={(params) => (
+                <TextField {...params} label="Environment" placeholder="Select environment" />
+              )}
+            />
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -306,36 +327,13 @@ export function UserCreateDialog({
           </Grid>
 
           {/* ---------------- Additional Information ---------------- */}
-
-          <Grid size={{ xs: 12 }}>
-            <TextField
-              fullWidth
-              multiline
-              rows={3}
-              label="Description"
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-            />
-          </Grid>
         </Grid>
       </DialogContent>
 
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
 
-        <Button
-          variant="contained"
-          loading={loading}
-          type="submit"
-          sx={{
-            bgcolor: '#0030ff !important',
-            '&:hover': {
-              bgcolor: '#032ad8 !important',
-            },
-            color: 'white !important',
-          }}
-        >
+        <Button variant="contained" loading={loading} type="submit" color="primary">
           Create
         </Button>
       </DialogActions>

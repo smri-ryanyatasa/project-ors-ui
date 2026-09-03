@@ -14,6 +14,8 @@ import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 
+import { useColorScheme } from '@mui/material/styles';
+
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
@@ -41,6 +43,8 @@ export const SignInSchema = zod.object({
 export function JwtSignInView() {
   const router = useRouter();
 
+  const { mode } = useColorScheme();
+
   const showPassword = useBoolean();
 
   const { checkUserSession } = useAuthContext();
@@ -50,7 +54,7 @@ export function JwtSignInView() {
   const defaultValues = {
     username: 'lks123',
     password: 'password',
-    env: 'MOA',
+    env: 'SCP',
   };
 
   const methods = useForm({
@@ -65,7 +69,7 @@ export function JwtSignInView() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await signInWithPassword({ username: data.username, password: data.password });
+      await signInWithPassword({ username: data.username, password: data.password, env: data.env });
       await checkUserSession?.();
 
       router.refresh();
@@ -117,22 +121,15 @@ export function JwtSignInView() {
         <Field.Select name="env" label="Environment" slotProps={{ inputLabel: { shrink: true } }}>
           <MenuItem value="">Select Branch</MenuItem>
 
-          <MenuItem value="MKT">DSL</MenuItem>
-          <MenuItem value="MOA">LSP</MenuItem>
-          <MenuItem value="NOR">WAP</MenuItem>
+          <MenuItem value="WAP">WAP</MenuItem>
+          <MenuItem value="LSP">LSP</MenuItem>
+          <MenuItem value="SCP">SCP</MenuItem>
         </Field.Select>
       </Box>
 
       <Button
         fullWidth
-        color="inherit"
-        sx={{
-          bgcolor: '#0030ff !important',
-          '&:hover': {
-            bgcolor: '#032ad8 !important',
-          },
-          color: 'white !important',
-        }}
+        color="primary"
         size="large"
         type="submit"
         variant="contained"
@@ -148,19 +145,6 @@ export function JwtSignInView() {
     <>
       <FormHead
         title="Sign in to your account"
-        description={
-          <>
-            {`Don’t have an account? `}
-            <Link
-              component={RouterLink}
-              href={paths.auth.jwt.signUp}
-              variant="subtitle2"
-              sx={{ color: '#0030ff' }}
-            >
-              Get started
-            </Link>
-          </>
-        }
         sx={{ textAlign: { xs: 'center', md: 'center' } }}
       />
 

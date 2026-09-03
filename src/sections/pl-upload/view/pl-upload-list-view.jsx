@@ -259,13 +259,7 @@ export function PlUploadListView({ title = 'Blank', sx }) {
         <Stack direction="row" spacing={1.5}>
           <Button
             variant="contained"
-            sx={{
-              bgcolor: uploadButton ? '#1C1C1C' : '#0030ff !important',
-              '&:hover': {
-                bgcolor: '#032ad8 !important',
-              },
-              color: 'white !important',
-            }}
+            color="primary"
             startIcon={
               <SvgColor
                 src="/assets/icons/solar/material-symbols--add.svg"

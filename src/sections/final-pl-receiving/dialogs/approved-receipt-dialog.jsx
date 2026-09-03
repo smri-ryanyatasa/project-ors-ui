@@ -40,18 +40,7 @@ export function ApprovedReceiptDialog({ open, onApproved, onClose }) {
           No
         </Button>
 
-        <Button
-          color="error"
-          variant="contained"
-          loading={loading}
-          onClick={handleConfirm}
-          sx={{
-            bgcolor: '#0030ff',
-            '&:hover': {
-              bgcolor: '#032ad8',
-            },
-          }}
-        >
+        <Button variant="contained" loading={loading} onClick={handleConfirm} color="primary">
           Yes
         </Button>
       </DialogActions>

@@ -338,17 +338,7 @@ export function RoleEditDialog({ open, role, menus, onClose, onSave }) {
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
 
-        <Button
-          variant="contained"
-          loading={loading}
-          type="submit"
-          sx={{
-            bgcolor: '#0030ff',
-            '&:hover': {
-              bgcolor: '#032ad8',
-            },
-          }}
-        >
+        <Button variant="contained" loading={loading} type="submit" color="primary">
           Update
         </Button>
       </DialogActions>

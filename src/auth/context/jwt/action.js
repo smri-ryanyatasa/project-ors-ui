@@ -10,9 +10,9 @@ import { JWT_STORAGE_KEY } from './constant';
 /** **************************************
  * Sign in
  *************************************** */
-export const signInWithPassword = async ({ username, password }) => {
+export const signInWithPassword = async ({ username, password, env }) => {
   try {
-    const params = { username, password };
+    const params = { username, password, env };
 
     const res = await axios.post(endpoints.auth.signIn, params);
 

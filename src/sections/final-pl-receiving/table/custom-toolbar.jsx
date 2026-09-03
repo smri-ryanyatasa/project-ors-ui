@@ -25,9 +25,82 @@ export function CustomToolbar(props) {
     }
   };
   return (
-    <Box sx={{ p: 2 }}>
+    <Box
+      sx={{
+        p: 2,
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        gap: 1,
+      }}
+    >
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={
+          <SvgColor
+            src="/assets/icons/solar/line-md--check-all.svg"
+            sx={{ width: 20, height: 20 }}
+          />
+        }
+        disabled={props.onRowsCount ? false : true}
+        onClick={props.onApprovedReceipt}
+      >
+        Approved Receipt
+      </Button>
+      <Button
+        variant="outlined"
+        startIcon={
+          <SvgColor src="/assets/icons/solar/lucide-lab--save.svg" sx={{ width: 20, height: 20 }} />
+        }
+        loading={loading}
+        disabled={props.onRowChanges ? false : true}
+        onClick={handleSave}
+      >
+        Save
+      </Button>
+      <Button
+        variant="outlined"
+        startIcon={
+          <SvgColor
+            src="/assets/icons/solar/material-symbols--close.svg"
+            sx={{ width: 20, height: 20 }}
+          />
+        }
+        disabled={props.onRowChanges ? false : true}
+        onClick={props.onDiscard}
+      >
+        Discard
+      </Button>
+      <Button
+        variant="outlined"
+        startIcon={
+          <SvgColor
+            src="/assets/icons/solar/material-symbols--undo-rounded.svg"
+            sx={{ width: 20, height: 20 }}
+          />
+        }
+        disabled={props.onRowChanges ? false : true}
+        onClick={props.onUndo}
+      >
+        Undo
+      </Button>
+      <Button
+        variant="outlined"
+        startIcon={
+          <SvgColor
+            src="/assets/icons/solar/material-symbols--redo-rounded.svg"
+            sx={{ width: 20, height: 20 }}
+          />
+        }
+        disabled={props.onRowChanges ? false : true}
+        onClick={props.onRedo}
+      >
+        Redo
+      </Button>
       <GridToolbarContainer
         sx={{
+          ml: 'auto',
           '& .MuiButtonBase-root': {
             color: '#637381',
           },
@@ -37,92 +110,6 @@ export function CustomToolbar(props) {
           },
         }}
       >
-        <Button
-          variant="contained"
-          sx={{
-            bgcolor: props.onRowsCount ? '#0030ff !important' : '#1C1C1C',
-            '&:hover': {
-              bgcolor: '#032ad8 !important',
-            },
-            color: 'white !important',
-          }}
-          startIcon={
-            <SvgColor
-              src="/assets/icons/solar/line-md--check-all.svg"
-              sx={{ width: 20, height: 20 }}
-            />
-          }
-          disabled={props.onRowsCount ? false : true}
-          onClick={props.onApprovedReceipt}
-        >
-          Approved Receipt
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{
-            color: props.onRowChanges ? 'white !important' : '#637381',
-          }}
-          startIcon={
-            <SvgColor
-              src="/assets/icons/solar/lucide-lab--save.svg"
-              sx={{ width: 20, height: 20 }}
-            />
-          }
-          loading={loading}
-          disabled={props.onRowChanges ? false : true}
-          onClick={handleSave}
-        >
-          Save
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{
-            color: props.onRowChanges ? 'white !important' : '#637381',
-          }}
-          startIcon={
-            <SvgColor
-              src="/assets/icons/solar/material-symbols--close.svg"
-              sx={{ width: 20, height: 20 }}
-            />
-          }
-          disabled={props.onRowChanges ? false : true}
-          onClick={props.onDiscard}
-        >
-          Discard
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{
-            color: props.onRowChanges ? 'white !important' : '#637381',
-          }}
-          startIcon={
-            <SvgColor
-              src="/assets/icons/solar/material-symbols--undo-rounded.svg"
-              sx={{ width: 20, height: 20 }}
-            />
-          }
-          disabled={props.onRowChanges ? false : true}
-          onClick={props.onUndo}
-        >
-          Undo
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{
-            color: props.onRowChanges ? 'white !important' : '#637381',
-          }}
-          startIcon={
-            <SvgColor
-              src="/assets/icons/solar/material-symbols--redo-rounded.svg"
-              sx={{ width: 20, height: 20 }}
-            />
-          }
-          disabled={props.onRowChanges ? false : true}
-          onClick={props.onRedo}
-        >
-          Redo
-        </Button>
-
         <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center' }}>
           <GridToolbarColumnsButton />
           <GridToolbarFilterButton />

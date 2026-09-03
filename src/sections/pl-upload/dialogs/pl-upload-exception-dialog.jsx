@@ -516,13 +516,7 @@ export function PlUploadExceptionDialog({
           variant="contained"
           onClick={handleImport}
           disabled={!file || loading || error || isValid}
-          sx={{
-            bgcolor: !file || loading || error || isValid ? '#1C1C1C' : '#0030ff !important',
-            '&:hover': {
-              bgcolor: '#032ad8 !important',
-            },
-            color: 'white !important',
-          }}
+          color="primary"
         >
           {loading ? 'Uploading...' : 'Upload'}
         </Button>

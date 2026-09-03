@@ -333,17 +333,7 @@ export function RoleCreateDialog({ open, menus, onClose, onSave }) {
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
 
-        <Button
-          variant="contained"
-          sx={{
-            bgcolor: '#0030ff',
-            '&:hover': {
-              bgcolor: '#032ad8',
-            },
-          }}
-          loading={loading}
-          type="submit"
-        >
+        <Button variant="contained" color="primary" loading={loading} type="submit">
           Create
         </Button>
       </DialogActions>

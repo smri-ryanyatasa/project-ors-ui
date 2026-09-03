@@ -16,11 +16,16 @@ export function UserEditDialog({ open, user, roles, branches, onClose, onSave })
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
+  const environments = [
+    { value: 'LSP', label: 'LSP' },
+    { value: 'SCP', label: 'SCP' },
+  ];
+
   const [form, setForm] = useState({
     user_id: '',
     user_name: '',
     full_name: '',
-    env: '',
+    env: [],
     position: '',
     email_address: '',
     role_id: '',
@@ -39,11 +44,18 @@ export function UserEditDialog({ open, user, roles, branches, onClose, onSave })
             .map((branch) => branch.trim())
             .filter(Boolean) || [];
 
+      const userEnv = Array.isArray(user.assigned_env)
+        ? user.assigned_env
+        : user.assigned_env
+            ?.split(',')
+            .map((env) => env.trim())
+            .filter(Boolean) || [];
+
       setForm({
         user_id: user.user_id,
         user_name: user.user_name ?? '',
         full_name: user.full_name ?? '',
-        env: user.env ?? '',
+        env: userEnv,
         position: user.position ?? '',
         email_address: user.email_address ?? '',
         role_id: user.role_id ?? '',
@@ -108,7 +120,7 @@ export function UserEditDialog({ open, user, roles, branches, onClose, onSave })
         },
       }}
     >
-      <DialogTitle>Create User</DialogTitle>
+      <DialogTitle>Update User</DialogTitle>
 
       <DialogContent dividers>
         <Grid container spacing={2} sx={{ mt: 0.5 }}>
@@ -146,19 +158,15 @@ export function UserEditDialog({ open, user, roles, branches, onClose, onSave })
             </TextField>
           </Grid>
 
-          <Grid size={{ xs: 12, sm: 6 }}>
+          <Grid size={{ xs: 6 }}>
             <TextField
-              select
               fullWidth
               required
-              label="Environment"
-              name="env"
-              value={form.env}
-              onChange={handleChange('env')}
-            >
-              <MenuItem value="LSP">LSP</MenuItem>
-              <MenuItem value="SCP">SCP</MenuItem>
-            </TextField>
+              label="Full Name"
+              name="full_name"
+              value={form.full_name}
+              onChange={handleChange('full_name')}
+            />
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -180,17 +188,6 @@ export function UserEditDialog({ open, user, roles, branches, onClose, onSave })
           </Grid>
 
           {/* ---------------- Personal Information ---------------- */}
-
-          <Grid size={{ xs: 12 }}>
-            <TextField
-              fullWidth
-              required
-              label="Full Name"
-              name="full_name"
-              value={form.full_name}
-              onChange={handleChange('full_name')}
-            />
-          </Grid>
 
           <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
@@ -216,7 +213,7 @@ export function UserEditDialog({ open, user, roles, branches, onClose, onSave })
 
           {/* ---------------- Organization ---------------- */}
 
-          <Grid size={{ xs: 12, sm: 6 }}>
+          {/* <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               select
               fullWidth
@@ -232,6 +229,39 @@ export function UserEditDialog({ open, user, roles, branches, onClose, onSave })
               <MenuItem value="Watcher">Watcher</MenuItem>
               <MenuItem value="Queue">Queue</MenuItem>
             </TextField>
+          </Grid> */}
+
+          {/* ---------------- Additional Information ---------------- */}
+
+          <Grid size={{ xs: 12 }}>
+            <TextField
+              fullWidth
+              multiline
+              rows={3}
+              label="Description"
+              name="description"
+              value={form.description}
+              onChange={handleChange('description')}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <Autocomplete
+              multiple
+              filterSelectedOptions
+              options={environments}
+              getOptionLabel={(option) => option.label}
+              value={environments.filter((env) => form.env.includes(env.value))}
+              onChange={(event, newValue) => {
+                setForm((prev) => ({
+                  ...prev,
+                  env: newValue.map((env) => env.value),
+                }));
+              }}
+              renderInput={(params) => (
+                <TextField {...params} label="Environment" placeholder="Select environment" />
+              )}
+            />
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -252,38 +282,13 @@ export function UserEditDialog({ open, user, roles, branches, onClose, onSave })
               )}
             />
           </Grid>
-
-          {/* ---------------- Additional Information ---------------- */}
-
-          <Grid size={{ xs: 12 }}>
-            <TextField
-              fullWidth
-              multiline
-              rows={3}
-              label="Description"
-              name="description"
-              value={form.description}
-              onChange={handleChange('description')}
-            />
-          </Grid>
         </Grid>
       </DialogContent>
 
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
 
-        <Button
-          variant="contained"
-          loading={loading}
-          type="submit"
-          sx={{
-            bgcolor: '#0030ff !important',
-            '&:hover': {
-              bgcolor: '#032ad8 !important',
-            },
-            color: 'white !important',
-          }}
-        >
+        <Button variant="contained" loading={loading} type="submit" color="primary">
           Update
         </Button>
       </DialogActions>

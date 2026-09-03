@@ -26,9 +26,32 @@ export function CustomToolbar(props) {
   };
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box
+      sx={{
+        p: 2,
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+      }}
+    >
+      <Button
+        variant="contained"
+        color="primary"
+        loading={confirmLoading}
+        disabled={props.onRowsCount ? false : true}
+        startIcon={
+          <SvgColor
+            src="/assets/icons/solar/solar--check-circle-broken.svg"
+            sx={{ width: 20, height: 20 }}
+          />
+        }
+        onClick={handleConfirmReceipt}
+      >
+        Confirm Receipt
+      </Button>
       <GridToolbarContainer
         sx={{
+          ml: 'auto',
           '& .MuiButtonBase-root': {
             color: '#637381',
           },
@@ -38,28 +61,6 @@ export function CustomToolbar(props) {
           },
         }}
       >
-        <Button
-          variant="contained"
-          sx={{
-            bgcolor: props.onRowsCount ? '#0030ff !important' : '#1C1C1C',
-            '&:hover': {
-              bgcolor: '#032ad8 !important',
-            },
-            color: 'white !important',
-          }}
-          loading={confirmLoading}
-          disabled={props.onRowsCount ? false : true}
-          startIcon={
-            <SvgColor
-              src="/assets/icons/solar/solar--check-circle-broken.svg"
-              sx={{ width: 20, height: 20 }}
-            />
-          }
-          onClick={handleConfirmReceipt}
-        >
-          Confirm Receipt
-        </Button>
-
         <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center' }}>
           <GridToolbarColumnsButton />
           <GridToolbarFilterButton />

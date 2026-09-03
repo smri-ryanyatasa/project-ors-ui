@@ -62,6 +62,10 @@ export function useUsers() {
         .map((branch) => branch.trim())
         .join(', ')
         .trim(),
+      env: form.env
+        .map((env) => env.trim())
+        .join(', ')
+        .trim(),
       created_by: user.user_id,
     };
 
@@ -89,6 +93,10 @@ export function useUsers() {
       ...userData,
       branches: userData.branches
         .map((branch) => branch.trim())
+        .join(', ')
+        .trim(),
+      env: userData.env
+        .map((env) => env.trim())
         .join(', ')
         .trim(),
       last_update_by: user.user_id,

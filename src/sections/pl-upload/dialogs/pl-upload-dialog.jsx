@@ -488,7 +488,7 @@ export function PlUploadDialog({ open, onClose, onImport, onDownloadTemplate, br
               </Stack>
 
               <IconButton color="error" onClick={handleRemoveFile}>
-                <Iconify icon="solar:trash-bin-trash-bold" />
+                <SvgColor src="/assets/icons/solar/material-symbols--close.svg" />
               </IconButton>
             </Stack>
           )}
@@ -505,13 +505,7 @@ export function PlUploadDialog({ open, onClose, onImport, onDownloadTemplate, br
           variant="contained"
           onClick={handleImport}
           disabled={!file || loading || error || isValid}
-          sx={{
-            bgcolor: !file || loading || error || isValid ? '#1C1C1C' : '#0030ff !important',
-            '&:hover': {
-              bgcolor: '#032ad8 !important',
-            },
-            color: 'white !important',
-          }}
+          color="primary"
         >
           {loading ? 'Uploading...' : 'Upload'}
         </Button>
