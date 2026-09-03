@@ -110,13 +110,7 @@ export function UserChangePassowordDialog({ open, user, onClose, onSave }) {
           variant="contained"
           onClick={handleChangePassword}
           loading={loading}
-          sx={{
-            bgcolor: '#0030ff !important',
-            '&:hover': {
-              bgcolor: '#032ad8 !important',
-            },
-            color: 'white !important',
-          }}
+          color="primary"
         >
           Save
         </Button>

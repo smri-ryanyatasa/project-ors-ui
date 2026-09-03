@@ -89,12 +89,7 @@ export function RoleListView({ title = 'Blank', sx }) {
         <Stack direction="row" spacing={1.5}>
           <Button
             variant="contained"
-            sx={{
-              bgcolor: '#0030ff',
-              '&:hover': {
-                bgcolor: '#032ad8',
-              },
-            }}
+            color="primary"
             startIcon={
               <SvgColor
                 src="/assets/icons/solar/material-symbols--add.svg"

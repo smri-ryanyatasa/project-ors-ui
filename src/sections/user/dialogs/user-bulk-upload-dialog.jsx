@@ -365,7 +365,7 @@ export function UserBulkUploadDialog({ open, onClose, onImport, onDownloadTempla
               </Stack>
 
               <IconButton color="error" onClick={handleRemoveFile}>
-                <Iconify icon="solar:trash-bin-trash-bold" />
+                <SvgColor src="/assets/icons/solar/material-symbols--close.svg" />
               </IconButton>
             </Stack>
           )}
@@ -382,13 +382,7 @@ export function UserBulkUploadDialog({ open, onClose, onImport, onDownloadTempla
           variant="contained"
           onClick={handleImport}
           disabled={!file || loading || error}
-          sx={{
-            bgcolor: !file || loading || error ? '#1C1C1C' : '#0030ff !important',
-            '&:hover': {
-              bgcolor: '#032ad8 !important',
-            },
-            color: 'white !important',
-          }}
+          color="primary"
         >
           {loading ? 'Importing...' : 'Import'}
         </Button>

@@ -21,13 +21,7 @@ export function UserCreateMenu({ onAddSingleUser, onBulkUpload }) {
     <>
       <Button
         variant="contained"
-        sx={{
-          bgcolor: '#0030ff !important',
-          '&:hover': {
-            bgcolor: '#032ad8 !important',
-          },
-          color: 'white !important',
-        }}
+        color="primary"
         startIcon={
           <SvgColor
             src="/assets/icons/solar/material-symbols--add.svg"

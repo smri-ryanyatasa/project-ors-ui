@@ -25,6 +25,7 @@ import { Scrollbar } from 'src/components/scrollbar';
 import { AnimateBorder } from 'src/components/animate';
 
 import { useMockedUser } from 'src/auth/hooks';
+import { useAuthContext } from 'src/auth/hooks';
 
 import { AccountButton } from './account-button';
 import { SignOutButton } from './sign-out-button';
@@ -35,6 +36,7 @@ export function AccountDrawer({ data = [], sx, ...other }) {
   const pathname = usePathname();
 
   const { user } = useMockedUser();
+  const { user: authUser } = useAuthContext();
 
   const { value: open, onFalse: onClose, onTrue: onOpen } = useBoolean();
 
@@ -151,8 +153,12 @@ export function AccountDrawer({ data = [], sx, ...other }) {
               {user?.displayName}
             </Typography>
 
-            <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }} noWrap>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
               {user?.email}
+            </Typography>
+
+            <Typography variant="subtitle2" sx={{ mt: 0.5, color: '#0030ff' }} noWrap>
+              {authUser?.role_name}
             </Typography>
           </Box>
 
@@ -165,20 +171,24 @@ export function AccountDrawer({ data = [], sx, ...other }) {
               justifyContent: 'center',
             }}
           >
-            {Array.from({ length: 3 }, (_, index) => (
-              <Tooltip
-                key={_mock.fullName(index + 1)}
-                title={`Switch to: ${_mock.fullName(index + 1)}`}
-              >
-                <Avatar
-                  alt={_mock.fullName(index + 1)}
-                  src={_mock.image.avatar(index + 1)}
-                  onClick={() => {}}
-                />
+            {authUser?.assigned_env?.split(',').map((env) => (
+              <Tooltip title="Add Env" key={env}>
+                <IconButton
+                  sx={[
+                    (theme) => ({
+                      bgcolor: varAlpha(theme.vars.palette.grey['500Channel'], 0.08),
+                      border: `dashed 1px ${varAlpha(theme.vars.palette.grey['500Channel'], 0.32)}`,
+                      fontSize: '0.7rem',
+                      fontWeight: 500,
+                    }),
+                  ]}
+                >
+                  {env.trim()}
+                </IconButton>
               </Tooltip>
             ))}
 
-            <Tooltip title="Add account">
+            <Tooltip title="Add Env">
               <IconButton
                 sx={[
                   (theme) => ({

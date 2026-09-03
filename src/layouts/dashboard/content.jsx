@@ -3,7 +3,7 @@
 import { mergeClasses } from 'minimal-shared/utils';
 
 import Container from '@mui/material/Container';
-import { styled , useColorScheme } from '@mui/material/styles';
+import { styled, useColorScheme } from '@mui/material/styles';
 
 import { useSettingsContext } from 'src/components/settings';
 
