@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
+
 import { toast } from 'sonner';
 
-import { Box, Stack, Button } from '@mui/material';
+import { Box, Stack, Button, Backdrop, CircularProgress, Typography } from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 
@@ -12,10 +14,9 @@ import { PageHeader } from 'src/components/page-header/page-header';
 import { useBranch } from '../hooks/use-branch';
 import { BranchTable } from '../table/branch-table';
 
-// ----------------------------------------------------------------------
-
 export function BranchListView({ title = 'Blank', sx }) {
   const {
+    refresh,
     loading,
     branches,
     total,
@@ -27,7 +28,10 @@ export function BranchListView({ title = 'Blank', sx }) {
     setSortModel,
     csvExport,
     excelExport,
+    triggerBranchInterface,
   } = useBranch();
+
+  const [triggerLoading, setTriggerLoading] = useState(false);
 
   const handleCsvExport = async () => {
     try {
@@ -44,6 +48,21 @@ export function BranchListView({ title = 'Blank', sx }) {
       toast.success('Excel file downloaded successfully.');
     } catch (error) {
       toast.error(error?.response?.data?.message || 'Failed to download the file.');
+    }
+  };
+
+  const handleTriggerBranch = async () => {
+    try {
+      setTriggerLoading(true);
+      await triggerBranchInterface();
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to download the file.');
+    } finally {
+      setTimeout(async () => {
+        setTriggerLoading(false);
+        await refresh();
+      }, 4000);
+      //   setTriggerLoading(false);
     }
   };
 
@@ -98,15 +117,14 @@ export function BranchListView({ title = 'Blank', sx }) {
           <Button
             variant="contained"
             color="primary"
+            loading={triggerLoading}
             startIcon={
               <SvgColor
                 src="/assets/icons/solar/mdi--settings-sync.svg"
                 sx={{ width: 20, height: 20 }}
               />
             }
-            onClick={() => {
-              // Import from MMS
-            }}
+            onClick={handleTriggerBranch}
           >
             Trigger Branch Interface
           </Button>
@@ -115,10 +133,41 @@ export function BranchListView({ title = 'Blank', sx }) {
     />
   );
 
+  const loader = () => (
+    <Backdrop
+      open={triggerLoading}
+      sx={{
+        position: 'absolute',
+        zIndex: (theme) => theme.zIndex.modal + 1,
+        color: '#fff',
+        flexDirection: 'column',
+        borderRadius: 1,
+      }}
+    >
+      <CircularProgress color="inherit" sx={{ mb: 2 }} />
+
+      <Typography color="inherit" variant="subtitle1">
+        Interface is in Progress ...
+      </Typography>
+
+      <Typography
+        variant="body2"
+        sx={{
+          color: 'rgba(255, 255, 255, 0.7)',
+        }}
+      >
+        Please wait while we process your request.
+      </Typography>
+    </Backdrop>
+  );
+
   return (
     <>
       {renderPageHeader()}
-      <DashboardContent maxWidth="xl">{renderContent()}</DashboardContent>
+      <DashboardContent maxWidth="xl">
+        {renderContent()}
+        {loader()}
+      </DashboardContent>
     </>
   );
 }

@@ -91,4 +91,7 @@ export const endpoints = {
     csvExport: '/api/po-logs/csv-export',
     excelExport: '/api/po-logs/excel-export',
   },
+  mmsMasterfile: {
+    trigger: '/api/mms-masterfile',
+  },
 };

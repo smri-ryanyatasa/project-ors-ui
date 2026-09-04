@@ -2,6 +2,7 @@ import { saveAs } from 'file-saver';
 import { useState, useEffect, useCallback } from 'react';
 
 import ItemService from 'src/services/item.service';
+import MMSMasterfileService from 'src/services/mms-masterfile.service';
 
 import { useAuthContext } from 'src/auth/hooks';
 
@@ -128,6 +129,13 @@ export function useItem() {
     }
   };
 
+  const triggerItemInterface = async () => {
+    await MMSMasterfileService.triggerBranchInterface({
+      sourceTable: 'stg_item',
+      targetTable: 'item',
+    });
+  };
+
   useEffect(() => {
     if (!user) return;
 
@@ -149,5 +157,6 @@ export function useItem() {
     csvExport,
     excelExport,
     itemRowsUpdate,
+    triggerItemInterface,
   };
 }
