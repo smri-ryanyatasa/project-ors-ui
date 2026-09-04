@@ -3,7 +3,7 @@
 import { toast } from 'sonner';
 import { useState } from 'react';
 
-import { Box, Stack, Button, Backdrop, CircularProgress, Typography } from '@mui/material';
+import { Box, Stack, Button, Backdrop, Typography, CircularProgress } from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 

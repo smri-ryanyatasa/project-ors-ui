@@ -10,11 +10,11 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import { SvgColor } from 'src/components/svg-color';
 import { PageHeader } from 'src/components/page-header/page-header';
 
+import { usePOLogs } from '../hooks/use-po-logs';
 import { POLogsTable } from '../table/po-logs-table';
 import { PlsPendingProcessingCard } from '../cards/pls-pending-processing';
 import { PlsPendingReTriggeringCard } from '../cards/pls-pending-re-triggering';
 import { PlsSuccessfulPOgenerationCard } from '../cards/pls-successful-po-generation';
-import { usePOLogs } from '../hooks/use-po-logs';
 
 export function POLogsListView({ title = 'Blank', sx }) {
   const {

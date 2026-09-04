@@ -52,8 +52,7 @@ export function usePOLogs() {
       ]);
 
       setPls(response);
-      console.log(count);
-      //   setStatus(count);
+      setStatus(count);
       setTotal(response?.[0]?.total_rows || 0);
     } catch (error) {
       console.log(error);
