@@ -85,4 +85,10 @@ export const endpoints = {
     csvExport: '/api/receiving-decrepancy-report/csv-export',
     excelExport: '/api/receiving-decrepancy-report/excel-export',
   },
+  poLogs: {
+    list: '/api/po-logs',
+    status: '/api/po-logs/status',
+    csvExport: '/api/po-logs/csv-export',
+    excelExport: '/api/po-logs/excel-export',
+  },
 };

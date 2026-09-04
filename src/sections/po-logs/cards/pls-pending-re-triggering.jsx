@@ -34,7 +34,7 @@ export function PlsPendingReTriggeringCard(props) {
                 <Skeleton variant="text" width={60} height={40} />
               ) : (
                 <Typography variant="h4" fontWeight={700}>
-                  2
+                  {props.status}
                 </Typography>
               )}
 

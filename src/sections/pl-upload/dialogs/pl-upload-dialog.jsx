@@ -20,7 +20,6 @@ import {
   AccordionDetails,
 } from '@mui/material';
 
-import { Iconify } from 'src/components/iconify';
 import { SvgColor } from 'src/components/svg-color';
 
 import { PlUploadPreviewTable } from './pl-upload-preview-dialog';
