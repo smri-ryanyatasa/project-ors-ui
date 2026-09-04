@@ -3,7 +3,7 @@
 import { toast } from 'sonner';
 import { useState } from 'react';
 
-import { Box, Stack, Button } from '@mui/material';
+import { Box, Stack, Button, Backdrop, CircularProgress, Typography } from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 
@@ -30,8 +30,11 @@ export function ItemListView({ title = 'Blank', sx }) {
     csvExport,
     excelExport,
     itemRowsUpdate,
+    triggerItemInterface,
   } = useItem();
+
   const [editedRows, setEditedRows] = useState({});
+  const [triggerLoading, setTriggerLoading] = useState(false);
 
   const handleRowUpdate = async (newRow) => {
     const originalRow = items.find((item) => item.id === newRow.id);
@@ -87,6 +90,18 @@ export function ItemListView({ title = 'Blank', sx }) {
       toast.success('Excel file downloaded successfully.');
     } catch (error) {
       toast.error(error?.response?.data?.message || 'Failed to download the file.');
+    }
+  };
+
+  const handleTriggerItem = async () => {
+    try {
+      setTriggerLoading(true);
+      await triggerItemInterface();
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to download the file.');
+    } finally {
+      setTriggerLoading(false);
+      await refresh();
     }
   };
 
@@ -150,9 +165,7 @@ export function ItemListView({ title = 'Blank', sx }) {
                 sx={{ width: 20, height: 20 }}
               />
             }
-            onClick={() => {
-              // Import from MMS
-            }}
+            onClick={handleTriggerItem}
           >
             Trigger Item Interface
           </Button>
@@ -161,10 +174,41 @@ export function ItemListView({ title = 'Blank', sx }) {
     />
   );
 
+  const loader = () => (
+    <Backdrop
+      open={triggerLoading}
+      sx={{
+        position: 'absolute',
+        zIndex: (theme) => theme.zIndex.modal + 1,
+        color: '#fff',
+        flexDirection: 'column',
+        borderRadius: 1,
+      }}
+    >
+      <CircularProgress color="inherit" sx={{ mb: 2 }} />
+
+      <Typography color="inherit" variant="subtitle1">
+        Interface is in Progress ...
+      </Typography>
+
+      <Typography
+        variant="body2"
+        sx={{
+          color: 'rgba(255, 255, 255, 0.7)',
+        }}
+      >
+        Please wait while we process your request.
+      </Typography>
+    </Backdrop>
+  );
+
   return (
     <>
       {renderPageHeader()}
-      <DashboardContent maxWidth="xl">{renderContent()}</DashboardContent>
+      <DashboardContent maxWidth="xl">
+        {renderContent()}
+        {loader()}
+      </DashboardContent>
     </>
   );
 }

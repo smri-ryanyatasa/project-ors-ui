@@ -2,6 +2,7 @@ import { saveAs } from 'file-saver';
 import { useState, useEffect, useCallback } from 'react';
 
 import BranchService from 'src/services/branch.service';
+import MMSMasterfileService from 'src/services/mms-masterfile.service';
 
 import { useAuthContext } from 'src/auth/hooks';
 
@@ -108,6 +109,13 @@ export function useBranch() {
     }
   };
 
+  const triggerBranchInterface = async () => {
+    await MMSMasterfileService.triggerBranchInterface({
+      sourceTable: 'stg_branch',
+      targetTable: 'branch',
+    });
+  };
+
   useEffect(() => {
     if (!user) return;
 
@@ -128,5 +136,6 @@ export function useBranch() {
     setSortModel,
     csvExport,
     excelExport,
+    triggerBranchInterface,
   };
 }
