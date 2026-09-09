@@ -12,6 +12,8 @@ import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 import Button, { buttonClasses } from '@mui/material/Button';
 
+import { useRouter } from 'src/routes/hooks';
+
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { CustomPopover } from 'src/components/custom-popover';
@@ -25,12 +27,19 @@ export function WorkspacesPopover({ data = [], sx, ...other }) {
 
   const [workspace, setWorkspace] = useState(data[0]);
 
+  const router = useRouter();
+
   const handleChangeWorkspace = useCallback(
     (newValue) => {
       setWorkspace(newValue);
+
       onClose();
+
+      if (newValue.url) {
+        router.push(newValue.url);
+      }
     },
-    [onClose]
+    [onClose, router]
   );
 
   const buttonBg = {
