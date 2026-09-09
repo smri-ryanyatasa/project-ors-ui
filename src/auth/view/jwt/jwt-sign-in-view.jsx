@@ -112,7 +112,7 @@ export function JwtSignInView() {
 
       <Box sx={{ gap: 1.5, display: 'flex', flexDirection: 'column' }}>
         <Field.Select name="env" label="Environment" slotProps={{ inputLabel: { shrink: true } }}>
-          <MenuItem value="">Select Branch</MenuItem>
+          <MenuItem value="">Select Environment</MenuItem>
 
           <MenuItem value="WAP">WAP</MenuItem>
           <MenuItem value="LSP">LSP</MenuItem>

@@ -1,6 +1,9 @@
 'use client';
 
-import { LineChart } from '@mui/x-charts';
+import Link from 'next/link';
+
+import { useTheme } from '@mui/material/styles';
+import { PieChart, LineChart } from '@mui/x-charts';
 import { Box, Card, Grid, Stack, Button, Typography, CardHeader, CardContent } from '@mui/material';
 
 import { CONFIG } from 'src/global-config';
@@ -13,6 +16,8 @@ import { useAuthContext } from 'src/auth/hooks';
 
 export function DashboardListView({ props, title = 'Blank', sx }) {
   const { user } = useAuthContext();
+
+  const themeColor = useTheme();
 
   const summaryCards = [
     {
@@ -119,6 +124,8 @@ export function DashboardListView({ props, title = 'Blank', sx }) {
                 variant="contained"
                 startIcon={<Iconify icon="solar:box-minimalistic-bold-duotone" />}
                 color="primary"
+                component={Link}
+                href="/ors/packing-list/pl-upload"
               >
                 Get Started
               </Button>
@@ -409,7 +416,7 @@ export function DashboardListView({ props, title = 'Blank', sx }) {
               flexDirection: 'column',
             }}
           >
-            <CardHeader title="Processing Overview" subheader="Monthly status count" />
+            <CardHeader title="Overall Count" subheader="Overview of overall count" />
 
             <Box
               sx={{
@@ -418,26 +425,61 @@ export function DashboardListView({ props, title = 'Blank', sx }) {
                 p: { xs: 1, sm: 2, md: 3 },
                 display: 'flex',
                 alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
-              <LineChart
-                height={350}
-                series={[
-                  {
-                    data: [120, 180, 150, 240, 280, 320],
-                    label: 'PL Volume',
-                  },
-                ]}
-                xAxis={[
-                  {
-                    scaleType: 'point',
-                    data: ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
-                  },
-                ]}
-                grid={{
-                  horizontal: true,
+              <Box
+                sx={{
+                  position: 'relative',
+                  width: 300,
+                  height: 300,
                 }}
-              />
+              >
+                {' '}
+                <PieChart
+                  series={[
+                    {
+                      data: [
+                        {
+                          id: 0,
+                          value: 120,
+                          label: 'Success',
+                          color: '#22C55E',
+                        },
+                        {
+                          id: 1,
+                          value: 80,
+                          label: 'Warning',
+                          color: '#FFAB00',
+                        },
+                        {
+                          id: 2,
+                          value: 50,
+                          label: 'Info',
+                          color: '#00B8D9',
+                        },
+                      ],
+                      innerRadius: 60,
+                      outerRadius: 100,
+                    },
+                  ]}
+                  height={300}
+                />
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: '49%',
+                    left: '37%',
+                    transform: 'translate(-50%, -50%)',
+                    textAlign: 'center',
+                  }}
+                >
+                  <Typography color="text.secondary" sx={{ fontSize: 10 }}>
+                    Total
+                  </Typography>
+                  <Typography variant="h4">180</Typography>
+                </Box>
+              </Box>
             </Box>
           </Card>
         </Grid>
@@ -465,8 +507,19 @@ export function DashboardListView({ props, title = 'Blank', sx }) {
                 height={350}
                 series={[
                   {
-                    data: [120, 180, 150, 240, 280, 320],
-                    label: 'PL Volume',
+                    data: [8, 23, 15, 25, 44, 55],
+                    label: 'PO Generated',
+                    color: themeColor.palette.success.main,
+                  },
+                  {
+                    data: [4, 56, 50, 11, 12, 40],
+                    label: 'Failed',
+                    color: themeColor.palette.warning.main,
+                  },
+                  {
+                    data: [40, 32, 65, 40, 23, 80],
+                    label: 'Approved',
+                    color: themeColor.palette.info.main,
                   },
                 ]}
                 xAxis={[
