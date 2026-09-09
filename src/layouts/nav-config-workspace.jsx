@@ -9,13 +9,14 @@ export const _workspaces = [
     logo: `${CONFIG.assetsDir}/assets/icons/workspaces/logo-1.webp`,
   },
   {
-    id: 'team-2',
-    name: 'SOAR',
+    id: 'team-3',
+    name: 'DC BOX',
     logo: `${CONFIG.assetsDir}/assets/icons/workspaces/logo-2.webp`,
+    url: '/dc_box',
   },
   {
     id: 'team-2',
-    name: 'DC BOX',
+    name: 'SOAR',
     logo: `${CONFIG.assetsDir}/assets/icons/workspaces/logo-3.webp`,
   },
 ];

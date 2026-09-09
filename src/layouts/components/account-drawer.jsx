@@ -22,7 +22,7 @@ import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { AnimateBorder } from 'src/components/animate';
 
-import { useMockedUser , useAuthContext } from 'src/auth/hooks';
+import { useMockedUser, useAuthContext } from 'src/auth/hooks';
 
 import { AccountButton } from './account-button';
 import { SignOutButton } from './sign-out-button';
@@ -176,6 +176,7 @@ export function AccountDrawer({ data = [], sx, ...other }) {
                       bgcolor: varAlpha(theme.vars.palette.grey['500Channel'], 0.08),
                       border: `dashed 1px ${varAlpha(theme.vars.palette.grey['500Channel'], 0.32)}`,
                       fontSize: '0.7rem',
+                      height: '2.3rem',
                       fontWeight: 500,
                     }),
                   ]}
@@ -185,7 +186,7 @@ export function AccountDrawer({ data = [], sx, ...other }) {
               </Tooltip>
             ))}
 
-            <Tooltip title="Add Env">
+            {/* <Tooltip title="Add Env">
               <IconButton
                 sx={[
                   (theme) => ({
@@ -196,7 +197,7 @@ export function AccountDrawer({ data = [], sx, ...other }) {
               >
                 <Iconify icon="mingcute:add-line" />
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
           </Box>
 
           {renderList()}
