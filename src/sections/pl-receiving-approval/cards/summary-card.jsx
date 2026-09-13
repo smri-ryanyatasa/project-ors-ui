@@ -5,11 +5,8 @@ import { Box, Card, Grid, Stack, Switch, Typography } from '@mui/material';
 import { Iconify } from 'src/components/iconify';
 
 export function SummaryCard() {
-  const [locationType, setLocationType] = useState('store');
-
-  const handleChange = (type) => {
-    setLocationType(type);
-  };
+  const [storeType, setStoreType] = useState(true);
+  const [warehouseType, setWarehouseType] = useState(true);
 
   return (
     <Grid container spacing={2}>
@@ -22,7 +19,7 @@ export function SummaryCard() {
             display: 'flex',
             alignItems: 'center',
             border: '1px solid',
-            borderColor: locationType === 'store' ? 'primary.main' : 'divider',
+            borderColor: storeType ? 'primary.main' : 'divider',
           }}
         >
           <Stack
@@ -33,7 +30,10 @@ export function SummaryCard() {
           >
             <Stack spacing={1}>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <Switch checked={locationType === 'store'} onChange={() => handleChange('store')} />
+                <Switch
+                  checked={storeType}
+                  onChange={(event) => setStoreType(event.target.checked)}
+                />
 
                 <Typography variant="h6">Store</Typography>
               </Stack>
@@ -70,7 +70,7 @@ export function SummaryCard() {
             display: 'flex',
             alignItems: 'center',
             border: '1px solid',
-            borderColor: locationType === 'warehouse' ? 'primary.main' : 'divider',
+            borderColor: warehouseType ? 'primary.main' : 'divider',
           }}
         >
           <Stack
@@ -82,8 +82,8 @@ export function SummaryCard() {
             <Stack spacing={1}>
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Switch
-                  checked={locationType === 'warehouse'}
-                  onChange={() => handleChange('warehouse')}
+                  checked={warehouseType}
+                  onChange={(event) => setWarehouseType(event.target.checked)}
                 />
 
                 <Typography variant="h6">Warehouse</Typography>
