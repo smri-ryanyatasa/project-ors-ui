@@ -66,6 +66,7 @@ export const endpoints = {
     excelExport: '/api/final-pl-receiving/excel-export',
     rowsUpdate: '/api/final-pl-receiving/rows-update',
     toApproved: '/api/final-pl-receiving/to-approved',
+    hasZero: '/api/final-pl-receiving/has-zero',
   },
   plAgeingReport: {
     list: '/api/pl-ageing-report',

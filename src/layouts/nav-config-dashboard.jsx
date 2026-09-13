@@ -1,3 +1,6 @@
+import { Box, Chip } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+
 import { paths } from 'src/routes/paths';
 
 import { CONFIG } from 'src/global-config';
@@ -120,16 +123,67 @@ const ICONS = {
 //     items: menu.children?.map(mapMenuItemToNav) || [],
 //   }));
 
-export const mapMenuItemToNav = (menu) => ({
+export const mapMenuItemToNav = (menu, total_pl_errors, notif_loading, retrigger) => ({
   title: menu.name,
 
   path: menu.url ? `${paths.base}${menu.url}` : `${paths.base}/dashboard`,
 
   icon: menu.icon ? ICONS[menu.icon] : undefined,
 
-  children: menu.children?.length ? menu.children.map(mapMenuItemToNav) : undefined,
-});
+  info:
+    menu.name === 'PL Upload' ? (
+      total_pl_errors ? (
+        <Chip
+          label={notif_loading ? <CircularProgress size={12} thickness={5} /> : total_pl_errors}
+          size="small"
+          color="warning"
+          sx={{
+            height: 20,
+            minWidth: 20,
+            fontSize: 11,
+            fontWeight: 700,
+            '& .MuiChip-label': {
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            },
+          }}
+        />
+      ) : null
+    ) : menu.name === 'PO Logs' ? (
+      retrigger ? (
+        <Chip
+          label={retrigger}
+          size="small"
+          color="warning"
+          sx={{
+            height: 20,
+            minWidth: 20,
+            fontSize: 11,
+            fontWeight: 700,
+          }}
+        />
+      ) : null
+    ) : menu.name === 'Packing List' ? (
+      total_pl_errors ? (
+        <Box
+          sx={{
+            width: 6,
+            height: 6,
+            borderRadius: '50%',
+            bgcolor: 'warning.main',
+            ml: 1,
+          }}
+        />
+      ) : null
+    ) : null,
 
+  children: menu.children?.length
+    ? menu.children.map((child) =>
+        mapMenuItemToNav(child, total_pl_errors, notif_loading, retrigger)
+      )
+    : undefined,
+});
 // ----------------------------------------------------------------------
 // Filter master menus using assigned menu IDs
 // ----------------------------------------------------------------------
@@ -158,13 +212,26 @@ const filterAssignedMenus = (menus, assignedMenuIds) =>
 // Create nav data
 // ----------------------------------------------------------------------
 
-export const getNavData = (menus = [], assignedMenus = []) => {
+export const getNavData = (
+  menus = [],
+  assignedMenus = [],
+  notifications,
+  loading = true,
+  poLogsStatus = []
+) => {
   const assignedMenuIds = new Set(assignedMenus.map((menu) => menu.id));
-
   const filteredMenus = filterAssignedMenus(menus, assignedMenuIds);
+
+  const total_pl_errors = notifications?.[0]?.total_pl_errors;
+  const notif_loading = loading;
+
+  const retrigger = poLogsStatus?.[0]?.total_pl_pending_reproccess;
 
   return filteredMenus.map((menu) => ({
     subheader: menu.name,
-    items: menu.children?.map(mapMenuItemToNav) || [],
+    items:
+      menu.children?.map((item) =>
+        mapMenuItemToNav(item, total_pl_errors, notif_loading, retrigger)
+      ) || [],
   }));
 };

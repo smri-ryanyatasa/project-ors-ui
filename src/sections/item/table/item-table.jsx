@@ -5,7 +5,9 @@ import { CustomToolbar } from './custom-toolbar';
 import { ItemTableColumns } from './item-table-columns';
 
 export function ItemTable(props) {
-  const columns = ItemTableColumns();
+  const columns = ItemTableColumns({
+    onOpenValues: props.onOpenValues,
+  });
 
   return (
     <Card>

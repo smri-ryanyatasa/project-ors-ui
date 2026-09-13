@@ -107,7 +107,7 @@ export const InitialPlReceivingTableColumns = () => [
   },
   {
     field: 'received_date',
-    headerName: 'Date & Time Uploaded',
+    headerName: 'Date & Time Received',
     width: 140,
     headerClassName: 'wrapped-header',
   },

@@ -44,6 +44,13 @@ class FinalPLReceivingService {
     });
     return data;
   }
+
+  async hasZero(params) {
+    const { data } = await axios.get(endpoints.finalPlReceiving.hasZero, {
+      params,
+    });
+    return data;
+  }
 }
 
 export default new FinalPLReceivingService();

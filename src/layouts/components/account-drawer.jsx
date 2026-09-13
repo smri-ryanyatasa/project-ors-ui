@@ -169,16 +169,30 @@ export function AccountDrawer({ data = [], sx, ...other }) {
             }}
           >
             {authUser?.assigned_env?.split(',').map((env) => (
-              <Tooltip title="Add Env" key={env}>
+              <Tooltip title={env.trim()} key={env}>
                 <IconButton
                   sx={[
-                    (theme) => ({
-                      bgcolor: varAlpha(theme.vars.palette.grey['500Channel'], 0.08),
-                      border: `dashed 1px ${varAlpha(theme.vars.palette.grey['500Channel'], 0.32)}`,
-                      fontSize: '0.7rem',
-                      height: '2.3rem',
-                      fontWeight: 500,
-                    }),
+                    (theme) => {
+                      const isActive = env.trim() === authUser.env;
+
+                      return {
+                        bgcolor: isActive
+                          ? varAlpha(theme.vars.palette.primary.mainChannel, 0.16)
+                          : varAlpha(theme.vars.palette.grey['500Channel'], 0.08),
+
+                        border: `dashed 1px ${
+                          isActive
+                            ? theme.vars.palette.primary.main
+                            : varAlpha(theme.vars.palette.grey['500Channel'], 0.32)
+                        }`,
+
+                        color: isActive ? 'primary.main' : 'text.primary',
+
+                        fontSize: '0.7rem',
+                        height: '2.3rem',
+                        fontWeight: isActive ? 700 : 500,
+                      };
+                    },
                   ]}
                 >
                   {env.trim()}

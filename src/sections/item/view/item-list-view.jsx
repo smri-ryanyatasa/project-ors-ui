@@ -3,7 +3,14 @@
 import { toast } from 'sonner';
 import { useState } from 'react';
 
-import { Box, Stack, Button, Backdrop, Typography, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Button,
+  Backdrop,
+  Typography,
+  CircularProgress,
+} from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 
@@ -12,6 +19,7 @@ import { PageHeader } from 'src/components/page-header/page-header';
 
 import { useItem } from '../hooks/use-item';
 import { ItemTable } from '../table/item-table';
+import { VendorListDialog } from '../dialogs/vendor-list-dialog';
 
 // ----------------------------------------------------------------------
 
@@ -34,7 +42,9 @@ export function ItemListView({ title = 'Blank', sx }) {
   } = useItem();
 
   const [editedRows, setEditedRows] = useState({});
+  const [vendors, setVendors] = useState([]);
   const [triggerLoading, setTriggerLoading] = useState(false);
+  const [vendorListOpen, setVendorListOpen] = useState(false);
 
   const handleRowUpdate = async (newRow) => {
     const originalRow = items.find((item) => item.id === newRow.id);
@@ -105,6 +115,11 @@ export function ItemListView({ title = 'Blank', sx }) {
     }
   };
 
+  const handleOpenValues = (event, value) => {
+    setVendors(value.split(','));
+    setVendorListOpen(true);
+  };
+
   const renderContent = () => (
     <Box
       sx={[
@@ -135,6 +150,7 @@ export function ItemListView({ title = 'Blank', sx }) {
         onDownloadExcel={handleExcelExport}
         onRowUpdate={handleRowUpdate}
         onSave={handleSave}
+        onOpenValues={handleOpenValues}
       />
     </Box>
   );
@@ -209,6 +225,11 @@ export function ItemListView({ title = 'Blank', sx }) {
         {renderContent()}
         {loader()}
       </DashboardContent>
+      <VendorListDialog
+        open={vendorListOpen}
+        data={vendors}
+        onClose={() => setVendorListOpen(false)}
+      />
     </>
   );
 }
