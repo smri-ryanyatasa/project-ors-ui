@@ -12,7 +12,12 @@ import { iconButtonClasses } from '@mui/material/IconButton';
 import { Logo } from 'src/components/logo';
 import { useSettingsContext } from 'src/components/settings';
 
+import { usePOLogs } from 'src/sections/po-logs/hooks/use-po-logs';
 import { useRolePermissions } from 'src/sections/role-permissions/hooks/use-roles';
+import {
+  PlUploadProvider,
+  usePlUploadContext,
+} from 'src/sections/pl-upload/view/pl-upload-context';
 
 import { useMockedUser } from 'src/auth/hooks';
 
@@ -32,8 +37,22 @@ import { MainSection, layoutClasses, HeaderSection, LayoutSection } from '../cor
 
 // ----------------------------------------------------------------------
 
-export function DashboardLayout({ sx, cssVars, children, slotProps, layoutQuery = 'lg' }) {
+export function DashboardLayout(props) {
+  return (
+    <PlUploadProvider>
+      <DashboardLayoutContent {...props} />
+    </PlUploadProvider>
+  );
+}
+
+// ----------------------------------------------------------------------
+
+function DashboardLayoutContent({ sx, cssVars, children, slotProps, layoutQuery = 'lg' }) {
   const theme = useTheme();
+
+  // ✅ NOW this is inside PlUploadProvider
+  const { loading, plsUplaodStatus } = usePlUploadContext();
+  const { status: poLogsStatus } = usePOLogs();
 
   const { user } = useMockedUser();
 
@@ -45,9 +64,6 @@ export function DashboardLayout({ sx, cssVars, children, slotProps, layoutQuery 
 
   const { value: open, onFalse: onClose, onTrue: onOpen } = useBoolean();
 
-  // const navData = slotProps?.nav?.data ?? dashboardNavData;
-  // const parsedMenus = menus ? (JSON.parse(user?.menus) ?? []) : [];
-
   const parsedMenus = useMemo(() => {
     if (!user?.menus) {
       return [];
@@ -57,28 +73,49 @@ export function DashboardLayout({ sx, cssVars, children, slotProps, layoutQuery 
       return JSON.parse(user.menus) ?? [];
     } catch (error) {
       console.error('Invalid menus JSON:', error);
+
       return [];
     }
   }, [user?.menus]);
 
-  const navData = getNavData(menus, parsedMenus);
+  // ----------------------------------------------------------------------
+
+  const navData = useMemo(
+    () => getNavData(menus, parsedMenus, plsUplaodStatus, loading, poLogsStatus),
+    [menus, parsedMenus, plsUplaodStatus, loading, poLogsStatus]
+  );
+
+  // ----------------------------------------------------------------------
 
   const isNavMini = settings.state.navLayout === 'mini';
+
   const isNavHorizontal = settings.state.navLayout === 'horizontal';
+
   const isNavVertical = isNavMini || settings.state.navLayout === 'vertical';
 
   const canDisplayItemByRole = (allowedRoles) => !allowedRoles?.includes(user?.role);
+
+  // ----------------------------------------------------------------------
 
   const renderHeader = () => {
     const headerSlotProps = {
       container: {
         maxWidth: false,
         sx: {
-          ...(isNavVertical && { px: { [layoutQuery]: 5 } }),
+          ...(isNavVertical && {
+            px: { [layoutQuery]: 5 },
+          }),
+
           ...(isNavHorizontal && {
             bgcolor: 'var(--layout-nav-bg)',
-            height: { [layoutQuery]: 'var(--layout-nav-horizontal-height)' },
-            [`& .${iconButtonClasses.root}`]: { color: 'var(--layout-nav-text-secondary-color)' },
+
+            height: {
+              [layoutQuery]: 'var(--layout-nav-horizontal-height)',
+            },
+
+            [`& .${iconButtonClasses.root}`]: {
+              color: 'var(--layout-nav-text-secondary-color)',
+            },
           }),
         },
       },
@@ -86,10 +123,17 @@ export function DashboardLayout({ sx, cssVars, children, slotProps, layoutQuery 
 
     const headerSlots = {
       topArea: (
-        <Alert severity="info" sx={{ display: 'none', borderRadius: 0 }}>
+        <Alert
+          severity="info"
+          sx={{
+            display: 'none',
+            borderRadius: 0,
+          }}
+        >
           This is an info Alert.
         </Alert>
       ),
+
       bottomArea: isNavHorizontal ? (
         <NavHorizontal
           data={navData}
@@ -98,13 +142,21 @@ export function DashboardLayout({ sx, cssVars, children, slotProps, layoutQuery 
           checkPermissions={canDisplayItemByRole}
         />
       ) : null,
+
       leftArea: (
         <>
-          {/** @slot Nav mobile */}
           <MenuButton
             onClick={onOpen}
-            sx={{ mr: 1, ml: -1, [theme.breakpoints.up(layoutQuery)]: { display: 'none' } }}
+            sx={{
+              mr: 1,
+              ml: -1,
+
+              [theme.breakpoints.up(layoutQuery)]: {
+                display: 'none',
+              },
+            }}
           />
+
           <NavMobile
             data={navData}
             open={open}
@@ -113,54 +165,49 @@ export function DashboardLayout({ sx, cssVars, children, slotProps, layoutQuery 
             checkPermissions={canDisplayItemByRole}
           />
 
-          {/** @slot Logo */}
           {isNavHorizontal && (
             <Logo
               sx={{
                 display: 'none',
-                [theme.breakpoints.up(layoutQuery)]: { display: 'inline-flex' },
+
+                [theme.breakpoints.up(layoutQuery)]: {
+                  display: 'inline-flex',
+                },
               }}
             />
           )}
 
-          {/** @slot Divider */}
           {isNavHorizontal && (
-            <VerticalDivider sx={{ [theme.breakpoints.up(layoutQuery)]: { display: 'flex' } }} />
+            <VerticalDivider
+              sx={{
+                [theme.breakpoints.up(layoutQuery)]: {
+                  display: 'flex',
+                },
+              }}
+            />
           )}
 
-          {/** @slot Workspace popover */}
           <WorkspacesPopover
             data={_workspaces}
-            sx={{ ...(isNavHorizontal && { color: 'var(--layout-nav-text-primary-color)' }) }}
+            sx={{
+              ...(isNavHorizontal && {
+                color: 'var(--layout-nav-text-primary-color)',
+              }),
+            }}
           />
         </>
       ),
+
       rightArea: (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0, sm: 0.75 } }}>
-          {/** @slot Searchbar */}
-          {/* <Searchbar data={navData} /> */}
-
-          {/** @slot Language popover */}
-          {/* <LanguagePopover
-            data={[
-              { value: 'en', label: 'English', countryCode: 'GB' },
-              { value: 'fr', label: 'French', countryCode: 'FR' },
-              { value: 'vi', label: 'Vietnamese', countryCode: 'VN' },
-              { value: 'cn', label: 'Chinese', countryCode: 'CN' },
-              { value: 'ar', label: 'Arabic', countryCode: 'SA' },
-            ]}
-          /> */}
-
-          {/** @slot Notifications popover */}
-          {/* <NotificationsDrawer data={_notifications} /> */}
-
-          {/** @slot Contacts popover */}
-          {/* <ContactsPopover data={_contacts} /> */}
-
-          {/** @slot Settings button */}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: { xs: 0, sm: 0.75 },
+          }}
+        >
           <SettingsButton />
 
-          {/** @slot Account drawer */}
           <AccountDrawer data={_account} />
         </Box>
       ),
@@ -171,12 +218,17 @@ export function DashboardLayout({ sx, cssVars, children, slotProps, layoutQuery 
         layoutQuery={layoutQuery}
         disableElevation={isNavVertical}
         {...slotProps?.header}
-        slots={{ ...headerSlots, ...slotProps?.header?.slots }}
+        slots={{
+          ...headerSlots,
+          ...slotProps?.header?.slots,
+        }}
         slotProps={merge(headerSlotProps, slotProps?.header?.slotProps ?? {})}
         sx={slotProps?.header?.sx}
       />
     );
   };
+
+  // ----------------------------------------------------------------------
 
   const renderSidebar = () => (
     <NavVertical
@@ -200,34 +252,29 @@ export function DashboardLayout({ sx, cssVars, children, slotProps, layoutQuery 
 
   return (
     <LayoutSection
-      /** **************************************
-       * @Header
-       *************************************** */
       headerSection={renderHeader()}
-      /** **************************************
-       * @Sidebar
-       *************************************** */
       sidebarSection={isNavHorizontal ? null : renderSidebar()}
-      /** **************************************
-       * @Footer
-       *************************************** */
       footerSection={renderFooter()}
-      /** **************************************
-       * @Styles
-       *************************************** */
-      cssVars={{ ...dashboardLayoutVars(theme), ...navVars.layout, ...cssVars }}
+      cssVars={{
+        ...dashboardLayoutVars(theme),
+        ...navVars.layout,
+        ...cssVars,
+      }}
       sx={[
         {
           [`& .${layoutClasses.sidebarContainer}`]: {
             [theme.breakpoints.up(layoutQuery)]: {
               pl: isNavMini ? 'var(--layout-nav-mini-width)' : 'var(--layout-nav-vertical-width)',
+
               transition: theme.transitions.create(['padding-left'], {
                 easing: 'var(--layout-transition-easing)',
+
                 duration: 'var(--layout-transition-duration)',
               }),
             },
           },
         },
+
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
     >

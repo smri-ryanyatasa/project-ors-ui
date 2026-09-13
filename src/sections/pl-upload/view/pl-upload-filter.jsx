@@ -1,13 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
-import {
-  Card,
-  Stack,
-  MenuItem,
-  TextField,
-  Typography,
-  CardContent,
-} from '@mui/material';
+import { Card, Stack, TextField, Typography, CardContent, Autocomplete } from '@mui/material';
 
 import { SvgColor } from 'src/components/svg-color';
 
@@ -16,18 +9,27 @@ export function PlUploadFilter({ sx, branches, onBranchChange }) {
     branches: '',
   });
 
-  const handleBranchChange = (event) => {
-    const branchCode = event.target.value;
+  const handleBranchChange = useCallback(
+    (branchCode) => {
+      const selectedBranch = branches.find(
+        (branch) => String(branch.branch_code) === String(branchCode)
+      );
 
-    const selectedBranch = branches.find((branch) => branch.branch_code === branchCode);
+      setForm((prev) => ({
+        ...prev,
+        branches: selectedBranch || null,
+      }));
 
-    setForm((prev) => ({
-      ...prev,
-      branches: selectedBranch,
-    }));
+      onBranchChange(branchCode);
+    },
+    [branches, onBranchChange]
+  );
 
-    onBranchChange(branchCode);
-  };
+  useEffect(() => {
+    if (branches.length === 1 && !form.branches?.branch_code) {
+      handleBranchChange(branches[0].branch_code);
+    }
+  }, [branches, form.branches?.branch_code, handleBranchChange]);
 
   return (
     <Card variant="outlined" sx={{ height: '100%' }}>
@@ -38,27 +40,31 @@ export function PlUploadFilter({ sx, branches, onBranchChange }) {
               src="/assets/icons/solar/ri--equalizer-line.svg"
               sx={{ width: 20, height: 20, color: '#637381' }}
             />
+
             <Typography variant="subtitle2" fontWeight={600}>
               Advanced Filter
             </Typography>
           </Stack>
 
-          <TextField
-            select
+          <Autocomplete
             fullWidth
-            label="Branches"
-            value={form.branches?.branch_code || ''}
-            onChange={handleBranchChange}
-          >
-            <MenuItem value="">
-              <em>Select Branch</em>
-            </MenuItem>
-            {branches.map((branch) => (
-              <MenuItem key={branch.branch_code} value={branch.branch_code}>
-                {branch.branch_code} - {branch.branch_name}
-              </MenuItem>
-            ))}
-          </TextField>
+            options={branches}
+            value={
+              branches.find(
+                (branch) => String(branch.branch_code) === String(form.branches?.branch_code || '')
+              ) || null
+            }
+            getOptionLabel={(option) => `${option.branch_code} - ${option.branch_name.trim()}`}
+            isOptionEqualToValue={(option, value) =>
+              String(option.branch_code) === String(value.branch_code)
+            }
+            onChange={(_, value) => {
+              handleBranchChange(value?.branch_code || '');
+            }}
+            renderInput={(params) => (
+              <TextField {...params} label="Branches" placeholder="Search branch..." />
+            )}
+          />
         </Stack>
       </CardContent>
     </Card>

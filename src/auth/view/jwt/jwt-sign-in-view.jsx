@@ -45,7 +45,7 @@ export function JwtSignInView() {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const defaultValues = {
-    username: 'lks123',
+    username: 'nmarhcan',
     password: 'password',
     env: 'SCP',
   };

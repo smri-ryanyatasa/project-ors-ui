@@ -2,7 +2,7 @@ import { Box, Chip, Stack } from '@mui/material';
 
 import { SvgColor } from 'src/components/svg-color';
 
-export const ItemTableColumns = () => [
+export const ItemTableColumns = ({ onOpenValues }) => [
   {
     field: 'style_code',
     headerName: 'Style Code',
@@ -47,63 +47,100 @@ export const ItemTableColumns = () => [
     minWidth: 200,
     flex: 1,
   },
-  {
-    field: 'alt_vendor_code',
-    headerName: 'Alt Vendor Code',
-    align: 'center',
-    headerAlign: 'center',
-    minWidth: 150,
-    flex: 1,
-    editable: true,
-    renderCell: (params) =>
-      params.value ? (
-        params.value
-      ) : (
-        <Box
-          sx={{
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Box size="small" sx={{ color: '#d3d7db' }}>
-            <SvgColor
-              src="/assets/icons/solar/solar--pen-bold.svg"
-              sx={{ width: 16, height: 16 }}
-            />
-          </Box>
-        </Box>
-      ),
-  },
+  //   {
+  //     field: 'alt_vendor_code',
+  //     headerName: 'Alt Vendor Code',
+  //     align: 'center',
+  //     headerAlign: 'center',
+  //     minWidth: 150,
+  //     flex: 1,
+  //     editable: true,
+  //     renderCell: (params) =>
+  //       params.value ? (
+  //         params.value
+  //       ) : (
+  //         <Box
+  //           sx={{
+  //             width: '100%',
+  //             height: '100%',
+  //             display: 'flex',
+  //             justifyContent: 'center',
+  //             alignItems: 'center',
+  //           }}
+  //         >
+  //           <Box size="small" sx={{ color: '#d3d7db' }}>
+  //             <SvgColor
+  //               src="/assets/icons/solar/solar--pen-bold.svg"
+  //               sx={{ width: 16, height: 16 }}
+  //             />
+  //           </Box>
+  //         </Box>
+  //       ),
+  //   },
   {
     field: 'alt_vendor_name',
-    headerName: 'Alt Vendor Name',
-    minWidth: 150,
+    headerName: 'Alt Vendor Code & Name',
+    minWidth: 200,
     flex: 1,
     editable: true,
-    renderCell: (params) =>
-      params.value ? (
-        params.value
-      ) : (
+    renderCell: (params) => {
+      const value = params.value;
+      return value ? (
         <Box
+          onClick={(event) => onOpenValues(event, value)}
           sx={{
+            cursor: 'pointer',
             width: '100%',
-            height: '100%',
             display: 'flex',
-            justifyContent: 'center',
             alignItems: 'center',
+            gap: 0.5,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            color: 'primary.main',
           }}
         >
-          <Box size="small" sx={{ color: '#d3d7db' }}>
-            <SvgColor
-              src="/assets/icons/solar/solar--pen-bold.svg"
-              sx={{ width: 16, height: 16 }}
-            />
+          <SvgColor
+            src="/assets/icons/solar/solar--tag-horizontal-bold-duotone.svg"
+            sx={{ width: 20, height: 20 }}
+          />
+
+          <Box
+            component="span"
+            sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {value.split(',')[0]}
           </Box>
         </Box>
-      ),
+      ) : (
+        '--'
+      );
+    },
+
+    //   params.value ? (
+    //     params.value
+    //   ) : (
+    //     <Box
+    //       sx={{
+    //         width: '100%',
+    //         height: '100%',
+    //         display: 'flex',
+    //         justifyContent: 'center',
+    //         alignItems: 'center',
+    //       }}
+    //     >
+    //       <Box size="small" sx={{ color: '#d3d7db' }}>
+    //         <SvgColor
+    //           src="/assets/icons/solar/solar--pen-bold.svg"
+    //           sx={{ width: 16, height: 16 }}
+    //         />
+    //       </Box>
+    //     </Box>
+    //   ),
   },
   {
     field: 'dept_code',

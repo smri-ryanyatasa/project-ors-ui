@@ -5,7 +5,9 @@ import { CustomToolbar } from './custom-toolbar';
 import { FinalPlReceivingTableColumns } from './final-pl-receiving-column';
 
 export function FinalPlReceivingTable(props) {
-  const columns = FinalPlReceivingTableColumns();
+  const columns = FinalPlReceivingTableColumns({
+    onExceeds: props.onExceeds,
+  });
 
   return (
     <Card>

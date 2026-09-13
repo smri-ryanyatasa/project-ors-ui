@@ -1,7 +1,7 @@
 'use client';
 
 import { toast } from 'sonner';
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 import { Box, Grid } from '@mui/material';
 
@@ -43,6 +43,8 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
     setSiNumber,
     rowsUpdate,
     toApproved,
+    hasZero,
+    zero,
   } = useFinalPLReceiving();
 
   const [gridRows, setGridRows] = useState(() => pls ?? []);
@@ -50,6 +52,10 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
   const [redoStack, setRedoStack] = useState([]);
   const [editedRows, setEditedRows] = useState({});
   const [approvedReceiptOpen, setApprovedReceiptOpen] = useState(false);
+  const [exceeds, setExceeds] = useState(false);
+  const [exceedsRowId, setExceedsRowId] = useState(null);
+
+  const editSequenceRef = useRef(0);
 
   const handleGetFiles = async (branch) => {
     const type = 3;
@@ -75,6 +81,7 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
   };
 
   const handleOpenApprovedReceipt = async () => {
+    await hasZero();
     setApprovedReceiptOpen(true);
   };
 
@@ -120,21 +127,71 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
     // Update DataGrid rows
     setGridRows((prev) => prev.map((row) => (row.id === newRow.id ? newRow : row)));
 
-    // Update edited rows
-    setEditedRows((prev) => ({
-      ...prev,
-      [newRow.id]: newRow,
-    }));
+    setEditedRows((prev) => {
+      const existing = prev[newRow.id];
+
+      const original = existing?.original ?? oldValues;
+      const current = newValues;
+
+      const updatedRows = {
+        ...prev,
+        [newRow.id]: {
+          original,
+          current,
+          row: newRow,
+          editSequence: editSequenceRef.current++,
+        },
+      };
+
+      updateExceedsState(updatedRows);
+
+      return updatedRows;
+    });
 
     return newRow;
   };
 
+  const updateExceedsState = (editedRowsData) => {
+    const totalFinalQty = Number(status?.[0]?.total_final_qty || 0);
+    const totalPlQty = Number(status?.[0]?.total_pl_qty || 0);
+
+    const totalDifference = Object.values(editedRowsData).reduce(
+      (totals, edit) =>
+        totals + (Number(edit.current.final_qty || 0) - Number(edit.original.final_qty || 0)),
+      0
+    );
+
+    const totalQty = totalFinalQty + totalDifference;
+
+    const ifExceeds = totalQty > totalPlQty;
+
+    if (!ifExceeds) {
+      setExceeds(false);
+      setExceedsRowId(null);
+
+      return;
+    }
+
+    // Find the latest edited row with value > 0
+    const lastNonZero = Object.entries(editedRowsData)
+      .filter(([, edit]) => Number(edit.current.final_qty || 0) > 0)
+      .sort(([, a], [, b]) => b.editSequence - a.editSequence)[0];
+
+    setExceeds(true);
+    setExceedsRowId(lastNonZero?.[0] ?? null);
+  };
+
   const handleSave = async () => {
     try {
-      const result = await rowsUpdate(editedRows);
-      await refresh();
-      setEditedRows({});
-      toast.success(result?.message || 'Save successfully.');
+      console.log(exceeds);
+      if (exceeds) {
+        toast.error('Total Actual Received Quantity Exceeds PL Quantity.');
+      } else {
+        const result = await rowsUpdate(editedRows);
+        await refresh();
+        setEditedRows({});
+        toast.success(result?.message || 'Save successfully.');
+      }
     } catch (error) {
       toast.error(error?.response?.data?.message || 'Failed to save.');
     }
@@ -142,6 +199,7 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
 
   const handleDiscard = async () => {
     await refresh();
+    setExceedsRowId(null);
     setEditedRows({});
   };
 
@@ -150,27 +208,21 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
 
     const change = undoStack[undoStack.length - 1];
 
-    let undoneRow;
-
-    setGridRows((prev) =>
-      prev.map((row) => {
-        if (row.id !== change.id) {
-          return row;
-        }
-
-        undoneRow = {
-          ...row,
-          ...change.oldValues,
-        };
-
-        return undoneRow;
-      })
-    );
-
     // Move history → redo
     setUndoStack((prev) => prev.slice(0, -1));
-
     setRedoStack((prev) => [...prev, change]);
+
+    // Update grid rows
+    setGridRows((prev) =>
+      prev.map((row) =>
+        row.id === change.id
+          ? {
+              ...row,
+              ...change.oldValues,
+            }
+          : row
+      )
+    );
 
     // Update edited rows
     setEditedRows((prev) => {
@@ -178,15 +230,39 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
 
       const originalRow = pls.find((row) => row.id === change.id);
 
-      if (
+      const currentRow = {
+        ...(prev[change.id]?.row ?? originalRow ?? {}),
+        ...change.oldValues,
+      };
+
+      // Check if the row is back to its original DB value
+      const isOriginal =
         originalRow &&
-        (undoneRow?.initial_qty ?? '') === (originalRow.initial_qty ?? '') &&
-        (undoneRow?.final_qty ?? '') === (originalRow.final_qty ?? '')
-      ) {
+        (currentRow.initial_qty ?? '') === (originalRow.initial_qty ?? '') &&
+        (currentRow.final_qty ?? '') === (originalRow.final_qty ?? '');
+
+      if (isOriginal) {
         delete next[change.id];
-      } else if (undoneRow) {
-        next[change.id] = undoneRow;
+      } else {
+        const existing = prev[change.id];
+
+        next[change.id] = {
+          original: existing?.original ?? {
+            initial_qty: originalRow?.initial_qty ?? '',
+            final_qty: originalRow?.final_qty ?? '',
+          },
+          current: {
+            initial_qty: currentRow.initial_qty ?? '',
+            final_qty: currentRow.final_qty ?? '',
+          },
+          row: currentRow,
+          editSequence: ++editSequenceRef.current,
+        };
       }
+
+      // IMPORTANT:
+      // Recalculate exceed based on the NEW edited rows
+      updateExceedsState(next);
 
       return next;
     });
@@ -197,33 +273,53 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
 
     const change = redoStack[redoStack.length - 1];
 
-    let redoneRow;
-
-    setGridRows((prev) =>
-      prev.map((row) => {
-        if (row.id !== change.id) {
-          return row;
-        }
-
-        redoneRow = {
-          ...row,
-          ...change.newValues,
-        };
-
-        return redoneRow;
-      })
-    );
-
     // Move history → undo
     setRedoStack((prev) => prev.slice(0, -1));
-
     setUndoStack((prev) => [...prev, change]);
 
-    // Add back to edited rows
-    setEditedRows((prev) => ({
-      ...prev,
-      [change.id]: redoneRow,
-    }));
+    // Update grid rows
+    setGridRows((prev) =>
+      prev.map((row) =>
+        row.id === change.id
+          ? {
+              ...row,
+              ...change.newValues,
+            }
+          : row
+      )
+    );
+
+    // Update edited rows
+    setEditedRows((prev) => {
+      const next = { ...prev };
+
+      const originalRow = pls.find((row) => row.id === change.id);
+
+      const currentRow = {
+        ...(prev[change.id]?.row ?? originalRow ?? {}),
+        ...change.newValues,
+      };
+
+      const existing = prev[change.id];
+
+      next[change.id] = {
+        original: existing?.original ?? {
+          initial_qty: originalRow?.initial_qty ?? '',
+          final_qty: originalRow?.final_qty ?? '',
+        },
+        current: {
+          initial_qty: currentRow.initial_qty ?? '',
+          final_qty: currentRow.final_qty ?? '',
+        },
+        row: currentRow,
+        editSequence: ++editSequenceRef.current,
+      };
+
+      // Recalculate total + red row
+      updateExceedsState(next);
+
+      return next;
+    });
   };
 
   const handleApproved = async () => {
@@ -234,6 +330,14 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
     } catch (error) {
       toast.error(error?.response?.data?.message || 'Failed to approve.');
     }
+  };
+
+  const handlePaginationModelChange = (newModel) => {
+    setPaginationModel(newModel);
+
+    // Reset exceed highlight when changing page
+    setExceedsRowId(null);
+    setExceeds(false);
   };
 
   useEffect(() => {
@@ -272,7 +376,7 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
         rowCount={total}
         hasRowChanges={Object.keys(editedRows).length > 0}
         paginationModel={paginationModel}
-        onPaginationModelChange={setPaginationModel}
+        onPaginationModelChange={handlePaginationModelChange}
         onFilterModelChange={handleFilterModelChange}
         filterModel={filterModel}
         sortModel={sortModel}
@@ -285,6 +389,7 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
         onUndo={handleUndo}
         onRedo={handleRedo}
         onApprovedReceipt={handleOpenApprovedReceipt}
+        onExceeds={exceedsRowId}
       />
     </Box>
   );
@@ -313,6 +418,7 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
       <DashboardContent maxWidth="xl">{renderContent()}</DashboardContent>
       <ApprovedReceiptDialog
         open={approvedReceiptOpen}
+        hasZero={zero}
         onApproved={handleApproved}
         onClose={() => setApprovedReceiptOpen(false)}
       />

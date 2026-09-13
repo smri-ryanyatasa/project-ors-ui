@@ -11,6 +11,7 @@ export function useFinalPLReceiving() {
   const [loading, setLoading] = useState(false);
   const [pls, setPls] = useState([]);
   const [status, setStatus] = useState([]);
+  const [zero, setZero] = useState(false);
 
   // Filter
   const [branch, setBranch] = useState();
@@ -64,8 +65,23 @@ export function useFinalPLReceiving() {
         }),
       ]);
 
+      const totals = count.reduce(
+        (acc, row) => {
+          acc.total_pl_qty += Number(row.total_pl_qty || 0);
+          acc.total_initial_qty += Number(row.total_initial_qty || 0);
+          acc.total_final_qty += Number(row.total_final_qty || 0);
+
+          return acc;
+        },
+        {
+          total_pl_qty: 0,
+          total_initial_qty: 0,
+          total_final_qty: 0,
+        }
+      );
+
       setPls(response);
-      setStatus(count);
+      setStatus([totals]);
       setTotal(response?.[0]?.total_rows || 0);
     } catch (error) {
       console.log(error);
@@ -150,13 +166,12 @@ export function useFinalPLReceiving() {
   };
 
   const rowsUpdate = async (rows) => {
-    const values = Object.values(rows).map(({ pl_id, initial_qty, final_qty, source_file_id }) => ({
-      pl_id,
-      initial_qty,
-      final_qty,
-      source_file_id,
+    const values = Object.values(rows).map(({ row }) => ({
+      pl_id: row.pl_id,
+      initial_qty: row.initial_qty,
+      final_qty: row.final_qty,
+      source_file_id: row.source_file_id,
     }));
-
     const result = await FinalPlReceivingService.rowsUpdate(values);
     return result;
   };
@@ -174,6 +189,26 @@ export function useFinalPLReceiving() {
     });
 
     return result;
+  };
+
+  const hasZero = async () => {
+    const data = await FinalPlReceivingService.hasZero({
+      search,
+      filterModel: JSON.stringify(filterModel.items),
+      sortModel: JSON.stringify(sortModel),
+      env: user.env,
+      branch: filename ? branch : null,
+      filename: filename ? filename : undefined,
+      vendor_code: vendorCode ? vendorCode : undefined,
+      si_number: siNumber ? siNumber : undefined,
+    });
+
+    const packingList = data.some((pl) => pl.final_qty === 0);
+    setZero(packingList);
+
+    return {
+      packingList: data,
+    };
   };
 
   const formatDate = (date = new Date()) => {
@@ -217,5 +252,7 @@ export function useFinalPLReceiving() {
     setSiNumber,
     rowsUpdate,
     toApproved,
+    hasZero,
+    zero,
   };
 }

@@ -9,7 +9,7 @@ import {
   DialogActions,
 } from '@mui/material';
 
-export function ApprovedReceiptDialog({ open, onApproved, onClose }) {
+export function ApprovedReceiptDialog({ open, hasZero, onApproved, onClose }) {
   const [loading, setLoading] = useState(false);
 
   const handleConfirm = async () => {
@@ -31,7 +31,9 @@ export function ApprovedReceiptDialog({ open, onApproved, onClose }) {
 
       <DialogContent>
         <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600 }}>
-          Are you sure you want to proceed?
+          {hasZero
+            ? 'Some items have zero quantity. Do you want to proceed?'
+            : 'Are you sure you want to proceed?'}
         </Typography>
       </DialogContent>
 

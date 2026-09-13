@@ -2,7 +2,7 @@ import { Box, Stack } from '@mui/material';
 
 import { SvgColor } from 'src/components/svg-color';
 
-export const FinalPlReceivingTableColumns = () => [
+export const FinalPlReceivingTableColumns = (props) => [
   {
     field: 'material_code',
     headerName: 'Material Code',
@@ -48,7 +48,7 @@ export const FinalPlReceivingTableColumns = () => [
     headerName: 'Initial Received Qty',
     width: 90,
     type: 'number',
-    editable: true,
+    editable: false,
     headerClassName: 'wrapped-header',
     renderCell: (params) => {
       const value = params.value;
@@ -60,7 +60,6 @@ export const FinalPlReceivingTableColumns = () => [
         backgroundColor = '#eb834f';
         color = '#ffffff';
       }
-
       return (
         <Stack
           direction="row"
@@ -114,10 +113,11 @@ export const FinalPlReceivingTableColumns = () => [
     renderCell: (params) => {
       const value = params.value;
 
-      let backgroundColor = null;
-      let color = '#ffffff';
+      const isExceeds = props.onExceeds === params.id;
 
-      value === 0 ? (backgroundColor = '#eb834f') : (backgroundColor = '#ffc000');
+      const backgroundColor = isExceeds ? '#c00000' : value === 0 ? '#eb834f' : '#ffc000';
+
+      const color = '#ffffff';
 
       return (
         <Stack
@@ -148,7 +148,11 @@ export const FinalPlReceivingTableColumns = () => [
             ) : (
               <SvgColor
                 src="/assets/icons/solar/solar--pen-bold.svg"
-                sx={{ width: 16, height: 16, color: '#ffffff' }}
+                sx={{
+                  width: 16,
+                  height: 16,
+                  color: '#ffffff',
+                }}
               />
             )}
           </Box>
