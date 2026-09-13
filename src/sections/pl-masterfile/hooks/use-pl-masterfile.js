@@ -15,7 +15,7 @@ export function usePlMasterfile() {
 
   // Filter
   const [total, setTotal] = useState(0);
-  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 5 });
+  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
   const [filterModel, setFilterModel] = useState({ items: [], quickFilterValues: [] });
   const search = filterModel.quickFilterValues?.[0] || '';
   const [sortModel, setSortModel] = useState([{ field: 'status', sort: 'desc' }]);
