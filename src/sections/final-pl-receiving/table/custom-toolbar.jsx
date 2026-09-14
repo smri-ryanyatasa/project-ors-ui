@@ -15,6 +15,7 @@ import { DownloadButton } from './download-button';
 
 export function CustomToolbar(props) {
   const [loading, setLoading] = useState(false);
+  const [approveLoading, setApproveLoading] = useState(false);
 
   const handleSave = async () => {
     try {
@@ -24,6 +25,16 @@ export function CustomToolbar(props) {
       setLoading(false);
     }
   };
+
+  const handleApprove = async () => {
+    try {
+      setApproveLoading(true);
+      await props.onApprovedReceipt();
+    } finally {
+      setApproveLoading(false);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -37,6 +48,7 @@ export function CustomToolbar(props) {
       <Button
         variant="contained"
         color="primary"
+        loading={approveLoading}
         startIcon={
           <SvgColor
             src="/assets/icons/solar/line-md--check-all.svg"
@@ -44,7 +56,7 @@ export function CustomToolbar(props) {
           />
         }
         disabled={props.onRowsCount ? false : true}
-        onClick={props.onApprovedReceipt}
+        onClick={handleApprove}
       >
         Approved Receipt
       </Button>

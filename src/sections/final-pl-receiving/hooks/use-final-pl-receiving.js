@@ -203,8 +203,7 @@ export function useFinalPLReceiving() {
       si_number: siNumber ? siNumber : undefined,
     });
 
-    const packingList = data.some((pl) => pl.final_qty === 0);
-    setZero(packingList);
+    setZero(data.hasZeroQty);
 
     return {
       packingList: data,
