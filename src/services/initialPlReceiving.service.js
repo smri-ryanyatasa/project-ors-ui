@@ -57,8 +57,10 @@ class InitialPLReceivingService {
     return data;
   }
 
-  async toConfirm(payload) {
-    const { data } = await axios.put(endpoints.initialPlReceiving.toConfirm, payload);
+  async toConfirm(params) {
+    const { data } = await axios.get(endpoints.initialPlReceiving.toConfirm, {
+      params,
+    });
     return data;
   }
 }

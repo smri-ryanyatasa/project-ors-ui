@@ -49,12 +49,9 @@ export function InitialPlReceivingListView({ title = 'Blank', sx }) {
   const { branches } = usePlUpload();
   const [editedRows, setEditedRows] = useState({});
   const [confirmReceiptOpen, setConfirmReceiptOpen] = useState(false);
-  const [packingList, setPackingList] = useState([]);
 
   const handleOpenConfirmReceipt = async () => {
     const result = await hasZero();
-
-    setPackingList(result.packingList);
 
     if (result.hasPending) {
       toast.warning('Some items are still on Pending.');
@@ -128,7 +125,7 @@ export function InitialPlReceivingListView({ title = 'Blank', sx }) {
   };
 
   const handleToConfirm = async () => {
-    await toConfirm(packingList);
+    await toConfirm();
     await refresh();
     toast.success('Successfully updated.');
   };

@@ -66,8 +66,21 @@ export function useInitialPLReceiving() {
         }),
       ]);
 
+      const totals = count.reduce(
+        (acc, row) => {
+          acc.total_actual_qty_received += Number(row.total_actual_qty_received || 0);
+          acc.total_uq_sku_received += Number(row.total_uq_sku_received || 0);
+
+          return acc;
+        },
+        {
+          total_actual_qty_received: 0,
+          total_uq_sku_received: 0,
+        }
+      );
+
       setPls(response);
-      setStatus(count);
+      setStatus([totals]);
       setTotal(response?.[0]?.total_rows || 0);
     } catch (error) {
       console.log(error);
@@ -193,22 +206,29 @@ export function useInitialPLReceiving() {
       si_number: siNumber ? siNumber : undefined,
     });
 
-    const hasPending = data.some((pl) => pl.status === 'Pending');
+    const hasPending = data.hasPending;
 
-    const packingList = data.some((pl) => pl.actual_received === 0);
-    setZero(packingList);
+    setZero(data.hasZeroQty);
 
     // kulang pa ng computation for actual received
     return {
       hasPending,
-      packingList: data,
     };
   };
 
-  const toConfirm = async (row) => {
+  const toConfirm = async () => {
     try {
       setLoading(true);
-      await InitialPlReceivingService.toConfirm(row);
+      await InitialPlReceivingService.toConfirm({
+        search,
+        filterModel: JSON.stringify(filterModel.items),
+        sortModel: JSON.stringify(sortModel),
+        env: user.env,
+        branch: filename ? branch : null,
+        filename: filename ? filename : undefined,
+        vendor_code: vendorCode ? vendorCode : undefined,
+        si_number: siNumber ? siNumber : undefined,
+      });
     } catch (error) {
       console.log(error);
     } finally {
