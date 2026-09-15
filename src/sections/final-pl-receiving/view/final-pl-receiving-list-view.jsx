@@ -111,20 +111,19 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
       return oldRow;
     }
 
-    // Save history
-    setUndoStack((prev) => [
-      ...prev,
-      {
-        id: newRow.id,
-        oldValues,
-        newValues,
-      },
-    ]);
+    const change = {
+      id: newRow.id,
+      oldValues,
+      newValues,
+    };
+
+    const nextUndoStack = [...undoStack, change];
+
+    setUndoStack(nextUndoStack);
 
     // New edit invalidates redo history
     setRedoStack([]);
 
-    // Update DataGrid rows
     setGridRows((prev) => prev.map((row) => (row.id === newRow.id ? newRow : row)));
 
     setEditedRows((prev) => {
@@ -139,11 +138,10 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
           original,
           current,
           row: newRow,
-          editSequence: editSequenceRef.current++,
         },
       };
 
-      updateExceedsState(updatedRows);
+      updateExceedsState(updatedRows, nextUndoStack);
 
       return updatedRows;
     });
@@ -151,7 +149,7 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
     return newRow;
   };
 
-  const updateExceedsState = (editedRowsData) => {
+  const updateExceedsState = (editedRowsData, history) => {
     const totalFinalQty = Number(status?.[0]?.total_final_qty || 0);
     const totalPlQty = Number(status?.[0]?.total_pl_qty || 0);
 
@@ -168,17 +166,15 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
     if (!ifExceeds) {
       setExceeds(false);
       setExceedsRowId(null);
-
       return;
     }
 
-    // Find the latest edited row with value > 0
-    const lastNonZero = Object.entries(editedRowsData)
-      .filter(([, edit]) => Number(edit.current.final_qty || 0) > 0)
-      .sort(([, a], [, b]) => b.editSequence - a.editSequence)[0];
+    // Find the latest history entry that belongs
+    // to a currently edited row.
+    const latestEdit = [...history].reverse().find((change) => editedRowsData[change.id]);
 
     setExceeds(true);
-    setExceedsRowId(lastNonZero?.[0] ?? null);
+    setExceedsRowId(latestEdit?.id ?? null);
   };
 
   const handleSave = async () => {
@@ -208,8 +204,11 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
 
     const change = undoStack[undoStack.length - 1];
 
+    // This is the history AFTER undo
+    const nextUndoStack = undoStack.slice(0, -1);
+
     // Move history → redo
-    setUndoStack((prev) => prev.slice(0, -1));
+    setUndoStack(nextUndoStack);
     setRedoStack((prev) => [...prev, change]);
 
     // Update grid rows
@@ -224,7 +223,6 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
       )
     );
 
-    // Update edited rows
     setEditedRows((prev) => {
       const next = { ...prev };
 
@@ -235,7 +233,6 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
         ...change.oldValues,
       };
 
-      // Check if the row is back to its original DB value
       const isOriginal =
         originalRow &&
         (currentRow.initial_qty ?? '') === (originalRow.initial_qty ?? '') &&
@@ -256,13 +253,11 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
             final_qty: currentRow.final_qty ?? '',
           },
           row: currentRow,
-          editSequence: ++editSequenceRef.current,
         };
       }
 
-      // IMPORTANT:
-      // Recalculate exceed based on the NEW edited rows
-      updateExceedsState(next);
+      // Use the history AFTER the undo
+      updateExceedsState(next, nextUndoStack);
 
       return next;
     });
@@ -273,9 +268,13 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
 
     const change = redoStack[redoStack.length - 1];
 
+    // History AFTER redo
+    const nextRedoStack = redoStack.slice(0, -1);
+    const nextUndoStack = [...undoStack, change];
+
     // Move history → undo
-    setRedoStack((prev) => prev.slice(0, -1));
-    setUndoStack((prev) => [...prev, change]);
+    setRedoStack(nextRedoStack);
+    setUndoStack(nextUndoStack);
 
     // Update grid rows
     setGridRows((prev) =>
@@ -312,11 +311,10 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
           final_qty: currentRow.final_qty ?? '',
         },
         row: currentRow,
-        editSequence: ++editSequenceRef.current,
       };
 
-      // Recalculate total + red row
-      updateExceedsState(next);
+      // Recalculate using the NEW undo history
+      updateExceedsState(next, nextUndoStack);
 
       return next;
     });
