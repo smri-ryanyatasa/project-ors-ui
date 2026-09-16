@@ -1,7 +1,7 @@
 'use client';
 
 import { toast } from 'sonner';
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Box, Grid } from '@mui/material';
 
@@ -54,8 +54,6 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
   const [approvedReceiptOpen, setApprovedReceiptOpen] = useState(false);
   const [exceeds, setExceeds] = useState(false);
   const [exceedsRowId, setExceedsRowId] = useState(null);
-
-  const editSequenceRef = useRef(0);
 
   const handleGetFiles = async (branch) => {
     const type = 3;

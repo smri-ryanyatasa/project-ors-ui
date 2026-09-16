@@ -13,7 +13,7 @@ import {
 
 import { Iconify } from 'src/components/iconify';
 
-export function MultipleFilter() {
+export function MultipleFilter(props) {
   const FIELD_OPTIONS = [
     { value: 'material_code', label: 'Material Code' },
     { value: 'branch', label: 'Branch' },

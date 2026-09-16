@@ -199,8 +199,105 @@ export function PlUploadDialog({ open, onClose, onImport, onDownloadTemplate, br
       await delay(2000);
 
       const data = await readFile(selectedFile);
+      const errors = [];
 
+      // VALIDATE TEMPLATE HEADER
+      const expectedHeaders = [
+        'DD No',
+        'SI',
+        'Ship To Code',
+        'Consignee',
+        'UOM',
+        'Material',
+        'Size No',
+        'Description',
+        'Served Qty',
+        'Carton Qty',
+        'Branch',
+        'Vendor',
+      ];
+
+      const normalizeHeader = (header) => {
+        const value = String(header ?? '').trim();
+
+        if (!value || /^__EMPTY(?:_\d+)?$/.test(value)) {
+          return null;
+        }
+
+        return value;
+      };
+
+      const actualHeaders = Object.keys(data[0] ?? {})
+        .map(normalizeHeader)
+        .filter(Boolean);
+
+      const isValidTemplate =
+        actualHeaders.length === expectedHeaders.length &&
+        expectedHeaders.every((header, index) => actualHeaders[index] === header);
+
+      if (!isValidTemplate) {
+        errors.push('Invalid template.');
+      }
+
+      const filenameParts = selectedFile.name.replace(/\.[^/.]+$/, '').split('_');
+
+      // VALIDATE BRANCH CODE
+      const branchCode = Number(filenameParts[2]);
+      const selectedBranch = Number(branch);
+
+      const isMatchingBranch = data.every(
+        (row) => Number(row.Branch) === selectedBranch && Number(row.Branch) === branchCode
+      );
+
+      if (!isMatchingBranch) {
+        errors.push('Mismatch branch code.');
+      }
+
+      // VALIDATE IF ALL BRANCH CODES IN UPLOADED FILE ARE THE SAME
+      const branchCodes = data.map((row) => Number(row.Branch));
+      const isSameBranch = branchCodes.every((bc) => bc === branchCodes[0]);
+
+      if (!isSameBranch) {
+        errors.push('Multiple branch codes found in file.');
+      }
+
+      // VALIDATE VENDOR CODE AGAINST FILE NAME
+      const vendorCode = Number(filenameParts[0]);
+      const isMatchingVendor = data.every((row) => Number(row.Vendor) === vendorCode);
+
+      if (!isMatchingVendor) {
+        errors.push('Mismatch vendor code.');
+      }
+
+      // VALIDATE IF ALL VENDOR CODES IN UPLOADED FILE ARE THE SAME
+      const vendorCodes = data.map((row) => Number(row.Vendor));
+      const isSameVendor = vendorCodes.every((vc) => vc === vendorCodes[0]);
+
+      if (!isSameVendor) {
+        errors.push('Multiple vendor codes found in file.');
+      }
+
+      // VALIDATE SI NUMBER AGAINST FILE NAME
+      const siNumber = Number(filenameParts[1]);
+      const isMatchingSI = data.every((row) => Number(row.SI) === siNumber);
+
+      if (!isMatchingSI) {
+        errors.push('Mismatch SI number.');
+      }
+
+      // VALIDATE IF ALL SI NUMBERS IN UPLOADED FILE ARE THE SAME
+      const siNumbers = data.map((row) => Number(row.SI));
+      const isSameSI = siNumbers.every((si) => si === siNumbers[0]);
+
+      if (!isSameSI) {
+        errors.push('Multiple SI number found in file.');
+      }
+
+      setIsValid(errors.length > 0);
+      setValidationErrors(errors);
       setRows(data);
+
+      console.log(errors);
     } catch (err) {
       console.log(err);
       setError('Unable to read the selected file.');
