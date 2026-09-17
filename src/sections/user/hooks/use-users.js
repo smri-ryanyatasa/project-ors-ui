@@ -85,7 +85,12 @@ export function useUsers() {
       created_by: user.user_id,
     }));
 
-    return await UserService.bulkUpload(rows);
+    const payload = {
+      rows,
+      env: user.env,
+    };
+
+    return await UserService.bulkUpload(payload);
   };
 
   const updateUser = async (userData) => {
