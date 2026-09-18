@@ -1,7 +1,7 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { Stack, Dialog, Button, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
-export function VendorListDialog({ open, data, onClose }) {
+export function UpcListDialog({ open, data, onClose }) {
   const result = data.map((item) => {
     const [code, ...nameParts] = item.split('-');
 
@@ -14,19 +14,14 @@ export function VendorListDialog({ open, data, onClose }) {
   const columns = [
     {
       field: 'code',
-      headerName: 'Vendor Code',
-      flex: 1,
-    },
-    {
-      field: 'name',
-      headerName: 'Vendor Name',
+      headerName: 'UPC',
       flex: 1,
     },
   ];
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>Alternative Vendor Code & Name</DialogTitle>
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
+      <DialogTitle>UPC List</DialogTitle>
 
       <DialogContent>
         <Stack spacing={2}>

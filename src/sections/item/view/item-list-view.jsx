@@ -3,14 +3,7 @@
 import { toast } from 'sonner';
 import { useState } from 'react';
 
-import {
-  Box,
-  Stack,
-  Button,
-  Backdrop,
-  Typography,
-  CircularProgress,
-} from '@mui/material';
+import { Box, Stack, Button, Backdrop, Typography, CircularProgress } from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 
@@ -19,6 +12,7 @@ import { PageHeader } from 'src/components/page-header/page-header';
 
 import { useItem } from '../hooks/use-item';
 import { ItemTable } from '../table/item-table';
+import { UpcListDialog } from '../dialogs/upc-list-dialog';
 import { VendorListDialog } from '../dialogs/vendor-list-dialog';
 
 // ----------------------------------------------------------------------
@@ -45,6 +39,8 @@ export function ItemListView({ title = 'Blank', sx }) {
   const [vendors, setVendors] = useState([]);
   const [triggerLoading, setTriggerLoading] = useState(false);
   const [vendorListOpen, setVendorListOpen] = useState(false);
+  const [upcs, setUpcs] = useState([]);
+  const [upcListOpen, setUpcListOpen] = useState(false);
 
   const handleRowUpdate = async (newRow) => {
     const originalRow = items.find((item) => item.id === newRow.id);
@@ -120,6 +116,11 @@ export function ItemListView({ title = 'Blank', sx }) {
     setVendorListOpen(true);
   };
 
+  const handleOpenUPCValues = (event, value) => {
+    setUpcs(value.split(','));
+    setUpcListOpen(true);
+  };
+
   const renderContent = () => (
     <Box
       sx={[
@@ -151,6 +152,7 @@ export function ItemListView({ title = 'Blank', sx }) {
         onRowUpdate={handleRowUpdate}
         onSave={handleSave}
         onOpenValues={handleOpenValues}
+        onOpenUPCValues={handleOpenUPCValues}
       />
     </Box>
   );
@@ -230,6 +232,7 @@ export function ItemListView({ title = 'Blank', sx }) {
         data={vendors}
         onClose={() => setVendorListOpen(false)}
       />
+      <UpcListDialog open={upcListOpen} data={upcs} onClose={() => setUpcListOpen(false)} />
     </>
   );
 }
