@@ -37,6 +37,8 @@ const nextConfig = {
       },
     },
   },
+
+  allowedDevOrigins: ['http://localhost:3000', 'http://10.102.67.115:3000'], // delete in production
 };
 
 export default nextConfig;
