@@ -7,6 +7,7 @@ import { ItemTableColumns } from './item-table-columns';
 export function ItemTable(props) {
   const columns = ItemTableColumns({
     onOpenValues: props.onOpenValues,
+    onOpenUPCValues: props.onOpenUPCValues,
   });
 
   return (

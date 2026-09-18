@@ -2,7 +2,7 @@ import { Box, Chip, Stack } from '@mui/material';
 
 import { SvgColor } from 'src/components/svg-color';
 
-export const ItemTableColumns = ({ onOpenValues }) => [
+export const ItemTableColumns = ({ onOpenValues, onOpenUPCValues }) => [
   {
     field: 'style_code',
     headerName: 'Style Code',
@@ -34,6 +34,43 @@ export const ItemTableColumns = ({ onOpenValues }) => [
     headerName: 'UPC',
     minWidth: 150,
     flex: 1,
+    renderCell: (params) => {
+      const value = params.value;
+      return value ? (
+        <Box
+          onClick={(event) => onOpenUPCValues(event, value)}
+          sx={{
+            cursor: 'pointer',
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 0.5,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            color: 'primary.main',
+          }}
+        >
+          <SvgColor
+            src="/assets/icons/solar/solar--tag-horizontal-bold-duotone.svg"
+            sx={{ width: 20, height: 20 }}
+          />
+
+          <Box
+            component="span"
+            sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {value.split(',')[0]}
+          </Box>
+        </Box>
+      ) : (
+        '--'
+      );
+    },
   },
   {
     field: 'primary_vendor_code',
