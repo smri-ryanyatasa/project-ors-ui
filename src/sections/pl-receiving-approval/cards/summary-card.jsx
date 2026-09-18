@@ -1,12 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Box, Card, Grid, Stack, Switch, Typography } from '@mui/material';
 
-import { Iconify } from 'src/components/iconify';
+import { SvgColor } from 'src/components/svg-color';
 
-export function SummaryCard() {
-  const [storeType, setStoreType] = useState(true);
-  const [warehouseType, setWarehouseType] = useState(true);
+export function SummaryCard(props) {
+  const [storeType, setStoreType] = useState(false);
+  const [warehouseType, setWarehouseType] = useState(false);
+
+  const onUpdate = async (isEnable, type) => {
+    await props.onUpdate(isEnable, type);
+    type == 'Store' ? setStoreType(isEnable) : setWarehouseType(isEnable);
+  };
+
+  useEffect(() => {
+    const store = props.stores.find((s) => s.store_type.toLowerCase().includes('store'));
+    store?.enable_store == 'Y' ? setStoreType(true) : setStoreType(false);
+
+    const warehouse = props.stores.find((s) => s.store_type.toLowerCase().includes('warehouse'));
+    warehouse?.enable_store == 'Y' ? setWarehouseType(true) : setWarehouseType(false);
+  }, [props.stores]);
 
   return (
     <Grid container spacing={2}>
@@ -32,7 +45,7 @@ export function SummaryCard() {
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Switch
                   checked={storeType}
-                  onChange={(event) => setStoreType(event.target.checked)}
+                  onChange={(event) => onUpdate(event.target.checked, 'Store')}
                 />
 
                 <Typography variant="h6">Store</Typography>
@@ -55,7 +68,10 @@ export function SummaryCard() {
                 flexShrink: 0,
               }}
             >
-              <Iconify icon="solar:shop-2-bold-duotone" width={40} sx={{ color: 'primary.main' }} />
+              <SvgColor
+                src="/assets/icons/solar/solar--shop-2-bold-duotone.svg"
+                sx={{ width: 40, height: 40, color: 'primary.main' }}
+              />
             </Box>
           </Stack>
         </Card>
@@ -83,7 +99,7 @@ export function SummaryCard() {
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Switch
                   checked={warehouseType}
-                  onChange={(event) => setWarehouseType(event.target.checked)}
+                  onChange={(event) => onUpdate(event.target.checked, 'Warehouse')}
                 />
 
                 <Typography variant="h6">Warehouse</Typography>
@@ -106,10 +122,9 @@ export function SummaryCard() {
                 flexShrink: 0,
               }}
             >
-              <Iconify
-                icon="solar:buildings-2-bold-duotone"
-                width={40}
-                sx={{ color: 'warning.main' }}
+              <SvgColor
+                src="/assets/icons/solar/solar--buildings-2-bold-duotone.svg"
+                sx={{ width: 40, height: 40, color: 'warning.main' }}
               />
             </Box>
           </Stack>

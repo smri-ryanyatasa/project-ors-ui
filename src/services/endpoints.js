@@ -95,4 +95,8 @@ export const endpoints = {
   mmsMasterfile: {
     trigger: '/api/mms-masterfile',
   },
+  plReceivingApproval: {
+    list: '/api/pl-receiving-approval',
+    update: '/api/pl-receiving-approval',
+  },
 };

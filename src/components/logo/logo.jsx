@@ -46,64 +46,67 @@ export function Logo({ sx, disabled, className, href = '/', isSingle = true, ...
     */
 
   const singleLogo = (
-    <svg
-      width="100%"
-      height="100%"
-      viewBox="0 0 512 512"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="100%" height="100%" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient
-          id={`${uniqueId}-1`}
-          x1="152"
-          y1="167.79"
-          x2="65.523"
-          y2="259.624"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor={PRIMARY_DARKER} />
-          <stop offset="1" stopColor={PRIMARY_MAIN} />
+        <linearGradient id="boxGradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#60A5FA" />
+          <stop offset="50%" stopColor="#2563EB" />
+          <stop offset="100%" stopColor="#1E3A8A" />
         </linearGradient>
-        <linearGradient
-          id={`${uniqueId}-2`}
-          x1="86"
-          y1="128"
-          x2="86"
-          y2="384"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor={PRIMARY_LIGHT} />
-          <stop offset="1" stopColor={PRIMARY_MAIN} />
+
+        <linearGradient id="topGradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#BFDBFE" />
+          <stop offset="100%" stopColor="#93C5FD" />
         </linearGradient>
-        <linearGradient
-          id={`${uniqueId}-3`}
-          x1="402"
-          y1="288"
-          x2="402"
-          y2="384"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor={PRIMARY_LIGHT} />
-          <stop offset="1" stopColor={PRIMARY_MAIN} />
-        </linearGradient>
+
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="12" stdDeviation="10" floodOpacity="0.25" />
+        </filter>
       </defs>
-      <path
-        fill={`url(#${`${uniqueId}-1`})`}
-        d="M86.352 246.358C137.511 214.183 161.836 245.017 183.168 285.573C165.515 317.716 153.837 337.331 148.132 344.418C137.373 357.788 125.636 367.911 111.202 373.752C80.856 388.014 43.132 388.681 14 371.048L86.352 246.358Z"
-      />
-      <path
-        fill={`url(#${`${uniqueId}-2`})`}
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M444.31 229.726C398.04 148.77 350.21 72.498 295.267 184.382C287.751 198.766 282.272 226.719 270 226.719V226.577C257.728 226.577 252.251 198.624 244.735 184.24C189.79 72.356 141.96 148.628 95.689 229.584C92.207 235.69 88.862 241.516 86 246.58C192.038 179.453 183.11 382.247 270 383.858V384C356.891 382.389 347.962 179.595 454 246.72C451.139 241.658 447.794 235.832 444.31 229.726Z"
-      />
-      <path
-        fill={`url(#${`${uniqueId}-3`})`}
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M450 384C476.509 384 498 362.509 498 336C498 309.491 476.509 288 450 288C423.491 288 402 309.491 402 336C402 362.509 423.491 384 450 384Z"
-      />
+
+      <ellipse cx="256" cy="425" rx="170" ry="35" fill="#000" opacity="0.10" />
+
+      <g filter="url(#shadow)">
+        <path d="M256 40L470 145L256 255L42 145L256 40Z" fill="url(#topGradient)" />
+
+        <path d="M42 145L256 255V472L42 370V145Z" fill="#2563EB" />
+
+        <path d="M470 145L256 255V472L470 370V145Z" fill="#1E40AF" />
+
+        <path d="M256 255V472" stroke="rgba(255,255,255,.35)" strokeWidth="3" />
+      </g>
+
+      <g>
+        <rect x="116" y="285" width="280" height="95" rx="20" fill="#FFFFFF" opacity="0.96" />
+
+        <text
+          x="256"
+          y="370"
+          textAnchor="middle"
+          fontFamily="Segoe UI, Arial, sans-serif"
+          fontSize="100"
+          fontWeight="800"
+          fill="#1E3A8A"
+          letterSpacing="2"
+        >
+          ORS
+        </text>
+      </g>
+
+      <g>
+        <circle cx="404" cy="118" r="42" fill="#22C55E" stroke="#FFFFFF" strokeWidth="6" />
+
+        <path
+          d="M385 118L399 132L425 105"
+          fill="none"
+          stroke="#FFFFFF"
+          strokeWidth="9"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+
+      <path d="M236 50L276 70V170L236 190L196 170V70L236 50Z" fill="#FFFFFF" opacity="0.75" />
     </svg>
   );
 
