@@ -23,7 +23,7 @@ export function useUsers() {
   const search = filterModel.quickFilterValues?.[0] || '';
 
   // Sorting
-  const [sortModel, setSortModel] = useState([{ field: 'user_name', sort: 'asc' }]);
+  const [sortModel, setSortModel] = useState([]);
 
   const handleFilterModelChange = useCallback((model) => {
     setFilterModel(model);
@@ -57,7 +57,7 @@ export function useUsers() {
   const createUser = async (form) => {
     const payload = {
       ...form,
-      mms: 'Y',
+      mms: 'N',
       branches: form.branches
         .map((branch) => branch.trim())
         .join(', ')
@@ -104,6 +104,7 @@ export function useUsers() {
         .map((env) => env.trim())
         .join(', ')
         .trim(),
+      status: userData.status == 'Active' ? 'Y' : 'N',
       last_update_by: user.user_id,
     };
 

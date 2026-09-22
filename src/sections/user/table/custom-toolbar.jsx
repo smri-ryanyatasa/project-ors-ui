@@ -8,6 +8,7 @@ import {
 } from '@mui/x-data-grid';
 
 import { DownloadButton } from './download-button';
+import { MultipleFilter } from './multiple-filter';
 
 export function CustomToolbar(props) {
   return (
@@ -25,6 +26,10 @@ export function CustomToolbar(props) {
       >
         <GridToolbarColumnsButton />
         <GridToolbarFilterButton />
+        <MultipleFilter
+          filterModel={props.filterModel}
+          onFilterModelChange={props.onFilterModelChange}
+        />
         <GridToolbarDensitySelector />
         <DownloadButton
           onDownloadCsv={props.onDownloadCsv}

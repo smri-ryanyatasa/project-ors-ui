@@ -15,23 +15,30 @@ import { Iconify } from 'src/components/iconify';
 
 export function MultipleFilter(props) {
   const FIELD_OPTIONS = [
-    { value: 'material_code', label: 'Material Code' },
-    { value: 'branch', label: 'Branch' },
+    { value: 'user_name', label: 'Username' },
+    { value: 'full_name', label: 'Fullname' },
+    { value: 'email_address', label: 'Email' },
     { value: 'status', label: 'Status' },
+    { value: 'role_name', label: 'Role Name' },
+    { value: 'position', label: 'Position' },
   ];
 
   const OPERATOR_OPTIONS = [
     { value: 'contains', label: 'contains' },
+    { value: 'doesNotContain', label: 'does not contain' },
     { value: 'equals', label: 'equals' },
+    { value: 'doesNotEqual', label: 'does not equal' },
     { value: 'startsWith', label: 'starts with' },
     { value: 'endsWith', label: 'ends with' },
+    { value: 'isEmpty', label: 'is empty' },
+    { value: 'isNotEmpty', label: 'is not empty' },
   ];
 
   const valueInputRef = useRef(null);
   const [filterAnchor, setFilterAnchor] = useState(null);
 
   const [filters, setFilters] = useState([
-    { id: Date.now(), field: 'material_code', operator: 'contains', value: '' },
+    { id: Date.now(), field: 'user_name', operator: 'contains', value: '' },
   ]);
 
   const filterOpen = Boolean(filterAnchor);
@@ -47,7 +54,7 @@ export function MultipleFilter(props) {
   const addFilter = () => {
     setFilters((prev) => [
       ...prev,
-      { id: Date.now(), field: 'material_code', operator: 'contains', value: '' },
+      { id: Date.now(), field: 'user_name', operator: 'contains', value: '' },
     ]);
   };
 
@@ -71,7 +78,10 @@ export function MultipleFilter(props) {
         value: filter.value,
       }));
     console.log(items);
-    // props.onFilterChange?.({ items, logicOperator: 'and' });
+    props.onFilterModelChange?.({
+      items,
+      logicOperator: 'and',
+    });
     handleFilterClose();
   };
 
@@ -165,15 +175,29 @@ export function MultipleFilter(props) {
                 </TextField>
 
                 {/* VALUE */}
-                <TextField
-                  size="small"
-                  label="Value"
-                  inputRef={valueInputRef}
-                  fullWidth
-                  value={filter.value}
-                  onChange={(event) => updateFilter(filter.id, 'value', event.target.value)}
-                  placeholder="Value"
-                />
+                {filter.field === 'status' ? (
+                  <TextField
+                    select
+                    size="small"
+                    label="Value"
+                    fullWidth
+                    value={filter.value}
+                    onChange={(event) => updateFilter(filter.id, 'value', event.target.value)}
+                  >
+                    <MenuItem value="Y">Active</MenuItem>
+                    <MenuItem value="N">Inactive</MenuItem>
+                  </TextField>
+                ) : (
+                  <TextField
+                    size="small"
+                    label="Value"
+                    inputRef={valueInputRef}
+                    fullWidth
+                    value={filter.value}
+                    onChange={(event) => updateFilter(filter.id, 'value', event.target.value)}
+                    placeholder="Value"
+                  />
+                )}
                 {/* DELETE */}
                 <IconButton size="small" color="error" onClick={() => removeFilter(filter.id)}>
                   <Iconify icon="solar:trash-bin-trash-bold" />

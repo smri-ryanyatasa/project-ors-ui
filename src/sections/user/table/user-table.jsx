@@ -29,10 +29,11 @@ export function UserTable(props) {
       paginationModel={props.paginationModel}
       onPaginationModelChange={props.onPaginationModelChange}
       // server-side sorting
-      onFilterModelChange={props.onFilterModelChange}
-      filterModel={props.filterModel}
+      //   onFilterModelChange={props.onFilterModelChange}
+      //   filterModel={props.filterModel}
       // sort
       sortingMode="server"
+      sortingOrder={['asc', 'desc']}
       sortModel={props.sortModel}
       onSortModelChange={props.onSortModelChange}
       slots={{
@@ -42,6 +43,8 @@ export function UserTable(props) {
         toolbar: {
           onDownloadCsv: props.onDownloadCsv,
           onDownloadExcel: props.onDownloadExcel,
+          filterModel: props.customFilterModel,
+          onFilterModelChange: props.onCustomFilterModelChange,
         },
         loadingOverlay: {
           variant: 'linear-progress',
