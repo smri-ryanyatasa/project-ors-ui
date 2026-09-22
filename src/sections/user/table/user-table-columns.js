@@ -8,7 +8,7 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
   {
     field: 'full_name',
     headerName: 'Name & Email',
-    flex: 1.5,
+    width: 270,
     renderCell: (params) => (
       <Stack direction="row" spacing={1.5} alignItems="center" sx={{ height: 1 }}>
         <Avatar src={_mock.image.avatar(1 + 1)} sx={{ width: 40, height: 40 }} />
@@ -72,7 +72,6 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
     headerAlign: 'center',
     flex: 1,
     renderCell: (params) => {
-      const active = 1;
       return (
         <Stack
           direction="row"
@@ -83,11 +82,15 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
         >
           <SvgColor
             src={
-              active
+              params.value == 'Y'
                 ? '/assets/icons/solar/solar--check-circle-bold.svg'
                 : '/assets/icons/solar/solar--close-circle-bold.svg'
             }
-            sx={{ color: active ? 'success.main' : 'error.main', width: 20, height: 20 }}
+            sx={{
+              color: params.value == 'Y' ? 'success.main' : 'error.main',
+              width: 20,
+              height: 20,
+            }}
           />
 
           {/* <Typography variant="body2">{params.value}</Typography> */}
@@ -159,8 +162,8 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
         sx={{ height: '100%' }}
       >
         <Chip
-          label={params.value === 'Y' ? 'Active' : 'Inactive'}
-          color={params.value === 'Y' ? 'success' : 'error'}
+          label={params.value}
+          color={params.value === 'Active' ? 'success' : 'error'}
           size="small"
         />
       </Stack>

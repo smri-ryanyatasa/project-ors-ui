@@ -6,7 +6,7 @@ export const _workspaces = [
   {
     id: 'team-1',
     name: 'ORS',
-    logo: `${CONFIG.assetsDir}/assets/icons/workspaces/logo-1.webp`,
+    logo: `${CONFIG.assetsDir}/assets/icons/workspaces/ors-logo.svg`,
   },
   {
     id: 'team-3',
