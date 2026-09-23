@@ -61,6 +61,16 @@ class UserService {
     const { data } = await axios.get(endpoints.user.branches);
     return data;
   }
+
+  async getMMSUsers() {
+    const { data } = await axios.get(endpoints.user.mmsUsers);
+    return data;
+  }
+
+  async creteMmsUser(payload) {
+    const { data } = await axios.post(endpoints.user.createMmsUser, payload);
+    return data;
+  }
 }
 
 export default new UserService();

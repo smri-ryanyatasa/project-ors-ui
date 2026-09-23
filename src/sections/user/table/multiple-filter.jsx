@@ -70,7 +70,12 @@ export function MultipleFilter(props) {
 
   const applyFilters = () => {
     const items = filters
-      .filter((filter) => filter.value.trim() !== '')
+      .filter(
+        (filter) =>
+          filter.operator === 'isEmpty' ||
+          filter.operator === 'isNotEmpty' ||
+          filter.value.trim() !== ''
+      )
       .map((filter) => ({
         id: String(filter.id),
         field: filter.field,
@@ -141,69 +146,80 @@ export function MultipleFilter(props) {
             )}
           </Stack>
           <Stack spacing={1} sx={{ mt: 2, maxHeight: 350, overflowY: 'auto' }}>
-            {filters.map((filter) => (
-              <Stack key={filter.id} direction="row" spacing={1} alignItems="center" sx={{ mt: 2 }}>
-                {/* FIELD */}
-                <TextField
-                  select
-                  size="small"
-                  label="Columns"
-                  value={filter.field}
-                  onChange={(event) => updateFilter(filter.id, 'field', event.target.value)}
-                  sx={{ width: 400 }}
+            {filters.map((filter) => {
+              const noValueOperator =
+                filter.operator === 'isEmpty' || filter.operator === 'isNotEmpty';
+              return (
+                <Stack
+                  key={filter.id}
+                  direction="row"
+                  spacing={1}
+                  alignItems="center"
+                  sx={{ mt: 2 }}
                 >
-                  {FIELD_OPTIONS.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                {/* OPERATOR */}
-                <TextField
-                  select
-                  size="small"
-                  label="Operator"
-                  value={filter.operator}
-                  onChange={(event) => updateFilter(filter.id, 'operator', event.target.value)}
-                  sx={{ width: 300 }}
-                >
-                  {OPERATOR_OPTIONS.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-
-                {/* VALUE */}
-                {filter.field === 'status' ? (
+                  {/* FIELD */}
                   <TextField
                     select
                     size="small"
-                    label="Value"
-                    fullWidth
-                    value={filter.value}
-                    onChange={(event) => updateFilter(filter.id, 'value', event.target.value)}
+                    label="Columns"
+                    value={filter.field}
+                    onChange={(event) => updateFilter(filter.id, 'field', event.target.value)}
+                    sx={{ width: 400 }}
                   >
-                    <MenuItem value="Y">Active</MenuItem>
-                    <MenuItem value="N">Inactive</MenuItem>
+                    {FIELD_OPTIONS.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
                   </TextField>
-                ) : (
+                  {/* OPERATOR */}
                   <TextField
+                    select
                     size="small"
-                    label="Value"
-                    inputRef={valueInputRef}
-                    fullWidth
-                    value={filter.value}
-                    onChange={(event) => updateFilter(filter.id, 'value', event.target.value)}
-                    placeholder="Value"
-                  />
-                )}
-                {/* DELETE */}
-                <IconButton size="small" color="error" onClick={() => removeFilter(filter.id)}>
-                  <Iconify icon="solar:trash-bin-trash-bold" />
-                </IconButton>
-              </Stack>
-            ))}
+                    label="Operator"
+                    value={filter.operator}
+                    onChange={(event) => updateFilter(filter.id, 'operator', event.target.value)}
+                    sx={{ width: 300 }}
+                  >
+                    {OPERATOR_OPTIONS.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+
+                  {/* VALUE */}
+                  {!noValueOperator &&
+                    (filter.field === 'status' ? (
+                      <TextField
+                        select
+                        size="small"
+                        label="Value"
+                        fullWidth
+                        value={filter.value}
+                        onChange={(event) => updateFilter(filter.id, 'value', event.target.value)}
+                      >
+                        <MenuItem value="Y">Active</MenuItem>
+                        <MenuItem value="N">Inactive</MenuItem>
+                      </TextField>
+                    ) : (
+                      <TextField
+                        size="small"
+                        label="Value"
+                        inputRef={valueInputRef}
+                        fullWidth
+                        value={filter.value}
+                        onChange={(event) => updateFilter(filter.id, 'value', event.target.value)}
+                        placeholder="Value"
+                      />
+                    ))}
+                  {/* DELETE */}
+                  <IconButton size="small" color="error" onClick={() => removeFilter(filter.id)}>
+                    <Iconify icon="solar:trash-bin-trash-bold" />
+                  </IconButton>
+                </Stack>
+              );
+            })}
           </Stack>
           {/* FOOTER */}
           <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mt: 3 }}>
