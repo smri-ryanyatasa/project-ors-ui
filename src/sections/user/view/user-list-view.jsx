@@ -3,7 +3,7 @@
 import { toast } from 'sonner';
 import { useState } from 'react';
 
-import { Box, Stack, Button } from '@mui/material';
+import { Box, Stack, Button, Backdrop, Typography, CircularProgress } from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 
@@ -14,6 +14,7 @@ import { useRolePermissions } from 'src/sections/role-permissions/hooks/use-role
 
 import { useUsers } from '../hooks/use-users';
 import { UserTable } from '../table/user-table';
+import { MMSUserDialog } from '../dialogs/mms-user-dialog';
 import { UserCreateMenu } from '../header/user-create-menu';
 import { UserEditDialog } from '../dialogs/user-edit-dialog';
 import { UserCreateDialog } from '../dialogs/user-create-dialog';
@@ -45,6 +46,9 @@ export function UserListView({ title = 'Blank', sx }) {
     setSortModel,
     csvExport,
     excelExport,
+    triggerMMSUser,
+    getMMSUsers,
+    createMmsUser,
   } = useUsers();
   const { roles } = useRolePermissions();
   const [selectedUser, setSelectedUser] = useState([]);
@@ -55,6 +59,10 @@ export function UserListView({ title = 'Blank', sx }) {
   const [activityLogOpen, setActivityLogOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [logs, setLogs] = useState([]);
+
+  const [triggerLoading, setTriggerLoading] = useState(false);
+  const [mmsUserOpen, setMmsUserOpen] = useState(false);
+  const [mmsUsers, setMmsUsers] = useState([]);
 
   const handleOpenEdit = async (user) => {
     setEditOpen(true);
@@ -134,6 +142,37 @@ export function UserListView({ title = 'Blank', sx }) {
     }
   };
 
+  const handleSelectMMSUser = async () => {
+    try {
+      setTriggerLoading(true);
+      await triggerMMSUser();
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to trigger MMS user.');
+    } finally {
+      setTimeout(async () => {
+        const res = await getMMSUsers();
+        setMmsUsers(res);
+        setTriggerLoading(false);
+        setMmsUserOpen(true);
+      }, 1000);
+    }
+  };
+
+  const handleInsertMmsUser = async (selectedMmsUser) => {
+    try {
+      const response = await createMmsUser(selectedMmsUser);
+      if (!response.data.success) {
+        toast.error(response.data.message || 'Something went wrong.');
+      }
+      await refresh();
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to trigger MMS user.');
+    } finally {
+      setMmsUserOpen(false);
+      toast.success('Users created successfully');
+    }
+  };
+
   const renderContent = () => (
     <Box
       sx={[
@@ -195,9 +234,7 @@ export function UserListView({ title = 'Blank', sx }) {
                 sx={{ width: 20, height: 20 }}
               />
             }
-            onClick={() => {
-              // Import from MMS
-            }}
+            onClick={handleSelectMMSUser}
           >
             Select Users from MMS
           </Button>
@@ -210,10 +247,41 @@ export function UserListView({ title = 'Blank', sx }) {
     />
   );
 
+  const loader = () => (
+    <Backdrop
+      open={triggerLoading}
+      sx={{
+        position: 'absolute',
+        zIndex: (theme) => theme.zIndex.modal + 1,
+        color: '#fff',
+        flexDirection: 'column',
+        borderRadius: 1,
+      }}
+    >
+      <CircularProgress color="inherit" sx={{ mb: 2 }} />
+
+      <Typography color="inherit" variant="subtitle1">
+        Select MMS User is in Progress ...
+      </Typography>
+
+      <Typography
+        variant="body2"
+        sx={{
+          color: 'rgba(255, 255, 255, 0.7)',
+        }}
+      >
+        Please wait while we process your request.
+      </Typography>
+    </Backdrop>
+  );
+
   return (
     <>
       {renderPageHeader()}
-      <DashboardContent maxWidth="xl">{renderContent()}</DashboardContent>
+      <DashboardContent maxWidth="xl">
+        {renderContent()}
+        {loader()}
+      </DashboardContent>
       <UserCreateDialog
         open={createOpen}
         roles={roles}
@@ -251,6 +319,12 @@ export function UserListView({ title = 'Blank', sx }) {
         user={selectedUser}
         onClose={() => setDeleteOpen(false)}
         onDelete={handleDelete}
+      />
+      <MMSUserDialog
+        open={mmsUserOpen}
+        users={mmsUsers}
+        onSave={handleInsertMmsUser}
+        onClose={() => setMmsUserOpen(false)}
       />
     </>
   );

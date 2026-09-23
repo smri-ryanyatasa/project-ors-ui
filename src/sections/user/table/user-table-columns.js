@@ -9,6 +9,8 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
     field: 'full_name',
     headerName: 'Name & Email',
     width: 270,
+    cellClassName: 'first-column-cell',
+    headerClassName: 'first-column-header',
     renderCell: (params) => (
       <Stack direction="row" spacing={1.5} alignItems="center" sx={{ height: 1 }}>
         <Avatar src={_mock.image.avatar(1 + 1)} sx={{ width: 40, height: 40 }} />
@@ -71,32 +73,30 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
     align: 'center',
     headerAlign: 'center',
     flex: 1,
-    renderCell: (params) => {
-      return (
-        <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          spacing={1}
-          sx={{ height: '100%' }}
-        >
-          <SvgColor
-            src={
-              params.value == 'Y'
-                ? '/assets/icons/solar/solar--check-circle-bold.svg'
-                : '/assets/icons/solar/solar--close-circle-bold.svg'
-            }
-            sx={{
-              color: params.value == 'Y' ? 'success.main' : 'error.main',
-              width: 20,
-              height: 20,
-            }}
-          />
+    renderCell: (params) => (
+      <Stack
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        spacing={1}
+        sx={{ height: '100%' }}
+      >
+        <SvgColor
+          src={
+            params.value == 'Y'
+              ? '/assets/icons/solar/solar--check-circle-bold.svg'
+              : '/assets/icons/solar/solar--close-circle-bold.svg'
+          }
+          sx={{
+            color: params.value == 'Y' ? 'success.main' : 'error.main',
+            width: 20,
+            height: 20,
+          }}
+        />
 
-          {/* <Typography variant="body2">{params.value}</Typography> */}
-        </Stack>
-      );
-    },
+        {/* <Typography variant="body2">{params.value}</Typography> */}
+      </Stack>
+    ),
   },
   {
     field: 'branches',
@@ -105,7 +105,7 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
     filterable: false,
     width: 250,
     renderCell: (params) => {
-      const branches = params.row.branch_names
+      const branches = params.row.branches
         ?.split(',')
         .map((branch) => branch.trim())
         .filter(Boolean);
@@ -127,20 +127,23 @@ export const UserTableColumns = ({ onDelete, onUpdate, onChangePassword, onActiv
                 px: 1,
                 py: 0.5,
                 borderRadius: 1,
-                bgcolor: '#F8F9FA',
-                color: 'black',
+                // bgcolor: '#F8F9FA',
               }}
             >
-              <SvgColor
-                src="/assets/icons/solar/solar--map-point-bold.svg"
-                sx={{
-                  width: 14,
-                  height: 14,
-                  color: 'text.secondary',
-                }}
-              />
+              {branch !== '-' && (
+                <>
+                  <SvgColor
+                    src="/assets/icons/solar/solar--map-point-bold.svg"
+                    sx={{
+                      width: 14,
+                      height: 14,
+                      color: 'text.secondary',
+                    }}
+                  />
 
-              <Typography variant="caption">{branch}</Typography>
+                  <Typography variant="caption">{branch}</Typography>
+                </>
+              )}
             </Box>
           ))}
         </Stack>

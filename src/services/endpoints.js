@@ -12,6 +12,8 @@ export const endpoints = {
     excelExport: '/api/users/excel-export',
     branches: '/api/users/branches',
     assignedBranch: '/api/users/assigned-branch',
+    mmsUsers: '/api/users/mms-users',
+    createMmsUser: '/api/users/create-mms-users',
   },
   rolePermission: {
     list: '/api/role-permissions',

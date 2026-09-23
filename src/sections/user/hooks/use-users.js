@@ -2,6 +2,7 @@ import { saveAs } from 'file-saver';
 import { useState, useEffect, useCallback } from 'react';
 
 import UserService from 'src/services/user.service';
+import MMSMasterfileService from 'src/services/mms-masterfile.service';
 
 import { useAuthContext } from 'src/auth/hooks';
 
@@ -66,6 +67,7 @@ export function useUsers() {
         .map((env) => env.trim())
         .join(', ')
         .trim(),
+      status: form.status == 'Active' ? 'Y' : 'N',
       created_by: user.user_id,
     };
 
@@ -191,6 +193,23 @@ export function useUsers() {
     }
   }, []);
 
+  const triggerMMSUser = async () => {
+    await MMSMasterfileService.triggerBranchInterface({
+      sourceTable: 'stg_mms_users',
+      targetTable: 'mms_users',
+    });
+  };
+
+  const getMMSUsers = async () => {
+    const response = await UserService.getMMSUsers();
+    return response;
+  };
+
+  const createMmsUser = async (mmsUsers) => {
+    const response = await UserService.creteMmsUser(mmsUsers);
+    return response;
+  };
+
   useEffect(() => {
     refresh();
     getBranches();
@@ -217,5 +236,8 @@ export function useUsers() {
     csvExport,
     excelExport,
     branches,
+    triggerMMSUser,
+    getMMSUsers,
+    createMmsUser,
   };
 }

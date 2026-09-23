@@ -25,7 +25,7 @@ export function CustomToolbar(props) {
         }}
       >
         <GridToolbarColumnsButton />
-        <GridToolbarFilterButton />
+        {/* <GridToolbarFilterButton /> */}
         <MultipleFilter
           filterModel={props.filterModel}
           onFilterModelChange={props.onFilterModelChange}

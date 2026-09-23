@@ -18,7 +18,6 @@ export function UserTable(props) {
       columns={columns}
       getRowId={(row) => row.user_id}
       getRowHeight={() => 'auto'}
-      checkboxSelection
       disableRowSelectionOnClick
       // server-side
       paginationMode="server"
@@ -54,6 +53,13 @@ export function UserTable(props) {
       sx={{
         '& .MuiDataGrid-row': {
           minHeight: '52px !important',
+        },
+        '& .first-column-header': {
+          pl: 2,
+        },
+
+        '& .first-column-cell': {
+          pl: 2,
         },
       }}
     />
