@@ -28,8 +28,8 @@ export function UserTable(props) {
       paginationModel={props.paginationModel}
       onPaginationModelChange={props.onPaginationModelChange}
       // server-side sorting
-      //   onFilterModelChange={props.onFilterModelChange}
-      //   filterModel={props.filterModel}
+      onFilterModelChange={props.onFilterModelChange}
+      filterModel={props.filterModel}
       // sort
       sortingMode="server"
       sortingOrder={['asc', 'desc']}
