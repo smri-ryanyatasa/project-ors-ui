@@ -20,6 +20,9 @@ export function useUsers() {
   // Filter state (Column)
   const [filterModel, setFilterModel] = useState({ items: [], quickFilterValues: [] });
 
+  // Custo Multiple Filter
+  const [customFilterModel, setCustomFilterModel] = useState({ items: [] });
+
   // Search input
   const search = filterModel.quickFilterValues?.[0] || '';
 
@@ -36,6 +39,16 @@ export function useUsers() {
     }));
   }, []);
 
+  const handleCustomFilterModelChange = useCallback((model) => {
+    setCustomFilterModel(model);
+
+    // Go back to first page when filter changes
+    setPaginationModel((prev) => ({
+      ...prev,
+      page: 0,
+    }));
+  }, []);
+
   const refresh = useCallback(async () => {
     try {
       setLoading(true);
@@ -44,7 +57,7 @@ export function useUsers() {
         page: paginationModel.page + 1,
         pageSize: paginationModel.pageSize,
         search,
-        filterModel: JSON.stringify(filterModel.items),
+        filterModel: JSON.stringify(customFilterModel.items),
         sortModel: JSON.stringify(sortModel),
       });
 
@@ -53,7 +66,7 @@ export function useUsers() {
     } finally {
       setLoading(false);
     }
-  }, [paginationModel, search, filterModel, sortModel]);
+  }, [paginationModel, search, filterModel, sortModel, customFilterModel]);
 
   const createUser = async (form) => {
     const payload = {
@@ -141,7 +154,7 @@ export function useUsers() {
 
       const blob = await UserService.csvExport({
         search,
-        filterModel: JSON.stringify(filterModel.items),
+        filterModel: JSON.stringify(customFilterModel.items),
         sortModel: JSON.stringify(sortModel),
       });
 
@@ -170,7 +183,7 @@ export function useUsers() {
 
       const response = await UserService.excelExport({
         search,
-        filterModel: JSON.stringify(filterModel.items),
+        filterModel: JSON.stringify(customFilterModel.items),
         sortModel: JSON.stringify(sortModel),
       });
 
@@ -239,5 +252,8 @@ export function useUsers() {
     triggerMMSUser,
     getMMSUsers,
     createMmsUser,
+    customFilterModel,
+    setCustomFilterModel,
+    handleCustomFilterModelChange,
   };
 }

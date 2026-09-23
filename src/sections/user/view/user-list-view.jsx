@@ -49,6 +49,8 @@ export function UserListView({ title = 'Blank', sx }) {
     triggerMMSUser,
     getMMSUsers,
     createMmsUser,
+    customFilterModel,
+    handleCustomFilterModelChange,
   } = useUsers();
   const { roles } = useRolePermissions();
   const [selectedUser, setSelectedUser] = useState([]);
@@ -198,8 +200,10 @@ export function UserListView({ title = 'Blank', sx }) {
         rowCount={total}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
-        onCustomFilterModelChange={handleFilterModelChange}
-        customFilterModel={filterModel}
+        onFilterModelChange={handleFilterModelChange}
+        filterModel={filterModel}
+        onCustomFilterModelChange={handleCustomFilterModelChange}
+        customFilterModel={customFilterModel}
         sortModel={sortModel}
         onSortModelChange={setSortModel}
         onDownloadCsv={handleCsvExport}
