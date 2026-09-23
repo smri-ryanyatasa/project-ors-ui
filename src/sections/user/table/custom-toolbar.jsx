@@ -2,7 +2,6 @@ import { Box } from '@mui/material';
 import {
   GridToolbarContainer,
   GridToolbarQuickFilter,
-  GridToolbarFilterButton,
   GridToolbarColumnsButton,
   GridToolbarDensitySelector,
 } from '@mui/x-data-grid';

@@ -41,7 +41,7 @@ export function UserEditDialog({ open, user, roles, branches, onClose, onSave })
         ? user.branches
         : user.branches
             ?.split(',')
-            .map((branch) => branch.trim())
+            .map((branch) => branch.split(' - ')[0].trim())
             .filter(Boolean) || [];
 
       const userEnv = Array.isArray(user.assigned_env)
