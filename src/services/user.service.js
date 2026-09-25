@@ -71,6 +71,28 @@ class UserService {
     const { data } = await axios.post(endpoints.user.createMmsUser, payload);
     return data;
   }
+
+  async saveFilter(payload) {
+    const { data } = await axios.post(endpoints.user.saveFilter, payload);
+    return data;
+  }
+
+  async getSaveFilter(params) {
+    const { data } = await axios.get(endpoints.user.saveFilter, {
+      params,
+    });
+    return data;
+  }
+
+  async deleteSaveFilter(params) {
+    const { data } = await axios.delete(endpoints.user.deleteSaveFilter(params));
+    return data;
+  }
+
+  async updateSaveFilter(payload) {
+    const { data } = await axios.put(endpoints.user.updateSaveFilter(payload.id), payload);
+    return data;
+  }
 }
 
 export default new UserService();

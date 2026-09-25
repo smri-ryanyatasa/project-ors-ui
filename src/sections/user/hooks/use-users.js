@@ -66,7 +66,7 @@ export function useUsers() {
     } finally {
       setLoading(false);
     }
-  }, [paginationModel, search, filterModel, sortModel, customFilterModel]);
+  }, [paginationModel, search, sortModel, customFilterModel]);
 
   const createUser = async (form) => {
     const payload = {
@@ -223,6 +223,26 @@ export function useUsers() {
     return response;
   };
 
+  const saveFilter = async (filter) => {
+    const response = await UserService.saveFilter(filter);
+    return response;
+  };
+
+  const getSaveFilter = async (gridKey) => {
+    const response = await UserService.getSaveFilter({ gridKey });
+    return response;
+  };
+
+  const deleteSaveFilter = async (filter) => {
+    const response = await UserService.deleteSaveFilter(filter);
+    return response;
+  };
+
+  const updateSaveFilter = async (filter) => {
+    const response = await UserService.updateSaveFilter(filter);
+    return response;
+  };
+
   useEffect(() => {
     refresh();
     getBranches();
@@ -255,5 +275,9 @@ export function useUsers() {
     customFilterModel,
     setCustomFilterModel,
     handleCustomFilterModelChange,
+    saveFilter,
+    getSaveFilter,
+    deleteSaveFilter,
+    updateSaveFilter,
   };
 }

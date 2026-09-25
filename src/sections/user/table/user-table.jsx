@@ -44,6 +44,15 @@ export function UserTable(props) {
           onDownloadExcel: props.onDownloadExcel,
           filterModel: props.customFilterModel,
           onFilterModelChange: props.onCustomFilterModelChange,
+          onSaveFilter: props.onSaveFilter,
+          getSaveFilter: props.getSaveFilter,
+          onDeleteSavedFilter: props.onDeleteSavedFilter,
+          onUpdateSavedFilter: props.onUpdateSavedFilter,
+        },
+        columnMenu: {
+          slots: {
+            columnMenuFilterItem: null,
+          },
         },
         loadingOverlay: {
           variant: 'linear-progress',
