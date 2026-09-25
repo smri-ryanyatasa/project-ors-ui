@@ -28,6 +28,10 @@ export function CustomToolbar(props) {
         <MultipleFilter
           filterModel={props.filterModel}
           onFilterModelChange={props.onFilterModelChange}
+          onSaveFilter={props.onSaveFilter}
+          getSaveFilter={props.getSaveFilter}
+          onDeleteSavedFilter={props.onDeleteSavedFilter}
+          onUpdateSavedFilter={props.onUpdateSavedFilter}
         />
         <GridToolbarDensitySelector />
         <DownloadButton

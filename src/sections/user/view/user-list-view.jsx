@@ -51,6 +51,10 @@ export function UserListView({ title = 'Blank', sx }) {
     createMmsUser,
     customFilterModel,
     handleCustomFilterModelChange,
+    saveFilter,
+    getSaveFilter,
+    deleteSaveFilter,
+    updateSaveFilter,
   } = useUsers();
   const { roles } = useRolePermissions();
   const [selectedUser, setSelectedUser] = useState([]);
@@ -175,6 +179,30 @@ export function UserListView({ title = 'Blank', sx }) {
     }
   };
 
+  const handleSaveFilter = async (filter) => {
+    try {
+      await saveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
+  const handleDeteleSavedFilter = async (filter) => {
+    try {
+      await deleteSaveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
+  const handleUpdateSavedFilter = async (filter) => {
+    try {
+      await updateSaveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
   const renderContent = () => (
     <Box
       sx={[
@@ -208,6 +236,10 @@ export function UserListView({ title = 'Blank', sx }) {
         onSortModelChange={setSortModel}
         onDownloadCsv={handleCsvExport}
         onDownloadExcel={handleExcelExport}
+        onSaveFilter={handleSaveFilter}
+        getSaveFilter={getSaveFilter}
+        onDeleteSavedFilter={handleDeteleSavedFilter}
+        onUpdateSavedFilter={handleUpdateSavedFilter}
       />
     </Box>
   );

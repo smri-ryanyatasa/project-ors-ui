@@ -14,6 +14,9 @@ export const endpoints = {
     assignedBranch: '/api/users/assigned-branch',
     mmsUsers: '/api/users/mms-users',
     createMmsUser: '/api/users/create-mms-users',
+    saveFilter: '/api/users/save-filter',
+    deleteSaveFilter: (id) => `/api/users/save-filter/${id}`,
+    updateSaveFilter: (id) => `/api/users/save-filter/${id}`,
   },
   rolePermission: {
     list: '/api/role-permissions',
