@@ -2,6 +2,7 @@ import { saveAs } from 'file-saver';
 import { useState, useEffect, useCallback } from 'react';
 
 import ItemService from 'src/services/item.service';
+import UserService from 'src/services/user.service';
 import MMSMasterfileService from 'src/services/mms-masterfile.service';
 
 import { useAuthContext } from 'src/auth/hooks';
@@ -16,12 +17,23 @@ export function useItem() {
   const [total, setTotal] = useState(0);
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
   const [filterModel, setFilterModel] = useState({ items: [], quickFilterValues: [] });
+  const [customFilterModel, setCustomFilterModel] = useState({ items: [] });
   const search = filterModel.quickFilterValues?.[0] || '';
   const [sortModel, setSortModel] = useState([{ field: 'style_code', sort: 'desc' }]);
 
   const handleFilterModelChange = useCallback((model) => {
     setFilterModel(model);
 
+    setPaginationModel((prev) => ({
+      ...prev,
+      page: 0,
+    }));
+  }, []);
+
+  const handleCustomFilterModelChange = useCallback((model) => {
+    setCustomFilterModel(model);
+
+    // Go back to first page when filter changes
     setPaginationModel((prev) => ({
       ...prev,
       page: 0,
@@ -39,7 +51,7 @@ export function useItem() {
           page: paginationModel.page + 1,
           pageSize: paginationModel.pageSize,
           search,
-          filterModel: JSON.stringify(filterModel.items),
+          filterModel: JSON.stringify(customFilterModel.items),
           sortModel: JSON.stringify(sortModel),
           env: user.env,
         }),
@@ -54,7 +66,7 @@ export function useItem() {
     } finally {
       setLoading(false);
     }
-  }, [user, paginationModel, search, filterModel, sortModel]);
+  }, [user, paginationModel, search, sortModel, customFilterModel]);
 
   const csvExport = async () => {
     if (!user) return;
@@ -64,7 +76,7 @@ export function useItem() {
 
       const blob = await ItemService.csvExport({
         search,
-        filterModel: JSON.stringify(filterModel.items),
+        filterModel: JSON.stringify(customFilterModel.items),
         sortModel: JSON.stringify(sortModel),
         env: user.env,
       });
@@ -96,7 +108,7 @@ export function useItem() {
 
       const response = await ItemService.excelExport({
         search,
-        filterModel: JSON.stringify(filterModel.items),
+        filterModel: JSON.stringify(customFilterModel.items),
         sortModel: JSON.stringify(sortModel),
         env: user.env,
       });
@@ -136,6 +148,26 @@ export function useItem() {
     });
   };
 
+  const saveFilter = async (filter) => {
+    const response = await UserService.saveFilter(filter);
+    return response;
+  };
+
+  const getSaveFilter = async (gridKey) => {
+    const response = await UserService.getSaveFilter({ gridKey });
+    return response;
+  };
+
+  const deleteSaveFilter = async (filter) => {
+    const response = await UserService.deleteSaveFilter(filter);
+    return response;
+  };
+
+  const updateSaveFilter = async (filter) => {
+    const response = await UserService.updateSaveFilter(filter);
+    return response;
+  };
+
   useEffect(() => {
     if (!user) return;
 
@@ -158,5 +190,12 @@ export function useItem() {
     excelExport,
     itemRowsUpdate,
     triggerItemInterface,
+    customFilterModel,
+    setCustomFilterModel,
+    handleCustomFilterModelChange,
+    saveFilter,
+    getSaveFilter,
+    deleteSaveFilter,
+    updateSaveFilter,
   };
 }

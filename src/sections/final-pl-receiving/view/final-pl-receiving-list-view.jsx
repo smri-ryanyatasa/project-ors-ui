@@ -44,6 +44,12 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
     rowsUpdate,
     toApproved,
     hasZero,
+    customFilterModel,
+    handleCustomFilterModelChange,
+    saveFilter,
+    getSaveFilter,
+    deleteSaveFilter,
+    updateSaveFilter,
     zero,
   } = useFinalPLReceiving();
 
@@ -340,6 +346,30 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
     setGridRows(pls ?? []);
   }, [pls]);
 
+  const handleSaveFilter = async (filter) => {
+    try {
+      await saveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
+  const handleDeteleSavedFilter = async (filter) => {
+    try {
+      await deleteSaveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
+  const handleUpdateSavedFilter = async (filter) => {
+    try {
+      await updateSaveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
   const renderContent = () => (
     <Box
       sx={[
@@ -386,6 +416,12 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
         onRedo={handleRedo}
         onApprovedReceipt={handleOpenApprovedReceipt}
         onExceeds={exceedsRowId}
+        customFilterModel={customFilterModel}
+        onCustomFilterModelChange={handleCustomFilterModelChange}
+        onSaveFilter={handleSaveFilter}
+        getSaveFilter={getSaveFilter}
+        onDeleteSavedFilter={handleDeteleSavedFilter}
+        onUpdateSavedFilter={handleUpdateSavedFilter}
       />
     </Box>
   );

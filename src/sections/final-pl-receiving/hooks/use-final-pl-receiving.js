@@ -1,6 +1,7 @@
 import { saveAs } from 'file-saver';
 import { useState, useEffect, useCallback } from 'react';
 
+import UserService from 'src/services/user.service';
 import FinalPlReceivingService from 'src/services/finalPlReceiving.service';
 
 import { useAuthContext } from 'src/auth/hooks';
@@ -22,12 +23,23 @@ export function useFinalPLReceiving() {
   const [total, setTotal] = useState(0);
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
   const [filterModel, setFilterModel] = useState({ items: [], quickFilterValues: [] });
+  const [customFilterModel, setCustomFilterModel] = useState({ items: [] });
   const search = filterModel.quickFilterValues?.[0] || '';
   const [sortModel, setSortModel] = useState([{ field: 'material_code', sort: 'desc' }]);
 
   const handleFilterModelChange = useCallback((model) => {
     setFilterModel(model);
 
+    setPaginationModel((prev) => ({
+      ...prev,
+      page: 0,
+    }));
+  }, []);
+
+  const handleCustomFilterModelChange = useCallback((model) => {
+    setCustomFilterModel(model);
+
+    // Go back to first page when filter changes
     setPaginationModel((prev) => ({
       ...prev,
       page: 0,
@@ -45,7 +57,7 @@ export function useFinalPLReceiving() {
           page: paginationModel.page + 1,
           pageSize: paginationModel.pageSize,
           search,
-          filterModel: JSON.stringify(filterModel.items),
+          filterModel: JSON.stringify(customFilterModel.items),
           sortModel: JSON.stringify(sortModel),
           env: user.env,
           branch: filename ? branch : null,
@@ -55,7 +67,7 @@ export function useFinalPLReceiving() {
         }),
         FinalPlReceivingService.getPlsStatus({
           search,
-          filterModel: JSON.stringify(filterModel.items),
+          filterModel: JSON.stringify(customFilterModel.items),
           sortModel: JSON.stringify(sortModel),
           env: user.env,
           branch: filename ? branch : null,
@@ -96,8 +108,8 @@ export function useFinalPLReceiving() {
     siNumber,
     paginationModel,
     search,
-    filterModel,
     sortModel,
+    customFilterModel,
   ]);
 
   const csvExport = async () => {
@@ -108,7 +120,7 @@ export function useFinalPLReceiving() {
 
       const blob = await FinalPlReceivingService.csvExport({
         search,
-        filterModel: JSON.stringify(filterModel.items),
+        filterModel: JSON.stringify(customFilterModel.items),
         sortModel: JSON.stringify(sortModel),
         env: user.env,
         branch: filename ? branch : null,
@@ -146,7 +158,7 @@ export function useFinalPLReceiving() {
 
       const response = await FinalPlReceivingService.excelExport({
         search,
-        filterModel: JSON.stringify(filterModel.items),
+        filterModel: JSON.stringify(customFilterModel.items),
         sortModel: JSON.stringify(sortModel),
         env: user.env,
         branch: filename ? branch : null,
@@ -210,6 +222,26 @@ export function useFinalPLReceiving() {
     };
   };
 
+  const saveFilter = async (filter) => {
+    const response = await UserService.saveFilter(filter);
+    return response;
+  };
+
+  const getSaveFilter = async (gridKey) => {
+    const response = await UserService.getSaveFilter({ gridKey });
+    return response;
+  };
+
+  const deleteSaveFilter = async (filter) => {
+    const response = await UserService.deleteSaveFilter(filter);
+    return response;
+  };
+
+  const updateSaveFilter = async (filter) => {
+    const response = await UserService.updateSaveFilter(filter);
+    return response;
+  };
+
   const formatDate = (date = new Date()) => {
     const pad = (value) => String(value).padStart(2, '0');
 
@@ -253,5 +285,12 @@ export function useFinalPLReceiving() {
     toApproved,
     hasZero,
     zero,
+    customFilterModel,
+    setCustomFilterModel,
+    handleCustomFilterModelChange,
+    saveFilter,
+    getSaveFilter,
+    deleteSaveFilter,
+    updateSaveFilter,
   };
 }

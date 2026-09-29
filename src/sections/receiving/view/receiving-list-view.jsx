@@ -37,6 +37,12 @@ export function ReceivingListView({ title = 'Blank', sx }) {
     setInitialReceiptEndDate,
     setFinalReceiptStartDate,
     setFinalReceiptEndDate,
+    customFilterModel,
+    handleCustomFilterModelChange,
+    saveFilter,
+    getSaveFilter,
+    deleteSaveFilter,
+    updateSaveFilter,
   } = useReceivingReport();
 
   const { branches } = usePlUpload();
@@ -67,6 +73,30 @@ export function ReceivingListView({ title = 'Blank', sx }) {
     return `${month}/${day}/${year}`;
   };
 
+  const handleSaveFilter = async (filter) => {
+    try {
+      await saveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
+  const handleDeteleSavedFilter = async (filter) => {
+    try {
+      await deleteSaveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
+  const handleUpdateSavedFilter = async (filter) => {
+    try {
+      await updateSaveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
   const renderContent = () => (
     <Box
       sx={[
@@ -90,6 +120,12 @@ export function ReceivingListView({ title = 'Blank', sx }) {
         onSortModelChange={setSortModel}
         onDownloadCsv={handleCsvExport}
         onDownloadExcel={handleExcelExport}
+        customFilterModel={customFilterModel}
+        onCustomFilterModelChange={handleCustomFilterModelChange}
+        onSaveFilter={handleSaveFilter}
+        getSaveFilter={getSaveFilter}
+        onDeleteSavedFilter={handleDeteleSavedFilter}
+        onUpdateSavedFilter={handleUpdateSavedFilter}
       />
     </Box>
   );

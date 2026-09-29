@@ -44,6 +44,12 @@ export function InitialPlReceivingListView({ title = 'Blank', sx }) {
     hasZero,
     zero,
     toConfirm,
+    customFilterModel,
+    handleCustomFilterModelChange,
+    saveFilter,
+    getSaveFilter,
+    deleteSaveFilter,
+    updateSaveFilter,
   } = useInitialPLReceiving();
 
   const { branches } = usePlUpload();
@@ -130,6 +136,30 @@ export function InitialPlReceivingListView({ title = 'Blank', sx }) {
     toast.success('Successfully updated.');
   };
 
+  const handleSaveFilter = async (filter) => {
+    try {
+      await saveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
+  const handleDeteleSavedFilter = async (filter) => {
+    try {
+      await deleteSaveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
+  const handleUpdateSavedFilter = async (filter) => {
+    try {
+      await updateSaveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
   const renderContent = () => (
     <Box
       sx={[
@@ -165,6 +195,12 @@ export function InitialPlReceivingListView({ title = 'Blank', sx }) {
         onDownloadExcel={handleExcelExport}
         onRowUpdate={handleRowUpdate}
         onConfirmReceipt={handleOpenConfirmReceipt}
+        customFilterModel={customFilterModel}
+        onCustomFilterModelChange={handleCustomFilterModelChange}
+        onSaveFilter={handleSaveFilter}
+        getSaveFilter={getSaveFilter}
+        onDeleteSavedFilter={handleDeteleSavedFilter}
+        onUpdateSavedFilter={handleUpdateSavedFilter}
       />
     </Box>
   );

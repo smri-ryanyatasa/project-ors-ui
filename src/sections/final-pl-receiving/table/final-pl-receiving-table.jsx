@@ -5,6 +5,19 @@ import { CustomToolbar } from './custom-toolbar';
 import { FinalPlReceivingTableColumns } from './final-pl-receiving-column';
 
 export function FinalPlReceivingTable(props) {
+  const FIELD_OPTIONS = [
+    { value: 'material_code', label: 'Material Code' },
+    { value: 'material_name', label: 'Material Name' },
+    { value: 'mms_sku_code', label: 'MMS SKU Code' },
+    { value: 'mms_sku_name', label: 'MMS SKU Name' },
+    { value: 'size', label: 'Size' },
+    { value: 'uom', label: 'UOM' },
+    { value: 'received_by', label: 'Received By' },
+    { value: 'actual_received', label: 'Actual Received' },
+    { value: 'received_date', label: 'Date & Tiem Actual Received' },
+    { value: 'status', label: 'Status' },
+  ];
+
   const columns = FinalPlReceivingTableColumns({
     onExceeds: props.onExceeds,
   });
@@ -52,6 +65,14 @@ export function FinalPlReceivingTable(props) {
               onRedo: props.onRedo,
               onApprovedReceipt: props.onApprovedReceipt,
               onRowsCount: props.rows.length,
+              filterModel: props.customFilterModel,
+              onFilterModelChange: props.onCustomFilterModelChange,
+              onSaveFilter: props.onSaveFilter,
+              getSaveFilter: props.getSaveFilter,
+              onDeleteSavedFilter: props.onDeleteSavedFilter,
+              onUpdateSavedFilter: props.onUpdateSavedFilter,
+              fieldOptions: FIELD_OPTIONS,
+              gridKey: 'final_pl_receiving',
             },
             loadingOverlay: {
               variant: 'linear-progress',

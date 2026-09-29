@@ -5,6 +5,17 @@ import { CustomToolbar } from './custom-toolbar';
 import { PlMasterfileTableColumns } from './pl-masterfile-column';
 
 export function PlMasterfileTable(props) {
+  const FIELD_OPTIONS = [
+    { value: 'filename', label: 'PL Filename' },
+    { value: 'status', label: 'Status' },
+    { value: 'si_number', label: 'SI Number' },
+    { value: 'branch_code', label: 'Branch Code' },
+    { value: 'material', label: 'Material' },
+    { value: 'vendor_code', label: 'Vendor Code' },
+    { value: 'uploaded_by', label: 'Uploaded By' },
+    { value: 'uploaded_date', label: 'Uploaded Date' },
+  ];
+
   const columns = PlMasterfileTableColumns();
 
   return (
@@ -38,6 +49,14 @@ export function PlMasterfileTable(props) {
             toolbar: {
               onDownloadCsv: props.onDownloadCsv,
               onDownloadExcel: props.onDownloadExcel,
+              filterModel: props.customFilterModel,
+              onFilterModelChange: props.onCustomFilterModelChange,
+              onSaveFilter: props.onSaveFilter,
+              getSaveFilter: props.getSaveFilter,
+              onDeleteSavedFilter: props.onDeleteSavedFilter,
+              onUpdateSavedFilter: props.onUpdateSavedFilter,
+              fieldOptions: FIELD_OPTIONS,
+              gridKey: 'pl_masterfile',
             },
             loadingOverlay: {
               variant: 'linear-progress',

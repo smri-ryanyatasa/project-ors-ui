@@ -32,6 +32,8 @@ export function CustomToolbar(props) {
           getSaveFilter={props.getSaveFilter}
           onDeleteSavedFilter={props.onDeleteSavedFilter}
           onUpdateSavedFilter={props.onUpdateSavedFilter}
+          fieldOptions={props.fieldOptions}
+          gridKey={props.gridKey}
         />
         <GridToolbarDensitySelector />
         <DownloadButton

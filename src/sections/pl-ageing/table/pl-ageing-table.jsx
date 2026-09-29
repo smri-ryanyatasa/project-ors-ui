@@ -5,6 +5,27 @@ import { CustomToolbar } from './custom-toolbar';
 import { PlAgeingTableColumns } from './pl-ageing-column';
 
 export function PlAgeingTable(props) {
+  const FIELD_OPTIONS = [
+    { value: 'filename', label: 'PL Filename' },
+    { value: 'line_items', label: 'Line Items' },
+    { value: 'current_status', label: 'Current Status' },
+    { value: 'uploaded_date', label: 'Upload Date' },
+    { value: 'available_date', label: 'Available Date' },
+    { value: 'aging_upload_available', label: 'Ageing (Days) from Upload to Available' },
+    { value: 'initial_receipt_date', label: 'Initial Receipt Date' },
+    { value: 'aging_available_initial', label: 'Ageing (Days) from Available to Initial Receipt' },
+    { value: 'approved_receipt_date', label: 'Approved Receipt Date' },
+    {
+      value: 'aging_initial_approve',
+      label: 'Ageing (Days) from Initial Receipt to Approved Receipt',
+    },
+    { value: 'po_generated_date', label: 'MMS PO Generated Date' },
+    {
+      value: 'aging_approve_po_gen',
+      label: 'Ageing (Days) from Approved Receipt to MMS PO Creation',
+    },
+  ];
+
   const columns = PlAgeingTableColumns();
 
   return (
@@ -38,6 +59,14 @@ export function PlAgeingTable(props) {
             toolbar: {
               onDownloadCsv: props.onDownloadCsv,
               onDownloadExcel: props.onDownloadExcel,
+              filterModel: props.customFilterModel,
+              onFilterModelChange: props.onCustomFilterModelChange,
+              onSaveFilter: props.onSaveFilter,
+              getSaveFilter: props.getSaveFilter,
+              onDeleteSavedFilter: props.onDeleteSavedFilter,
+              onUpdateSavedFilter: props.onUpdateSavedFilter,
+              fieldOptions: FIELD_OPTIONS,
+              gridKey: 'pl_ageing',
             },
             loadingOverlay: {
               variant: 'linear-progress',
