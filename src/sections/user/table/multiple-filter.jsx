@@ -22,22 +22,16 @@ import { Iconify } from 'src/components/iconify';
 
 export function MultipleFilter(props) {
   const {
-    gridKey = 'users',
+    gridKey = '',
     onFilterModelChange,
     onSaveFilter,
     getSaveFilter,
     onDeleteSavedFilter,
     onUpdateSavedFilter,
+    fieldOptions,
   } = props;
 
-  const FIELD_OPTIONS = [
-    { value: 'user_name', label: 'Username' },
-    { value: 'full_name', label: 'Fullname' },
-    { value: 'email_address', label: 'Email' },
-    { value: 'status', label: 'Status' },
-    { value: 'role_name', label: 'Role Name' },
-    { value: 'position', label: 'Position' },
-  ];
+  const FIELD_OPTIONS = fieldOptions;
 
   const OPERATOR_OPTIONS = [
     { value: 'contains', label: 'contains' },
@@ -61,7 +55,7 @@ export function MultipleFilter(props) {
   const [filters, setFilters] = useState([
     {
       id: Date.now(),
-      field: 'user_name',
+      field: FIELD_OPTIONS[0].value ?? '',
       operator: 'contains',
       value: '',
     },
@@ -158,7 +152,7 @@ export function MultipleFilter(props) {
       ...prev,
       {
         id: Date.now(),
-        field: 'user_name',
+        field: FIELD_OPTIONS[0].value ?? '',
         operator: 'contains',
         value: '',
       },
@@ -219,7 +213,7 @@ export function MultipleFilter(props) {
     setFilters([
       {
         id: Date.now(),
-        field: 'user_name',
+        field: FIELD_OPTIONS[0].value ?? '',
         operator: 'contains',
         value: '',
       },

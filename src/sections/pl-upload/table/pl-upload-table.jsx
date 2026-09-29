@@ -5,6 +5,13 @@ import { CustomToolbar } from './custom-toolbar';
 import { PlUploadTableColumns } from './pl-upload-column';
 
 export function PlUploadTable(props) {
+  const FIELD_OPTIONS = [
+    { value: 'filename', label: 'PL Filename' },
+    { value: 'uploaded_by', label: 'Uploaded By' },
+    { value: 'status', label: 'Status' },
+    { value: 'result', label: 'Result' },
+  ];
+
   const columns = PlUploadTableColumns({
     onPlUploadLog: props.onPlUploadLog,
     onPlUploadException: props.onPlUploadException,
@@ -43,6 +50,14 @@ export function PlUploadTable(props) {
             toolbar: {
               onDownloadCsv: props.onDownloadCsv,
               onDownloadExcel: props.onDownloadExcel,
+              filterModel: props.customFilterModel,
+              onFilterModelChange: props.onCustomFilterModelChange,
+              onSaveFilter: props.onSaveFilter,
+              getSaveFilter: props.getSaveFilter,
+              onDeleteSavedFilter: props.onDeleteSavedFilter,
+              onUpdateSavedFilter: props.onUpdateSavedFilter,
+              fieldOptions: FIELD_OPTIONS,
+              gridKey: 'pl_upload',
             },
             loadingOverlay: {
               variant: 'linear-progress',

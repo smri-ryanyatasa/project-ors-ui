@@ -5,6 +5,15 @@ import { CustomToolbar } from './custom-toolbar';
 import { BranchTableColumns } from './branch-table-columns';
 
 export function BranchTable(props) {
+  const FIELD_OPTIONS = [
+    { value: 'branch_code', label: 'Branch Code' },
+    { value: 'branch_name', label: 'Branch Name' },
+    { value: 'warehouse_code', label: 'Warehouse Code' },
+    { value: 'warehouse_name', label: 'Warehouse Name' },
+    { value: 'store_type', label: 'Store Type' },
+    { value: 'status', label: 'Status' },
+  ];
+
   const columns = BranchTableColumns();
 
   return (
@@ -38,6 +47,14 @@ export function BranchTable(props) {
             toolbar: {
               onDownloadCsv: props.onDownloadCsv,
               onDownloadExcel: props.onDownloadExcel,
+              filterModel: props.customFilterModel,
+              onFilterModelChange: props.onCustomFilterModelChange,
+              onSaveFilter: props.onSaveFilter,
+              getSaveFilter: props.getSaveFilter,
+              onDeleteSavedFilter: props.onDeleteSavedFilter,
+              onUpdateSavedFilter: props.onUpdateSavedFilter,
+              fieldOptions: FIELD_OPTIONS,
+              gridKey: 'branch',
             },
             loadingOverlay: {
               variant: 'linear-progress',

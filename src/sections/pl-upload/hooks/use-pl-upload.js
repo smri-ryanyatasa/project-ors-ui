@@ -1,6 +1,7 @@
 import { saveAs } from 'file-saver';
 import { useState, useEffect, useCallback } from 'react';
 
+import UserService from 'src/services/user.service';
 import PlUploadService from 'src/services/plUpload.service';
 
 import { useAuthContext } from 'src/auth/hooks';
@@ -18,12 +19,23 @@ export function usePlUpload() {
   const [total, setTotal] = useState(0);
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
   const [filterModel, setFilterModel] = useState({ items: [], quickFilterValues: [] });
+  const [customFilterModel, setCustomFilterModel] = useState({ items: [] });
   const search = filterModel.quickFilterValues?.[0] || '';
   const [sortModel, setSortModel] = useState([{ field: 'filename', sort: 'desc' }]);
 
   const handleFilterModelChange = useCallback((model) => {
     setFilterModel(model);
 
+    setPaginationModel((prev) => ({
+      ...prev,
+      page: 0,
+    }));
+  }, []);
+
+  const handleCustomFilterModelChange = useCallback((model) => {
+    setCustomFilterModel(model);
+
+    // Go back to first page when filter changes
     setPaginationModel((prev) => ({
       ...prev,
       page: 0,
@@ -41,14 +53,14 @@ export function usePlUpload() {
           page: paginationModel.page + 1,
           pageSize: paginationModel.pageSize,
           search,
-          filterModel: JSON.stringify(filterModel.items),
+          filterModel: JSON.stringify(customFilterModel.items),
           sortModel: JSON.stringify(sortModel),
           env: user.env,
           branch: selectedBranch,
         }),
         PlUploadService.getPlsUploadStatus({
           search,
-          filterModel: JSON.stringify(filterModel.items),
+          filterModel: JSON.stringify(customFilterModel.items),
           sortModel: JSON.stringify(sortModel),
           env: user.env,
           branch: selectedBranch,
@@ -63,7 +75,7 @@ export function usePlUpload() {
     } finally {
       setLoading(false);
     }
-  }, [user, selectedBranch, paginationModel, search, filterModel, sortModel]);
+  }, [user, selectedBranch, paginationModel, search, customFilterModel, sortModel]);
 
   const getUserBranches = useCallback(async () => {
     if (!user) return;
@@ -91,7 +103,7 @@ export function usePlUpload() {
 
       const blob = await PlUploadService.csvExport({
         search,
-        filterModel: JSON.stringify(filterModel.items),
+        filterModel: JSON.stringify(customFilterModel.items),
         sortModel: JSON.stringify(sortModel),
         env: user.env,
         branch: selectedBranch,
@@ -124,7 +136,7 @@ export function usePlUpload() {
 
       const response = await PlUploadService.excelExport({
         search,
-        filterModel: JSON.stringify(filterModel.items),
+        filterModel: JSON.stringify(customFilterModel.items),
         sortModel: JSON.stringify(sortModel),
         env: user.env,
         branch: selectedBranch,
@@ -244,6 +256,26 @@ export function usePlUpload() {
     return await PlUploadService.plReUpload(cleanData);
   };
 
+  const saveFilter = async (filter) => {
+    const response = await UserService.saveFilter(filter);
+    return response;
+  };
+
+  const getSaveFilter = async (gridKey) => {
+    const response = await UserService.getSaveFilter({ gridKey });
+    return response;
+  };
+
+  const deleteSaveFilter = async (filter) => {
+    const response = await UserService.deleteSaveFilter(filter);
+    return response;
+  };
+
+  const updateSaveFilter = async (filter) => {
+    const response = await UserService.updateSaveFilter(filter);
+    return response;
+  };
+
   useEffect(() => {
     if (!user) return;
 
@@ -273,5 +305,12 @@ export function usePlUpload() {
     deletePlFile,
     plUpload,
     plReUpload,
+    customFilterModel,
+    setCustomFilterModel,
+    handleCustomFilterModelChange,
+    saveFilter,
+    getSaveFilter,
+    deleteSaveFilter,
+    updateSaveFilter,
   };
 }

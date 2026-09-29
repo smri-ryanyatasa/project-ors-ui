@@ -33,6 +33,12 @@ export function ItemListView({ title = 'Blank', sx }) {
     excelExport,
     itemRowsUpdate,
     triggerItemInterface,
+    customFilterModel,
+    handleCustomFilterModelChange,
+    saveFilter,
+    getSaveFilter,
+    deleteSaveFilter,
+    updateSaveFilter,
   } = useItem();
 
   const [editedRows, setEditedRows] = useState({});
@@ -121,6 +127,30 @@ export function ItemListView({ title = 'Blank', sx }) {
     setUpcListOpen(true);
   };
 
+  const handleSaveFilter = async (filter) => {
+    try {
+      await saveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
+  const handleDeteleSavedFilter = async (filter) => {
+    try {
+      await deleteSaveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
+  const handleUpdateSavedFilter = async (filter) => {
+    try {
+      await updateSaveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
   const renderContent = () => (
     <Box
       sx={[
@@ -153,6 +183,12 @@ export function ItemListView({ title = 'Blank', sx }) {
         onSave={handleSave}
         onOpenValues={handleOpenValues}
         onOpenUPCValues={handleOpenUPCValues}
+        customFilterModel={customFilterModel}
+        onCustomFilterModelChange={handleCustomFilterModelChange}
+        onSaveFilter={handleSaveFilter}
+        getSaveFilter={getSaveFilter}
+        onDeleteSavedFilter={handleDeteleSavedFilter}
+        onUpdateSavedFilter={handleUpdateSavedFilter}
       />
     </Box>
   );

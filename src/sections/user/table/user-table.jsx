@@ -4,6 +4,15 @@ import { CustomToolbar } from './custom-toolbar';
 import { UserTableColumns } from './user-table-columns';
 
 export function UserTable(props) {
+  const FIELD_OPTIONS = [
+    { value: 'user_name', label: 'Username' },
+    { value: 'full_name', label: 'Fullname' },
+    { value: 'email_address', label: 'Email' },
+    { value: 'status', label: 'Status' },
+    { value: 'role_name', label: 'Role Name' },
+    { value: 'position', label: 'Position' },
+  ];
+
   const columns = UserTableColumns({
     onDelete: props.onDelete,
     onUpdate: props.onUpdate,
@@ -48,6 +57,8 @@ export function UserTable(props) {
           getSaveFilter: props.getSaveFilter,
           onDeleteSavedFilter: props.onDeleteSavedFilter,
           onUpdateSavedFilter: props.onUpdateSavedFilter,
+          fieldOptions: FIELD_OPTIONS,
+          gridKey: 'users',
         },
         columnMenu: {
           slots: {

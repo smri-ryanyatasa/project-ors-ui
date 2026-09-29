@@ -5,6 +5,24 @@ import { CustomToolbar } from './custom-toolbar';
 import { InitialPlReceivingTableColumns } from './initial-pl-receiving-column';
 
 export function InitialPlReceivingTable(props) {
+  const FIELD_OPTIONS = [
+    { value: 'material_code', label: 'Material Code' },
+    { value: 'material_name', label: 'Material Description' },
+    { value: 'mms_sku_code', label: 'MMS SKU Code' },
+    { value: 'mms_sku_name', label: 'MMS SKU Name' },
+    { value: 'size', label: 'Size' },
+    { value: 'uom', label: 'UOM' },
+    { value: 'pl_qty', label: 'PL Qty' },
+    { value: 'initial_qty', label: 'Initial Received Qty' },
+    { value: 'pl_initial_discrepancy', label: 'PL-Initial Discrepancy' },
+    { value: 'final_qty', label: 'Final Received Qty' },
+    { value: 'initial_final_discrepancy', label: 'Initial Final Discrepancy' },
+    { value: 'initial_received_by', label: 'Initial Received By' },
+    { value: 'initial_received_date', label: 'Date/Time Initially Received' },
+    { value: 'final_received_by', label: 'Final Received Qty Updated By' },
+    { value: 'final_received_date', label: 'Date/Time Final Received Qty' },
+  ];
+
   const columns = InitialPlReceivingTableColumns();
 
   return (
@@ -45,6 +63,14 @@ export function InitialPlReceivingTable(props) {
               onConfirmReceipt: props.onConfirmReceipt,
               onPending: props.onPending,
               onRowsCount: props.rows.length,
+              filterModel: props.customFilterModel,
+              onFilterModelChange: props.onCustomFilterModelChange,
+              onSaveFilter: props.onSaveFilter,
+              getSaveFilter: props.getSaveFilter,
+              onDeleteSavedFilter: props.onDeleteSavedFilter,
+              onUpdateSavedFilter: props.onUpdateSavedFilter,
+              fieldOptions: FIELD_OPTIONS,
+              gridKey: 'initial_pl_receiving',
             },
             loadingOverlay: {
               variant: 'linear-progress',

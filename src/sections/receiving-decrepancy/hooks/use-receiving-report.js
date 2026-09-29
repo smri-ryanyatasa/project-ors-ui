@@ -1,6 +1,7 @@
 import { saveAs } from 'file-saver';
 import { useState, useEffect, useCallback } from 'react';
 
+import UserService from 'src/services/user.service';
 import ReceivingDecrepancyReport from 'src/services/receivingDecrepancyReport';
 
 import { useAuthContext } from 'src/auth/hooks';
@@ -22,12 +23,23 @@ export function useReceivingDecrepancyReport() {
   const [total, setTotal] = useState(0);
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
   const [filterModel, setFilterModel] = useState({ items: [], quickFilterValues: [] });
+  const [customFilterModel, setCustomFilterModel] = useState({ items: [] });
   const search = filterModel.quickFilterValues?.[0] || '';
   const [sortModel, setSortModel] = useState([{ field: 'material_code', sort: 'asc' }]);
 
   const handleFilterModelChange = useCallback((model) => {
     setFilterModel(model);
 
+    setPaginationModel((prev) => ({
+      ...prev,
+      page: 0,
+    }));
+  }, []);
+
+  const handleCustomFilterModelChange = useCallback((model) => {
+    setCustomFilterModel(model);
+
+    // Go back to first page when filter changes
     setPaginationModel((prev) => ({
       ...prev,
       page: 0,
@@ -45,7 +57,7 @@ export function useReceivingDecrepancyReport() {
           page: paginationModel.page + 1,
           pageSize: paginationModel.pageSize,
           search,
-          filterModel: JSON.stringify(filterModel.items),
+          filterModel: JSON.stringify(customFilterModel.items),
           sortModel: JSON.stringify(sortModel),
           env: user.env,
           branch,
@@ -56,7 +68,7 @@ export function useReceivingDecrepancyReport() {
         }),
         ReceivingDecrepancyReport.getPlsStatus({
           search,
-          filterModel: JSON.stringify(filterModel.items),
+          filterModel: JSON.stringify(customFilterModel.items),
           sortModel: JSON.stringify(sortModel),
           env: user.env,
           branch,
@@ -66,6 +78,8 @@ export function useReceivingDecrepancyReport() {
           finalReceiptEndDate,
         }),
       ]);
+
+      console.log(response);
 
       setPlsReceiving(response);
       setStatus(count);
@@ -79,7 +93,7 @@ export function useReceivingDecrepancyReport() {
     user,
     paginationModel,
     search,
-    filterModel,
+    customFilterModel,
     sortModel,
     branch,
     initialReceiptStartDate,
@@ -96,7 +110,7 @@ export function useReceivingDecrepancyReport() {
 
       const blob = await ReceivingDecrepancyReport.csvExport({
         search,
-        filterModel: JSON.stringify(filterModel.items),
+        filterModel: JSON.stringify(customFilterModel.items),
         sortModel: JSON.stringify(sortModel),
         env: user.env,
         branch,
@@ -157,6 +171,26 @@ export function useReceivingDecrepancyReport() {
     }
   };
 
+  const saveFilter = async (filter) => {
+    const response = await UserService.saveFilter(filter);
+    return response;
+  };
+
+  const getSaveFilter = async (gridKey) => {
+    const response = await UserService.getSaveFilter({ gridKey });
+    return response;
+  };
+
+  const deleteSaveFilter = async (filter) => {
+    const response = await UserService.deleteSaveFilter(filter);
+    return response;
+  };
+
+  const updateSaveFilter = async (filter) => {
+    const response = await UserService.updateSaveFilter(filter);
+    return response;
+  };
+
   const formatDate = (date = new Date()) => {
     const pad = (value) => String(value).padStart(2, '0');
 
@@ -197,5 +231,12 @@ export function useReceivingDecrepancyReport() {
     setInitialReceiptEndDate,
     setFinalReceiptStartDate,
     setFinalReceiptEndDate,
+    customFilterModel,
+    setCustomFilterModel,
+    handleCustomFilterModelChange,
+    saveFilter,
+    getSaveFilter,
+    deleteSaveFilter,
+    updateSaveFilter,
   };
 }

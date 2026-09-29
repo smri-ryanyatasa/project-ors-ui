@@ -5,6 +5,32 @@ import { CustomToolbar } from './custom-toolbar';
 import { ReceivingTableColumns } from './receiving-column';
 
 export function ReceivingTable(props) {
+  const FIELD_OPTIONS = [
+    { value: 'filename', label: 'PL Filename' },
+    { value: 'si_number', label: 'SI Number' },
+    { value: 'branch_code', label: 'Branch Code' },
+    { value: 'branch_name', label: 'Branch Name' },
+    { value: 'material_code', label: 'Material Code' },
+    { value: 'material_name', label: 'Material Name' },
+    { value: 'mms_sku_code', label: 'MMS SKU Code' },
+    { value: 'mms_sku_name', label: 'MMS SKU Name' },
+    { value: 'vendor_code', label: 'Vendor Code' },
+    { value: 'vendor_name', label: 'Vendor Name' },
+    { value: 'size', label: 'MMS PO Generated Date' },
+    { value: 'uom', label: 'UOM' },
+    { value: 'pl_qty', label: 'PL Qty' },
+    { value: 'initial_qty', label: 'Initial Received Qty' },
+    { value: 'final_qty', label: 'Final Received Qty' },
+    { value: 'initial_received_by', label: 'Initially Received By' },
+    { value: 'initial_received_date', label: 'Date/Time Initially Received' },
+    { value: 'confirmed_receipt_by', label: 'Initia Receipt Confirmed By' },
+    { value: 'confirmed_receipt_date', label: 'Date/Time Initial Receipt Confirmed' },
+    { value: 'final_received_by', label: 'Finale Received Qty Updated By' },
+    { value: 'final_received_date', label: 'Date/Time of Uploaded Final Received Qty' },
+    { value: 'approved_receipt_by', label: 'Final Receipt Approved By' },
+    { value: 'approved_receipt_date', label: 'Date/Time of Final Receipt Approved' },
+  ];
+
   const columns = ReceivingTableColumns();
 
   return (
@@ -39,6 +65,14 @@ export function ReceivingTable(props) {
             toolbar: {
               onDownloadCsv: props.onDownloadCsv,
               onDownloadExcel: props.onDownloadExcel,
+              filterModel: props.customFilterModel,
+              onFilterModelChange: props.onCustomFilterModelChange,
+              onSaveFilter: props.onSaveFilter,
+              getSaveFilter: props.getSaveFilter,
+              onDeleteSavedFilter: props.onDeleteSavedFilter,
+              onUpdateSavedFilter: props.onUpdateSavedFilter,
+              fieldOptions: FIELD_OPTIONS,
+              gridKey: 'receivng',
             },
             loadingOverlay: {
               variant: 'linear-progress',

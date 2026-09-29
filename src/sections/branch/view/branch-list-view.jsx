@@ -28,6 +28,12 @@ export function BranchListView({ title = 'Blank', sx }) {
     csvExport,
     excelExport,
     triggerBranchInterface,
+    customFilterModel,
+    handleCustomFilterModelChange,
+    saveFilter,
+    getSaveFilter,
+    deleteSaveFilter,
+    updateSaveFilter,
   } = useBranch();
 
   const [triggerLoading, setTriggerLoading] = useState(false);
@@ -65,6 +71,30 @@ export function BranchListView({ title = 'Blank', sx }) {
     }
   };
 
+  const handleSaveFilter = async (filter) => {
+    try {
+      await saveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
+  const handleDeteleSavedFilter = async (filter) => {
+    try {
+      await deleteSaveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
+  const handleUpdateSavedFilter = async (filter) => {
+    try {
+      await updateSaveFilter(filter);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Something went wrong.');
+    }
+  };
+
   const renderContent = () => (
     <Box
       sx={[
@@ -92,6 +122,12 @@ export function BranchListView({ title = 'Blank', sx }) {
         onSortModelChange={setSortModel}
         onDownloadCsv={handleCsvExport}
         onDownloadExcel={handleExcelExport}
+        customFilterModel={customFilterModel}
+        onCustomFilterModelChange={handleCustomFilterModelChange}
+        onSaveFilter={handleSaveFilter}
+        getSaveFilter={getSaveFilter}
+        onDeleteSavedFilter={handleDeteleSavedFilter}
+        onUpdateSavedFilter={handleUpdateSavedFilter}
       />
     </Box>
   );
