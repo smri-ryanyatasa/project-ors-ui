@@ -57,7 +57,7 @@ export function DownloadButton({ onDownloadCsv, onDownloadExcel }) {
         >
           <ListItemIcon>
             <SvgColor
-              src="/assets/icons/solar/solar--user-plus-bold.svg"
+              src="/assets/icons/solar/basil--file-download-solid.svg"
               sx={{ width: 20, height: 20 }}
             />
           </ListItemIcon>
@@ -72,7 +72,7 @@ export function DownloadButton({ onDownloadCsv, onDownloadExcel }) {
         >
           <ListItemIcon>
             <SvgColor
-              src="/assets/icons/solar/solar--upload-bold.svg"
+              src="/assets/icons/solar/basil--file-download-solid.svg"
               sx={{ width: 20, height: 20 }}
             />
           </ListItemIcon>

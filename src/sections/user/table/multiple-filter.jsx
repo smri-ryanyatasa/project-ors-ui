@@ -18,7 +18,7 @@ import {
   DialogActions,
 } from '@mui/material';
 
-import { Iconify } from 'src/components/iconify';
+import { SvgColor } from 'src/components/svg-color';
 
 export function MultipleFilter(props) {
   const {
@@ -440,7 +440,10 @@ export function MultipleFilter(props) {
             },
           }}
         >
-          <Iconify icon="solar:filter-bold" />
+          <SvgColor
+            src="/assets/icons/solar/solar--filter-bold.svg"
+            sx={{ width: 20, height: 20 }}
+          />
         </Badge>
 
         <Typography
@@ -490,7 +493,12 @@ export function MultipleFilter(props) {
                 onClick={(event) => {
                   setSavedFilterAnchor(event.currentTarget);
                 }}
-                endIcon={<Iconify icon="eva:chevron-down-fill" />}
+                endIcon={
+                  <SvgColor
+                    src="/assets/icons/solar/eva--chevron-down-fill.svg"
+                    sx={{ width: 20, height: 20 }}
+                  />
+                }
                 sx={{
                   color: 'text.primary',
                   fontWeight: 700,
@@ -544,7 +552,10 @@ export function MultipleFilter(props) {
                           ml: 1,
                         }}
                       >
-                        <Iconify icon="solar:pen-bold" />
+                        <SvgColor
+                          src="/assets/icons/solar/solar--pen-bold.svg"
+                          sx={{ width: 20, height: 20 }}
+                        />
                       </IconButton>
 
                       {/* DELETE */}
@@ -553,7 +564,10 @@ export function MultipleFilter(props) {
                         color="error"
                         onClick={(event) => deleteSavedFilter(event, savedFilter.id)}
                       >
-                        <Iconify icon="solar:trash-bin-trash-bold" />
+                        <SvgColor
+                          src="/assets/icons/solar/solar--trash-bin-2-bold.svg"
+                          sx={{ width: 20, height: 20 }}
+                        />
                       </IconButton>
                     </MenuItem>
                   ))
@@ -656,7 +670,10 @@ export function MultipleFilter(props) {
 
                   {/* DELETE */}
                   <IconButton size="small" color="error" onClick={() => removeFilter(filter.id)}>
-                    <Iconify icon="solar:trash-bin-trash-bold" />
+                    <SvgColor
+                      src="/assets/icons/solar/solar--trash-bin-2-bold.svg"
+                      sx={{ width: 20, height: 20 }}
+                    />
                   </IconButton>
                 </Stack>
               );
@@ -675,7 +692,12 @@ export function MultipleFilter(props) {
             {/* ADD FILTER */}
             <Button
               size="small"
-              startIcon={<Iconify icon="mingcute:add-line" />}
+              startIcon={
+                <SvgColor
+                  src="/assets/icons/solar/mingcute--add-line.svg"
+                  sx={{ width: 20, height: 20 }}
+                />
+              }
               onClick={addFilter}
             >
               Add filter
@@ -690,7 +712,12 @@ export function MultipleFilter(props) {
               {/* SAVE */}
               <Button
                 size="small"
-                startIcon={<Iconify icon="solar:diskette-bold" />}
+                startIcon={
+                  <SvgColor
+                    src="/assets/icons/solar/solar--diskette-bold.svg"
+                    sx={{ width: 20, height: 20 }}
+                  />
+                }
                 onClick={openSaveDialog}
                 disabled={appliedFilters.length === 0}
                 variant="outlined"
