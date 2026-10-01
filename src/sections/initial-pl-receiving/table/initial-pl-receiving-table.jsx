@@ -12,15 +12,10 @@ export function InitialPlReceivingTable(props) {
     { value: 'mms_sku_name', label: 'MMS SKU Name' },
     { value: 'size', label: 'Size' },
     { value: 'uom', label: 'UOM' },
-    { value: 'pl_qty', label: 'PL Qty' },
-    { value: 'initial_qty', label: 'Initial Received Qty' },
-    { value: 'pl_initial_discrepancy', label: 'PL-Initial Discrepancy' },
-    { value: 'final_qty', label: 'Final Received Qty' },
-    { value: 'initial_final_discrepancy', label: 'Initial Final Discrepancy' },
-    { value: 'initial_received_by', label: 'Initial Received By' },
-    { value: 'initial_received_date', label: 'Date/Time Initially Received' },
-    { value: 'final_received_by', label: 'Final Received Qty Updated By' },
-    { value: 'final_received_date', label: 'Date/Time Final Received Qty' },
+    { value: 'received_by', label: 'Received By' },
+    { value: 'actual_received', label: 'Actual Received' },
+    { value: 'received_date', label: 'Date & Time Received' },
+    { value: 'status', label: 'Status' },
   ];
 
   const columns = InitialPlReceivingTableColumns();

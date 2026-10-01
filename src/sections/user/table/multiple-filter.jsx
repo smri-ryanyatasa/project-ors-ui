@@ -643,7 +643,7 @@ export function MultipleFilter(props) {
 
                   {/* VALUE */}
                   {!noValueOperator &&
-                    (filter.field === 'status' ? (
+                    (filter.field === 'status' && gridKey == 'users' ? (
                       <TextField
                         select
                         size="small"
