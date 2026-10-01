@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { useColorScheme } from '@mui/material/styles';
 
+import { themeConfig } from 'src/theme/theme-config';
 import { Label } from 'src/components/label';
 
 import { settingIcons } from './icons';
@@ -22,6 +23,7 @@ import { SmallBlock, LargeBlock } from './styles';
 import { FullScreenButton } from './fullscreen-button';
 import { useSettingsContext } from '../context/use-settings-context';
 import { NavColorOptions, NavLayoutOptions } from './nav-layout-option';
+import { FontSizeOptions, FontFamilyOptions } from './font-options';
 
 // ----------------------------------------------------------------------
 
@@ -236,51 +238,51 @@ export function SettingsDrawer({ sx, defaultSettings }) {
     </LargeBlock>
   );
 
-  //   const renderFont = () => (
-  //     <LargeBlock title="Font" sx={{ gap: 2.5 }}>
-  //       {visibility.fontFamily && (
-  //         <SmallBlock
-  //           label="Family"
-  //           canReset={settings.state.fontFamily !== defaultSettings.fontFamily}
-  //           onReset={() => {
-  //             settings.setState({ fontFamily: defaultSettings.fontFamily });
-  //           }}
-  //         >
-  //           <FontFamilyOptions
-  //             value={settings.state.fontFamily}
-  //             onChangeOption={(newOption) => {
-  //               settings.setState({ fontFamily: newOption });
-  //             }}
-  //             options={[
-  //               themeConfig.fontFamily.primary,
-  //               'Inter Variable',
-  //               'DM Sans Variable',
-  //               'Nunito Sans Variable',
-  //             ]}
-  //             icon={<SvgIcon sx={{ width: 28, height: 28 }}>{settingIcons.font}</SvgIcon>}
-  //           />
-  //         </SmallBlock>
-  //       )}
-  //       {visibility.fontSize && (
-  //         <SmallBlock
-  //           label="Size"
-  //           canReset={settings.state.fontSize !== defaultSettings.fontSize}
-  //           onReset={() => {
-  //             settings.setState({ fontSize: defaultSettings.fontSize });
-  //           }}
-  //           sx={{ gap: 5 }}
-  //         >
-  //           <FontSizeOptions
-  //             options={[12, 20]}
-  //             value={settings.state.fontSize}
-  //             onChangeOption={(newOption) => {
-  //               settings.setState({ fontSize: newOption });
-  //             }}
-  //           />
-  //         </SmallBlock>
-  //       )}
-  //     </LargeBlock>
-  //   );
+  const renderFont = () => (
+    <LargeBlock title="Font" sx={{ gap: 2.5 }}>
+      {visibility.fontFamily && (
+        <SmallBlock
+          label="Family"
+          canReset={settings.state.fontFamily !== defaultSettings.fontFamily}
+          onReset={() => {
+            settings.setState({ fontFamily: defaultSettings.fontFamily });
+          }}
+        >
+          <FontFamilyOptions
+            value={settings.state.fontFamily}
+            onChangeOption={(newOption) => {
+              settings.setState({ fontFamily: newOption });
+            }}
+            options={[
+              themeConfig.fontFamily.primary,
+              'Inter Variable',
+              'DM Sans Variable',
+              'Nunito Sans Variable',
+            ]}
+            icon={<SvgIcon sx={{ width: 28, height: 28 }}>{settingIcons.font}</SvgIcon>}
+          />
+        </SmallBlock>
+      )}
+      {visibility.fontSize && (
+        <SmallBlock
+          label="Size"
+          canReset={settings.state.fontSize !== defaultSettings.fontSize}
+          onReset={() => {
+            settings.setState({ fontSize: defaultSettings.fontSize });
+          }}
+          sx={{ gap: 5 }}
+        >
+          <FontSizeOptions
+            options={[12, 20]}
+            value={settings.state.fontSize}
+            onChangeOption={(newOption) => {
+              settings.setState({ fontSize: newOption });
+            }}
+          />
+        </SmallBlock>
+      )}
+    </LargeBlock>
+  );
 
   return (
     <Drawer
@@ -323,7 +325,7 @@ export function SettingsDrawer({ sx, defaultSettings }) {
 
           {(visibility.navColor || visibility.navLayout) && renderNav()}
           {/* {visibility.primaryColor && renderPresets()} */}
-          {/* {(visibility.fontFamily || visibility.fontSize) && renderFont()} */}
+          {(visibility.fontFamily || visibility.fontSize) && renderFont()}
         </Box>
       </Scrollbar>
     </Drawer>

@@ -34,6 +34,7 @@ import { SettingsButton } from '../components/settings-button';
 import { WorkspacesPopover } from '../components/workspaces-popover';
 import { dashboardLayoutVars, dashboardNavColorVars } from './css-vars';
 import { MainSection, layoutClasses, HeaderSection, LayoutSection } from '../core';
+import { WorkspaceDropdown } from '../components/env-button';
 
 // ----------------------------------------------------------------------
 
@@ -206,6 +207,8 @@ function DashboardLayoutContent({ sx, cssVars, children, slotProps, layoutQuery 
             gap: { xs: 0, sm: 0.75 },
           }}
         >
+          <WorkspaceDropdown />
+
           <SettingsButton />
 
           <AccountDrawer data={_account} />
