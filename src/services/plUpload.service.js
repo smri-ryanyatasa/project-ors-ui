@@ -48,8 +48,10 @@ class PlUploadService {
     return data;
   }
 
-  async getUserBranch() {
-    const { data } = await axios.get(endpoints.user.assignedBranch);
+  async getUserBranch(params) {
+    const { data } = await axios.get(endpoints.user.assignedBranch, {
+      params,
+    });
     return data;
   }
 
