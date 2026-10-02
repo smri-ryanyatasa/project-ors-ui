@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import { useColorScheme } from '@mui/material/styles';
 
 import { themeConfig } from 'src/theme/theme-config';
+
 import { Label } from 'src/components/label';
 
 import { settingIcons } from './icons';
@@ -21,9 +22,9 @@ import { BaseOption } from './base-option';
 import { Scrollbar } from '../../scrollbar';
 import { SmallBlock, LargeBlock } from './styles';
 import { FullScreenButton } from './fullscreen-button';
+import { FontSizeOptions, FontFamilyOptions } from './font-options';
 import { useSettingsContext } from '../context/use-settings-context';
 import { NavColorOptions, NavLayoutOptions } from './nav-layout-option';
-import { FontSizeOptions, FontFamilyOptions } from './font-options';
 
 // ----------------------------------------------------------------------
 

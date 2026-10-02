@@ -85,6 +85,7 @@ export function usePlUpload() {
 
       const response = await PlUploadService.getUserBranch({
         user_id: user.user_id,
+        env: user.env,
       });
 
       setBranches(response);

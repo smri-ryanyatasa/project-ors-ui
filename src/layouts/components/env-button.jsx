@@ -1,11 +1,14 @@
 import { useState, useCallback } from 'react';
+
 import Box from '@mui/material/Box';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
+
 import { Iconify } from 'src/components/iconify';
 import { CustomPopover } from 'src/components/custom-popover';
+
 export function WorkspaceDropdown() {
   const environments = [
     { id: 'SCP', name: 'SCP' },

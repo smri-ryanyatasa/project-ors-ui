@@ -3,7 +3,7 @@ import 'src/global.css';
 import { Toaster } from 'sonner';
 
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
 
 import { CONFIG } from 'src/global-config';
 import { themeConfig, ThemeProvider, primary as primaryColor } from 'src/theme';

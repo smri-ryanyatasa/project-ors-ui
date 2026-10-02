@@ -30,11 +30,11 @@ import { getNavData } from '../nav-config-dashboard';
 import { _workspaces } from '../nav-config-workspace';
 import { MenuButton } from '../components/menu-button';
 import { AccountDrawer } from '../components/account-drawer';
+import { WorkspaceDropdown } from '../components/env-button';
 import { SettingsButton } from '../components/settings-button';
 import { WorkspacesPopover } from '../components/workspaces-popover';
 import { dashboardLayoutVars, dashboardNavColorVars } from './css-vars';
 import { MainSection, layoutClasses, HeaderSection, LayoutSection } from '../core';
-import { WorkspaceDropdown } from '../components/env-button';
 
 // ----------------------------------------------------------------------
 
