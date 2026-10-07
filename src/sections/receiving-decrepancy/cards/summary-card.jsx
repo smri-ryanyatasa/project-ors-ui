@@ -108,7 +108,7 @@ export function SummaryCard(props) {
                     <Skeleton variant="text" width={60} height={40} />
                   ) : (
                     <Typography variant="h4" fontWeight={700}>
-                      {card.value}
+                      {card.value ?? 0}
                     </Typography>
                   )}
 

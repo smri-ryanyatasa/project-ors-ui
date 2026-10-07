@@ -505,7 +505,7 @@ export function MultipleFilter(props) {
                   px: 1,
                 }}
               >
-                {selectedSavedFilter?.name || 'New Filter'}
+                {selectedSavedFilter?.name || 'Smart Filter'}
               </Button>
 
               {/* SAVED FILTER MENU */}

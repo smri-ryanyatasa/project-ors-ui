@@ -11,7 +11,7 @@ export function AuthSplitSection({
   methods,
   layoutQuery = 'md',
   title = 'Manage the job',
-  imgUrl = `${CONFIG.assetsDir}/assets/illustrations/illustration-dashboard.webp`,
+  imgUrl = `${CONFIG.assetsDir}/assets/illustrations/ORS_LOIGN-image.png`,
   subtitle = 'Ordering and Receiving System is a centralized platform for managing orders, receiving deliveries, and maintaining accurate inventory across stores and warehouses.',
   ...other
 }) {
@@ -41,6 +41,12 @@ export function AuthSplitSection({
       ]}
       {...other}
     >
+      <Box
+        component="img"
+        alt="Dashboard illustration"
+        src={imgUrl}
+        sx={{ width: 350, objectFit: 'cover' }}
+      />
       <div>
         <Typography variant="h3" sx={{ textAlign: 'center', color: '#ffffff' }}>
           {title}
@@ -54,13 +60,6 @@ export function AuthSplitSection({
           </Typography>
         )}
       </div>
-
-      <Box
-        component="img"
-        alt="Dashboard illustration"
-        src={imgUrl}
-        sx={{ width: 370, aspectRatio: '4/3', objectFit: 'cover' }}
-      />
     </Box>
   );
 }

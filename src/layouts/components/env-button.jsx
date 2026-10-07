@@ -1,31 +1,58 @@
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
+import { Typography } from '@mui/material';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 
 import { Iconify } from 'src/components/iconify';
 import { CustomPopover } from 'src/components/custom-popover';
 
-export function WorkspaceDropdown() {
+import { useUsers } from 'src/sections/user/hooks/use-users';
+
+import { useAuthContext } from 'src/auth/hooks';
+
+export function WorkspaceDropdown(props) {
+  const { user } = useAuthContext();
+  const { updateCurrentEnv } = useUsers();
+
   const environments = [
-    { id: 'SCP', name: 'SCP' },
+    { id: 'WAP', name: 'WAP' },
     { id: 'LSP', name: 'LSP' },
+    { id: 'SCP', name: 'SCP' },
   ];
-  const [workspace, setWorkspace] = useState(environments[0]);
+
+  //   const [workspace, setWorkspace] = useState(environments[0]);
   const [openPopover, setOpenPopover] = useState(null);
+
   const handleOpen = (event) => {
     setOpenPopover(event.currentTarget);
   };
+
   const handleClose = () => {
     setOpenPopover(null);
   };
-  const handleChangeWorkspace = useCallback((newValue) => {
-    setWorkspace(newValue);
-    handleClose();
-  }, []);
+
+  const handleChangeWorkspace = useCallback(
+    async (newValue) => {
+      try {
+        //   setWorkspace(newValue);
+
+        props.onEnvLoading(true);
+        await updateCurrentEnv(newValue);
+      } finally {
+        handleClose();
+        setTimeout(async () => {
+          props.onEnvLoading(false);
+
+          window.location.reload();
+        }, 2000);
+      }
+    },
+    [props]
+  );
+
   const buttonBg = {
     height: 1,
     zIndex: -1,
@@ -43,6 +70,7 @@ export function WorkspaceDropdown() {
       }),
     ...(openPopover && { opacity: 1, visibility: 'visible' }),
   };
+
   return (
     <>
       <ButtonBase
@@ -51,7 +79,7 @@ export function WorkspaceDropdown() {
         sx={{ py: 0.5, px: 0, gap: 1, position: 'relative', '&::before': buttonBg }}
       >
         <Box component="span" sx={{ typography: 'subtitle2' }}>
-          {workspace.name}
+          {user?.env}
         </Box>
         <Iconify width={16} icon="carbon:chevron-sort" sx={{ color: 'text.disabled' }} />{' '}
       </ButtonBase>
@@ -68,7 +96,7 @@ export function WorkspaceDropdown() {
           {environments.map((option) => (
             <MenuItem
               key={option.id}
-              selected={option.id === workspace.id}
+              selected={option.id === user?.env}
               onClick={() => handleChangeWorkspace(option)}
               sx={{ height: 48 }}
             >

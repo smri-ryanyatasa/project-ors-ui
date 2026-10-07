@@ -17,6 +17,7 @@ export const endpoints = {
     saveFilter: '/api/users/save-filter',
     deleteSaveFilter: (id) => `/api/users/save-filter/${id}`,
     updateSaveFilter: (id) => `/api/users/save-filter/${id}`,
+    updateCurrentEnv: '/api/users/update-current-env',
   },
   rolePermission: {
     list: '/api/role-permissions',

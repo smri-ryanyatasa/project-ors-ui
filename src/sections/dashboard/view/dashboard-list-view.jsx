@@ -9,7 +9,6 @@ import { Box, Card, Grid, Stack, Button, Typography, CardHeader, CardContent } f
 import { CONFIG } from 'src/global-config';
 import { DashboardContent } from 'src/layouts/dashboard';
 
-import { Iconify } from 'src/components/iconify';
 import { SvgColor } from 'src/components/svg-color';
 
 import { useAuthContext } from 'src/auth/hooks';
@@ -122,7 +121,12 @@ export function DashboardListView({ props, title = 'Blank', sx }) {
 
               <Button
                 variant="contained"
-                startIcon={<Iconify icon="solar:box-minimalistic-bold-duotone" />}
+                startIcon={
+                  <SvgColor
+                    src="/assets/icons/solar/solar--box-minimalistic-bold-duotone.svg"
+                    width={14}
+                  />
+                }
                 color="primary"
                 component={Link}
                 href="/ors/packing-list/pl-upload"
@@ -197,25 +201,25 @@ export function DashboardListView({ props, title = 'Blank', sx }) {
                 {
                   title: 'Upload Packing List',
                   description: 'Upload list of packing',
-                  icon: 'solar:cart-large-2-bold-duotone',
+                  icon: 'solar--cart-large-2-bold-duotone',
                   color: 'primary',
                 },
                 {
                   title: 'Receiving',
                   description: 'Record received items',
-                  icon: 'solar:inbox-in-bold-duotone',
+                  icon: 'solar--inbox-in-bold-duotone',
                   color: 'info',
                 },
                 {
                   title: 'Approval',
                   description: 'Review received items',
-                  icon: 'solar:check-circle-bold-duotone',
+                  icon: 'solar--check-circle-bold-duotone',
                   color: 'success',
                 },
                 {
                   title: 'Purchase Order',
                   description: 'Generate purchase orders',
-                  icon: 'solar:document-add-bold-duotone',
+                  icon: 'solar--document-add-bold-duotone',
                   color: 'warning',
                 },
               ].map((item, index, items) => (
@@ -256,7 +260,7 @@ export function DashboardListView({ props, title = 'Blank', sx }) {
                       color: `${item.color}.main`,
                     }}
                   >
-                    <Iconify icon={item.icon} width={22} />
+                    <SvgColor src={`/assets/icons/solar/${item.icon}.svg`} width={14} />
                   </Box>
 
                   {/* Text */}
