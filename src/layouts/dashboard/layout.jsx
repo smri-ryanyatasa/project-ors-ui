@@ -1,13 +1,14 @@
 'use client';
 
-import { useMemo } from 'react';
 import { merge } from 'es-toolkit';
+import { useMemo, useState } from 'react';
 import { useBoolean } from 'minimal-shared/hooks';
 
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import { useTheme } from '@mui/material/styles';
 import { iconButtonClasses } from '@mui/material/IconButton';
+import { Backdrop, Typography, CircularProgress } from '@mui/material';
 
 import { Logo } from 'src/components/logo';
 import { useSettingsContext } from 'src/components/settings';
@@ -54,6 +55,7 @@ function DashboardLayoutContent({ sx, cssVars, children, slotProps, layoutQuery 
   // ✅ NOW this is inside PlUploadProvider
   const { loading, plsUplaodStatus } = usePlUploadContext();
   const { status: poLogsStatus } = usePOLogs();
+  const [envLoading, setEnvLoading] = useState(false);
 
   const { user } = useMockedUser();
 
@@ -64,6 +66,11 @@ function DashboardLayoutContent({ sx, cssVars, children, slotProps, layoutQuery 
   const navVars = dashboardNavColorVars(theme, settings.state.navColor, settings.state.navLayout);
 
   const { value: open, onFalse: onClose, onTrue: onOpen } = useBoolean();
+
+  const handleEnvLoading = async (value) => {
+    setEnvLoading(value);
+    console.log(envLoading);
+  };
 
   const parsedMenus = useMemo(() => {
     if (!user?.menus) {
@@ -207,7 +214,7 @@ function DashboardLayoutContent({ sx, cssVars, children, slotProps, layoutQuery 
             gap: { xs: 0, sm: 0.75 },
           }}
         >
-          <WorkspaceDropdown />
+          <WorkspaceDropdown onEnvLoading={handleEnvLoading} />
 
           <SettingsButton />
 
@@ -253,6 +260,32 @@ function DashboardLayoutContent({ sx, cssVars, children, slotProps, layoutQuery 
 
   const renderMain = () => <MainSection {...slotProps?.main}>{children}</MainSection>;
 
+  const loader = () => (
+    <Backdrop
+      open={envLoading}
+      sx={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 99999,
+        color: '#fff',
+        flexDirection: 'column',
+      }}
+    >
+      <CircularProgress color="inherit" sx={{ mb: 2 }} />
+
+      <Typography variant="subtitle1">Changing Environment is in Progress ...</Typography>
+
+      <Typography
+        variant="body2"
+        sx={{
+          color: 'rgba(255, 255, 255, 0.7)',
+        }}
+      >
+        Please wait while we process your request.
+      </Typography>
+    </Backdrop>
+  );
+
   return (
     <LayoutSection
       headerSection={renderHeader()}
@@ -282,6 +315,7 @@ function DashboardLayoutContent({ sx, cssVars, children, slotProps, layoutQuery 
       ]}
     >
       {renderMain()}
+      {loader()}
     </LayoutSection>
   );
 }

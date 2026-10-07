@@ -17,25 +17,25 @@ import { DateRangeFilter } from './date';
 export function PlAgeingFilter({ sx, onFilter }) {
   const [filters, setFilters] = useState({
     uploadedDate: {
-      type: 'all',
+      type: 'All',
       startDate: '',
       endDate: '',
     },
 
     initialReceiptDate: {
-      type: 'all',
+      type: 'All',
       startDate: '',
       endDate: '',
     },
 
     approvedReceiptDate: {
-      type: 'all',
+      type: 'All',
       startDate: '',
       endDate: '',
     },
 
     poGeneratedDate: {
-      type: 'all',
+      type: 'All',
       startDate: '',
       endDate: '',
     },

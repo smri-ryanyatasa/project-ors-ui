@@ -93,6 +93,11 @@ class UserService {
     const { data } = await axios.put(endpoints.user.updateSaveFilter(payload.id), payload);
     return data;
   }
+
+  async updateCurrentEnv(payload) {
+    const { data } = await axios.post(endpoints.user.updateCurrentEnv, payload);
+    return data;
+  }
 }
 
 export default new UserService();

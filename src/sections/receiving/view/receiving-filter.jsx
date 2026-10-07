@@ -20,13 +20,13 @@ export function ReceivingFilter({ sx, branches, onFilter }) {
   const [filters, setFilters] = useState({
     branches: '',
     initialReceiptDate: {
-      type: 'all',
+      type: 'All',
       startDate: '',
       endDate: '',
     },
 
     finalReceiptDate: {
-      type: 'all',
+      type: 'All',
       startDate: '',
       endDate: '',
     },

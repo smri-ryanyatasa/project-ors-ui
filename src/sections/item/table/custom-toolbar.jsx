@@ -1,6 +1,4 @@
-import { useState } from 'react';
-
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import {
   GridToolbarContainer,
   GridToolbarQuickFilter,
@@ -8,25 +6,23 @@ import {
   GridToolbarDensitySelector,
 } from '@mui/x-data-grid';
 
-import { SvgColor } from 'src/components/svg-color';
-
 import { MultipleFilter } from 'src/sections/user/table/multiple-filter';
 
 import { DownloadButton } from './download-button';
 
 export function CustomToolbar(props) {
-  const [loading, setLoading] = useState(false);
+  //   const [loading, setLoading] = useState(false);
 
-  const handleSave = async () => {
-    try {
-      setLoading(true);
-      await props.onSave();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //   const handleSave = async () => {
+  //     try {
+  //       setLoading(true);
+  //       await props.onSave();
+  //     } catch (error) {
+  //       console.log(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
   return (
     <Box
@@ -37,7 +33,7 @@ export function CustomToolbar(props) {
         width: '100%',
       }}
     >
-      <Button
+      {/* <Button
         variant="contained"
         loading={loading}
         color="primary"
@@ -48,7 +44,7 @@ export function CustomToolbar(props) {
         onClick={handleSave}
       >
         Save
-      </Button>
+      </Button> */}
       <GridToolbarContainer
         sx={{
           ml: 'auto',

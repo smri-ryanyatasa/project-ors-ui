@@ -243,6 +243,11 @@ export function useUsers() {
     return response;
   };
 
+  const updateCurrentEnv = async (params) => {
+    const response = await UserService.updateCurrentEnv(params);
+    return response;
+  };
+
   useEffect(() => {
     refresh();
     getBranches();
@@ -279,5 +284,6 @@ export function useUsers() {
     getSaveFilter,
     deleteSaveFilter,
     updateSaveFilter,
+    updateCurrentEnv,
   };
 }
