@@ -49,7 +49,7 @@ export const endpoints = {
     excelExport: '/api/branch/excel-export',
   },
   item: {
-    list: '/api/item/item-fetch',
+    list: '/api/item',
     csvExport: '/api/item/csv-export',
     excelExport: '/api/item/excel-export',
     rowsUpdate: '/api/item/update-rows',

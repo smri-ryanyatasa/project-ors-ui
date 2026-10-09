@@ -57,10 +57,10 @@ export function useItem() {
         }),
       ]);
 
-      setItems(response.data);
-      setTotal(response.total);
-      //   setItems(response);
-      //   setTotal(response?.[0]?.total_rows || 0);
+      //   setItems(response.data);
+      //   setTotal(response.total);
+      setItems(response);
+      setTotal(response?.[0]?.total_rows || 0);
     } catch (error) {
       console.log(error);
     } finally {
