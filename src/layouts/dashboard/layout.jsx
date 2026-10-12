@@ -73,15 +73,18 @@ function DashboardLayoutContent({ sx, cssVars, children, slotProps, layoutQuery 
   };
 
   const parsedMenus = useMemo(() => {
-    if (!user?.menus) {
+    const menus2 = user?.menus;
+
+    if (typeof menus2 !== 'string' || !menus2.trim()) {
       return [];
     }
 
     try {
-      return JSON.parse(user.menus) ?? [];
-    } catch (error) {
-      console.error('Invalid menus JSON:', error);
+      const parsed = JSON.parse(menus2);
 
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      console.error('[Dashboard] Invalid menus JSON:', error);
       return [];
     }
   }, [user?.menus]);

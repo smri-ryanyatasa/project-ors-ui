@@ -118,7 +118,7 @@ export function ItemListView({ title = 'Blank', sx }) {
   };
 
   const handleOpenValues = (event, value) => {
-    setVendors(value.split(','));
+    setVendors(value.split('",'));
     setVendorListOpen(true);
   };
 

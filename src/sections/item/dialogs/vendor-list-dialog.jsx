@@ -6,8 +6,8 @@ export function VendorListDialog({ open, data, onClose }) {
     const [code, ...nameParts] = item.split('-');
 
     return {
-      code: code.trim(),
-      name: nameParts.join('-').trim(),
+      code: code.trim().replace(/"/g, ''),
+      name: nameParts.join('-').trim().replace(/"/g, ''),
     };
   });
 

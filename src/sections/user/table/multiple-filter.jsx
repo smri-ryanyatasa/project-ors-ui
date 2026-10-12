@@ -20,7 +20,10 @@ import {
 
 import { SvgColor } from 'src/components/svg-color';
 
+import { useAuthContext } from 'src/auth/hooks';
+
 export function MultipleFilter(props) {
+  const { user } = useAuthContext();
   const {
     gridKey = '',
     onFilterModelChange,
@@ -104,20 +107,37 @@ export function MultipleFilter(props) {
         return;
       }
 
-      const parsedFilters = res.map((item) => ({
-        ...item,
-        filters: typeof item.filters === 'string' ? JSON.parse(item.filters) : item.filters || [],
-      }));
+      const parsedFilters = res.map((item) => {
+        let filters2 = item.filters;
+
+        if (typeof filters2 === 'string') {
+          try {
+            filters2 = filters ? JSON.parse(filters2) : [];
+          } catch {
+            filters2 = [];
+          }
+        }
+
+        return {
+          ...item,
+          filters: filters2 ?? [],
+        };
+      });
 
       setSavedFilters(parsedFilters);
     } catch (error) {
       console.error('Failed to load saved filters:', error);
     }
-  }, [getSaveFilter, gridKey]);
+  }, [gridKey, getSaveFilter, filters]);
 
   useEffect(() => {
+    if (!user) {
+      setSavedFilters([]);
+      return;
+    }
+
     loadSavedFilters();
-  }, [loadSavedFilters]);
+  }, [user, setSavedFilters, loadSavedFilters]);
 
   // ---------------------------------------------------------------------------
   // SAVE SAVED FILTERS TO LOCAL STORAGE
