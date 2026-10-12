@@ -50,7 +50,7 @@ export function WorkspaceDropdown(props) {
         }, 2000);
       }
     },
-    [props]
+    [props, updateCurrentEnv]
   );
 
   const buttonBg = {

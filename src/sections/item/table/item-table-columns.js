@@ -150,7 +150,7 @@ export const ItemTableColumns = ({ onOpenValues, onOpenUPCValues }) => [
               whiteSpace: 'nowrap',
             }}
           >
-            {value.split(',')[0]}
+            {value.split(',')[0].replace(/"/g, '')}
           </Box>
         </Box>
       ) : (
