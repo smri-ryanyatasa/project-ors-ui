@@ -10,8 +10,6 @@ import { DashboardContent } from 'src/layouts/dashboard';
 // import { SvgColor } from 'src/components/svg-color';
 import { PageHeader } from 'src/components/page-header/page-header';
 
-import { usePlUpload } from 'src/sections/pl-upload/hooks/use-pl-upload';
-
 import { UniqueSkuReceivedCard } from '../cards/unique-sku-received';
 import { InitialPlReceivingFilter } from './initial-pl-receiving-filter';
 import { ConfirmReceiptDialog } from '../dialogs/confirm-receipt-dialog';
@@ -50,9 +48,9 @@ export function InitialPlReceivingListView({ title = 'Blank', sx }) {
     getSaveFilter,
     deleteSaveFilter,
     updateSaveFilter,
+    branches,
   } = useInitialPLReceiving();
 
-  const { branches } = usePlUpload();
   const [editedRows, setEditedRows] = useState({});
   const [confirmReceiptOpen, setConfirmReceiptOpen] = useState(false);
 

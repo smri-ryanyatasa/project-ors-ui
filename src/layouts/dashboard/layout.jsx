@@ -13,18 +13,13 @@ import { Backdrop, Typography, CircularProgress } from '@mui/material';
 import { Logo } from 'src/components/logo';
 import { useSettingsContext } from 'src/components/settings';
 
-import { usePOLogs } from 'src/sections/po-logs/hooks/use-po-logs';
-import { useRolePermissions } from 'src/sections/role-permissions/hooks/use-roles';
-import {
-  PlUploadProvider,
-  usePlUploadContext,
-} from 'src/sections/pl-upload/view/pl-upload-context';
-
 import { useMockedUser } from 'src/auth/hooks';
 
 import { NavMobile } from './nav-mobile';
 import { VerticalDivider } from './content';
 import { NavVertical } from './nav-vertical';
+import { useMenus } from './hooks/use-menus';
+import { useBadge } from './hooks/use-badge';
 import { NavHorizontal } from './nav-horizontal';
 import { _account } from '../nav-config-account';
 import { getNavData } from '../nav-config-dashboard';
@@ -40,11 +35,7 @@ import { MainSection, layoutClasses, HeaderSection, LayoutSection } from '../cor
 // ----------------------------------------------------------------------
 
 export function DashboardLayout(props) {
-  return (
-    <PlUploadProvider>
-      <DashboardLayoutContent {...props} />
-    </PlUploadProvider>
-  );
+  return <DashboardLayoutContent {...props} />;
 }
 
 // ----------------------------------------------------------------------
@@ -53,15 +44,17 @@ function DashboardLayoutContent({ sx, cssVars, children, slotProps, layoutQuery 
   const theme = useTheme();
 
   // ✅ NOW this is inside PlUploadProvider
-  const { loading, plsUplaodStatus } = usePlUploadContext();
-  const { status: poLogsStatus } = usePOLogs();
+  //   const { loading, plsUplaodStatus } = usePlUploadContext();
+  //   const { status: poLogsStatus } = usePOLogs();
   const [envLoading, setEnvLoading] = useState(false);
 
   const { user } = useMockedUser();
 
   const settings = useSettingsContext();
 
-  const { menus } = useRolePermissions();
+  const { menus } = useMenus();
+
+  const { loading, plsUplaodStatus, status: poLogsStatus } = useBadge();
 
   const navVars = dashboardNavColorVars(theme, settings.state.navColor, settings.state.navLayout);
 

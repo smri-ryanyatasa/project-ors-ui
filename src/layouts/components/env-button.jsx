@@ -9,13 +9,13 @@ import ButtonBase from '@mui/material/ButtonBase';
 import { Iconify } from 'src/components/iconify';
 import { CustomPopover } from 'src/components/custom-popover';
 
-import { useUsers } from 'src/sections/user/hooks/use-users';
-
 import { useAuthContext } from 'src/auth/hooks';
+
+import { useWorkspace } from '../dashboard/hooks/use-workspace';
 
 export function WorkspaceDropdown(props) {
   const { user } = useAuthContext();
-  const { updateCurrentEnv } = useUsers();
+  const { updateCurrentEnv } = useWorkspace();
 
   const environments = [
     { id: 'WAP', name: 'WAP' },

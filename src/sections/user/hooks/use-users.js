@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 import UserService from 'src/services/user.service';
 import MMSMasterfileService from 'src/services/mms-masterfile.service';
+import RolePermissionsService from 'src/services/rolePermissions.service';
 
 import { useAuthContext } from 'src/auth/hooks';
 
@@ -13,6 +14,8 @@ export function useUsers() {
 
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
+
+  const [roles, setRoles] = useState([]);
 
   // Pagination state
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
@@ -197,12 +200,23 @@ export function useUsers() {
     }
   };
 
-  const getBranches = useCallback(async () => {
+  //   const getBranches = useCallback(async () => {
+  //     try {
+  //       const response = await UserService.getBranches();
+  //       setBranches(response);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }, []);
+
+  const loadBranches = useCallback(async () => {
     try {
-      const response = await UserService.getBranches();
-      setBranches(response);
+      const res = await UserService.getBranches(); // Use your existing branches API function
+      setBranches(res);
+      return res;
     } catch (error) {
-      console.log(error);
+      console.error('Failed to load branches:', error);
+      throw error;
     }
   }, []);
 
@@ -248,10 +262,19 @@ export function useUsers() {
     return response;
   };
 
+  const loadRoles = useCallback(async () => {
+    const response = await RolePermissionsService.getRoles();
+
+    setRoles(response);
+  }, []);
+
   useEffect(() => {
     refresh();
-    getBranches();
-  }, [refresh, getBranches]);
+  }, [refresh]);
+
+  //   useEffect(() => {
+  //     getBranches();
+  //   }, [getBranches]);
 
   return {
     users,
@@ -274,6 +297,7 @@ export function useUsers() {
     csvExport,
     excelExport,
     branches,
+    loadBranches,
     triggerMMSUser,
     getMMSUsers,
     createMmsUser,
@@ -285,5 +309,7 @@ export function useUsers() {
     deleteSaveFilter,
     updateSaveFilter,
     updateCurrentEnv,
+    roles,
+    loadRoles,
   };
 }

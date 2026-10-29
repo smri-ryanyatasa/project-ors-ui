@@ -11,8 +11,8 @@ import { SvgColor } from 'src/components/svg-color';
 import { PageHeader } from 'src/components/page-header/page-header';
 
 import { PlUploadFilter } from './pl-upload-filter';
+import { usePlUpload } from '../hooks/use-pl-upload';
 import { PlUploadTable } from '../table/pl-upload-table';
-import { usePlUploadContext } from './pl-upload-context';
 import { FileUploadedCard } from '../cards/file-upload-card';
 import { PlUploadDialog } from '../dialogs/pl-upload-dialog';
 import { FileRejectedCard } from '../cards/file-rejected-card';
@@ -48,7 +48,7 @@ export function PlUploadListView({ title = 'Blank', sx }) {
     getSaveFilter,
     deleteSaveFilter,
     updateSaveFilter,
-  } = usePlUploadContext();
+  } = usePlUpload();
 
   const [selectedPl, setSelectedPl] = useState([]);
   const [logs, setLogs] = useState([]);

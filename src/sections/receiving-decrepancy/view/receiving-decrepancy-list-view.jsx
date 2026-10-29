@@ -8,8 +8,6 @@ import { DashboardContent } from 'src/layouts/dashboard';
 
 import { PageHeader } from 'src/components/page-header/page-header';
 
-import { usePlUpload } from 'src/sections/pl-upload/hooks/use-pl-upload';
-
 import { SummaryCard } from '../cards/summary-card';
 import { ReceivingDecrepancyFilter } from './receiving-decrepancy-filter';
 import { useReceivingDecrepancyReport } from '../hooks/use-receiving-report';
@@ -40,9 +38,8 @@ export function ReceivingDecrepancyListView({ title = 'Blank', sx }) {
     getSaveFilter,
     deleteSaveFilter,
     updateSaveFilter,
+    branches,
   } = useReceivingDecrepancyReport();
-
-  const { branches } = usePlUpload();
 
   const handleCsvExport = async () => {
     await csvExport();

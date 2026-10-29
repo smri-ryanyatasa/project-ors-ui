@@ -10,8 +10,6 @@ import { DashboardContent } from 'src/layouts/dashboard';
 import { SvgColor } from 'src/components/svg-color';
 import { PageHeader } from 'src/components/page-header/page-header';
 
-import { useRolePermissions } from 'src/sections/role-permissions/hooks/use-roles';
-
 import { useUsers } from '../hooks/use-users';
 import { UserTable } from '../table/user-table';
 import { MMSUserDialog } from '../dialogs/mms-user-dialog';
@@ -29,6 +27,7 @@ export function UserListView({ title = 'Blank', sx }) {
   const {
     users,
     branches,
+    loadBranches,
     refresh,
     createUser,
     bulkUpload,
@@ -55,8 +54,9 @@ export function UserListView({ title = 'Blank', sx }) {
     getSaveFilter,
     deleteSaveFilter,
     updateSaveFilter,
+    roles,
+    loadRoles,
   } = useUsers();
-  const { roles } = useRolePermissions();
   const [selectedUser, setSelectedUser] = useState([]);
   const [createOpen, setCreateOpen] = useState(false);
   const [bulkUploadOpen, setBulkUploadOpen] = useState(false);
@@ -71,6 +71,8 @@ export function UserListView({ title = 'Blank', sx }) {
   const [mmsUsers, setMmsUsers] = useState([]);
 
   const handleOpenEdit = async (user) => {
+    await loadBranches();
+    await loadRoles();
     setEditOpen(true);
     setSelectedUser(user);
   };
@@ -275,7 +277,11 @@ export function UserListView({ title = 'Blank', sx }) {
             Select Users from MMS
           </Button>
           <UserCreateMenu
-            onAddSingleUser={() => setCreateOpen(true)}
+            onAddSingleUser={async () => {
+              await loadBranches();
+              await loadRoles();
+              setCreateOpen(true);
+            }}
             onBulkUpload={() => setBulkUploadOpen(true)}
           />
         </Stack>

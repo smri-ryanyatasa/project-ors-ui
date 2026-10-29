@@ -99,6 +99,11 @@ export function MultipleFilter(props) {
   // ---------------------------------------------------------------------------
 
   const loadSavedFilters = useCallback(async () => {
+    if (!user) {
+      setSavedFilters([]);
+      return;
+    }
+
     try {
       const res = await getSaveFilter(gridKey);
 
@@ -112,7 +117,7 @@ export function MultipleFilter(props) {
 
         if (typeof filters2 === 'string') {
           try {
-            filters2 = filters ? JSON.parse(filters2) : [];
+            filters2 = JSON.parse(filters2);
           } catch {
             filters2 = [];
           }
@@ -128,16 +133,16 @@ export function MultipleFilter(props) {
     } catch (error) {
       console.error('Failed to load saved filters:', error);
     }
-  }, [gridKey, getSaveFilter, filters]);
+  }, [user, gridKey, getSaveFilter, setSavedFilters]);
 
-  useEffect(() => {
-    if (!user) {
-      setSavedFilters([]);
-      return;
-    }
+  //   useEffect(() => {
+  //     if (!user) {
+  //       setSavedFilters([]);
+  //       return;
+  //     }
 
-    loadSavedFilters();
-  }, [user, setSavedFilters, loadSavedFilters]);
+  //     loadSavedFilters();
+  //   }, [user, setSavedFilters, loadSavedFilters]);
 
   // ---------------------------------------------------------------------------
   // SAVE SAVED FILTERS TO LOCAL STORAGE
@@ -155,8 +160,9 @@ export function MultipleFilter(props) {
   // FILTER POPOVER
   // ---------------------------------------------------------------------------
 
-  const handleFilterClick = (event) => {
+  const handleFilterClick = async (event) => {
     setFilterAnchor(event.currentTarget);
+    await loadSavedFilters();
   };
 
   const handleFilterClose = () => {
