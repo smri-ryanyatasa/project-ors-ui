@@ -17,13 +17,15 @@ import { RoleCreateDialog } from '../dialogs/role-create-dialog';
 import { RoleDeleteDialog } from '../dialogs/role-delete-dialog';
 
 export function RoleListView({ title = 'Blank', sx }) {
-  const { roles, refresh, createRole, updateRole, deleteRole, menus } = useRolePermissions();
+  const { roles, refresh, createRole, updateRole, deleteRole, menus, getMenus } =
+    useRolePermissions();
   const [createOpen, setCreateOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState([]);
 
   const handleOpenEdit = async (role) => {
+    await getMenus();
     setEditOpen(true);
     setSelectedRole(role);
   };
@@ -96,7 +98,10 @@ export function RoleListView({ title = 'Blank', sx }) {
                 sx={{ width: 20, height: 20 }}
               />
             }
-            onClick={() => setCreateOpen(true)}
+            onClick={async () => {
+              await getMenus();
+              setCreateOpen(true);
+            }}
           >
             Add New Role
           </Button>

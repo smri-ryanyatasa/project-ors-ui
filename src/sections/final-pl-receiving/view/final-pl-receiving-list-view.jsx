@@ -9,9 +9,6 @@ import { DashboardContent } from 'src/layouts/dashboard';
 
 import { PageHeader } from 'src/components/page-header/page-header';
 
-import { usePlUpload } from 'src/sections/pl-upload/hooks/use-pl-upload';
-import { useInitialPLReceiving } from 'src/sections/initial-pl-receiving/hooks/use-initial-pl-receiving';
-
 import { TotalPlQuantityCard } from '../cards/total-pl-quantity';
 import { FinalPlReceivingFilter } from './final-pl-receiving-filter';
 import { useFinalPLReceiving } from '../hooks/use-final-pl-receiving';
@@ -21,8 +18,6 @@ import { TotalFinalReceivedQuantityCard } from '../cards/total-final-received-qu
 import { TotalInitialReceivedQuantityCard } from '../cards/total-initial-received-quantity';
 
 export function FinalPlReceivingListView({ title = 'Blank', sx }) {
-  const { branches } = usePlUpload();
-  const { getPlsFiles, files } = useInitialPLReceiving();
   const {
     refresh,
     loading,
@@ -50,7 +45,10 @@ export function FinalPlReceivingListView({ title = 'Blank', sx }) {
     getSaveFilter,
     deleteSaveFilter,
     updateSaveFilter,
+    branches,
     zero,
+    getPlsFiles,
+    files,
   } = useFinalPLReceiving();
 
   const [gridRows, setGridRows] = useState(() => pls ?? []);

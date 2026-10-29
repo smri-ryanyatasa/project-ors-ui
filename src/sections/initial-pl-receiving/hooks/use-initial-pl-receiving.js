@@ -2,6 +2,7 @@ import { saveAs } from 'file-saver';
 import { useState, useEffect, useCallback } from 'react';
 
 import UserService from 'src/services/user.service';
+import PlUploadService from 'src/services/plUpload.service';
 import InitialPlReceivingService from 'src/services/initialPlReceiving.service';
 
 import { useAuthContext } from 'src/auth/hooks';
@@ -27,6 +28,8 @@ export function useInitialPLReceiving() {
   const [customFilterModel, setCustomFilterModel] = useState({ items: [] });
   const search = filterModel.quickFilterValues?.[0] || '';
   const [sortModel, setSortModel] = useState([{ field: 'material_code', sort: 'desc' }]);
+
+  const [branches, setBranches] = useState([]);
 
   const handleFilterModelChange = useCallback((model) => {
     setFilterModel(model);
@@ -282,11 +285,31 @@ export function useInitialPLReceiving() {
     return `${MM}${DD}${YY}_${HH}${MMN}${SS}`;
   };
 
+  const getUserBranches = useCallback(async () => {
+    if (!user) return;
+
+    try {
+      setLoading(true);
+
+      const response = await PlUploadService.getUserBranch({
+        user_id: user.user_id,
+        env: user.env,
+      });
+
+      setBranches(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
+
   useEffect(() => {
     if (!user) return;
 
     refresh();
-  }, [user, refresh]);
+    getUserBranches();
+  }, [user, refresh, getUserBranches]);
 
   return {
     refresh,
@@ -321,5 +344,6 @@ export function useInitialPLReceiving() {
     getSaveFilter,
     deleteSaveFilter,
     updateSaveFilter,
+    branches,
   };
 }

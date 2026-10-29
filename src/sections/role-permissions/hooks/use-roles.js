@@ -57,8 +57,7 @@ export function useRolePermissions() {
 
   useEffect(() => {
     refresh();
-    getMenus();
-  }, [refresh, getMenus]);
+  }, [refresh]);
 
   return {
     roles,
@@ -68,5 +67,6 @@ export function useRolePermissions() {
     updateRole,
     deleteRole,
     menus,
+    getMenus,
   };
 }

@@ -2,7 +2,9 @@ import { saveAs } from 'file-saver';
 import { useState, useEffect, useCallback } from 'react';
 
 import UserService from 'src/services/user.service';
+import PlUploadService from 'src/services/plUpload.service';
 import FinalPlReceivingService from 'src/services/finalPlReceiving.service';
+import InitialPlReceivingService from 'src/services/initialPlReceiving.service';
 
 import { useAuthContext } from 'src/auth/hooks';
 
@@ -26,6 +28,9 @@ export function useFinalPLReceiving() {
   const [customFilterModel, setCustomFilterModel] = useState({ items: [] });
   const search = filterModel.quickFilterValues?.[0] || '';
   const [sortModel, setSortModel] = useState([{ field: 'material_code', sort: 'desc' }]);
+
+  const [branches, setBranches] = useState([]);
+  const [files, setFiles] = useState([]);
 
   const handleFilterModelChange = useCallback((model) => {
     setFilterModel(model);
@@ -256,11 +261,45 @@ export function useFinalPLReceiving() {
     return `${MM}${DD}${YY}_${HH}${MMN}${SS}`;
   };
 
+  const getUserBranches = useCallback(async () => {
+    if (!user) return;
+
+    try {
+      setLoading(true);
+
+      const response = await PlUploadService.getUserBranch({
+        user_id: user.user_id,
+        env: user.env,
+      });
+
+      setBranches(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
+
+  const getPlsFiles = async (branch_code, type = 2) => {
+    try {
+      const response = await InitialPlReceivingService.getPlsFiles({
+        branch_id: branch_code,
+        env: user.env,
+        type,
+      });
+
+      setFiles(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (!user) return;
 
     refresh();
-  }, [user, refresh]);
+    getUserBranches();
+  }, [user, refresh, getUserBranches]);
 
   return {
     refresh,
@@ -292,5 +331,8 @@ export function useFinalPLReceiving() {
     getSaveFilter,
     deleteSaveFilter,
     updateSaveFilter,
+    branches,
+    getPlsFiles,
+    files,
   };
 }
