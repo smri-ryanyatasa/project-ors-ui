@@ -25,7 +25,7 @@ export function AuthSplitSection({
           px: 3,
           pb: 3,
           width: 1,
-          maxWidth: 750,
+          maxWidth: 765,
           display: 'none',
           position: 'relative',
           pt: 'var(--layout-header-desktop-height)',

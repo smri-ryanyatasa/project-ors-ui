@@ -40,6 +40,11 @@ export function UserChangePassowordDialog({ open, user, onClose, onSave }) {
       return;
     }
 
+    if (form.new_password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return;
+    }
+
     setError('');
 
     try {
@@ -66,7 +71,7 @@ export function UserChangePassowordDialog({ open, user, onClose, onSave }) {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
-      <DialogTitle>Change Password - {user.full_name}</DialogTitle>
+      <DialogTitle>Change Password - {user?.full_name}</DialogTitle>
 
       <DialogContent>
         <Stack spacing={3} sx={{ mt: 1 }}>

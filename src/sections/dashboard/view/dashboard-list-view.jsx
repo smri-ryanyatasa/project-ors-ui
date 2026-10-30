@@ -1,10 +1,22 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 
 import { useTheme } from '@mui/material/styles';
 import { PieChart, LineChart } from '@mui/x-charts';
-import { Box, Card, Grid, Stack, Button, Typography, CardHeader, CardContent } from '@mui/material';
+import {
+  Box,
+  Card,
+  Grid,
+  Stack,
+  Button,
+  Select,
+  MenuItem,
+  Typography,
+  CardHeader,
+  CardContent,
+} from '@mui/material';
 
 import { CONFIG } from 'src/global-config';
 import { DashboardContent } from 'src/layouts/dashboard';
@@ -15,6 +27,8 @@ import { useAuthContext } from 'src/auth/hooks';
 
 export function DashboardListView({ props, title = 'Blank', sx }) {
   const { user } = useAuthContext();
+
+  const [dateRange, setDateRange] = useState('7');
 
   const themeColor = useTheme();
 
@@ -43,6 +57,12 @@ export function DashboardListView({ props, title = 'Blank', sx }) {
       icon: '/assets/icons/solar/Sparkline.svg',
       color: 'success',
     },
+  ];
+
+  const dateRanges = [
+    { value: '7', label: 'Last 7 Days' },
+    { value: '30', label: 'Last 30 Days' },
+    { value: '90', label: 'Last 90 Days' },
   ];
 
   const renderContent = () => (
@@ -279,7 +299,54 @@ export function DashboardListView({ props, title = 'Blank', sx }) {
           </Card>
         </Grid>
       </Grid>
+      <Box sx={{ width: '100%' }}>
+        {/* Header */}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 2,
+            mb: 2,
+          }}
+        >
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: 700,
+              color: 'text.primary',
+            }}
+          >
+            Order Receiving Overview
+          </Typography>
 
+          <Select
+            size="small"
+            value={dateRange}
+            onChange={(event) => setDateRange(event.target.value)}
+            sx={{
+              minWidth: 108,
+              bgcolor: 'background.paper',
+              fontSize: 10,
+              '& .MuiSelect-select': {
+                py: 0.75,
+                pl: 1.25,
+                pr: 4,
+                fontSize: 15,
+              },
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'divider',
+              },
+            }}
+          >
+            {dateRanges.map((range) => (
+              <MenuItem key={range.value} value={range.value}>
+                {range.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
+      </Box>
       <Grid container spacing={2} sx={{ mb: 2 }}>
         {summaryCards.map((card) => (
           <Grid key={card.label} size={{ xs: 12, sm: 6, md: 3 }} sx={{ display: 'flex' }}>
@@ -409,7 +476,6 @@ export function DashboardListView({ props, title = 'Blank', sx }) {
           </Grid>
         ))}
       </Grid>
-
       <Grid container spacing={2} alignItems="stretch">
         <Grid size={{ xs: 12, sm: 12, md: 4 }} sx={{ display: 'flex' }}>
           <Card

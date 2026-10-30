@@ -9,19 +9,29 @@ import ButtonBase from '@mui/material/ButtonBase';
 import { Iconify } from 'src/components/iconify';
 import { CustomPopover } from 'src/components/custom-popover';
 
-import { useAuthContext } from 'src/auth/hooks';
+import { useUsers } from 'src/sections/user/hooks/use-users';
 
-import { useWorkspace } from '../dashboard/hooks/use-workspace';
+import { useAuthContext } from 'src/auth/hooks';
 
 export function WorkspaceDropdown(props) {
   const { user } = useAuthContext();
-  const { updateCurrentEnv } = useWorkspace();
+  const { updateCurrentEnv } = useUsers();
 
-  const environments = [
+  const assigned_env = user?.assigned_env.split(',') ?? [];
+  const options = (assigned_env ?? [])
+    .filter((value) => value.trim() !== '')
+    .map((value) => ({
+      id: value.trim(),
+      name: value.trim(),
+    }));
+
+  const all = [
     { id: 'WAP', name: 'WAP' },
     { id: 'LSP', name: 'LSP' },
     { id: 'SCP', name: 'SCP' },
   ];
+
+  const environments = options?.length ? options : all;
 
   //   const [workspace, setWorkspace] = useState(environments[0]);
   const [openPopover, setOpenPopover] = useState(null);

@@ -9,7 +9,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 
@@ -30,7 +29,10 @@ export const SignInSchema = zod.object({
     .string()
     .min(1, { message: 'Password is required!' })
     .min(6, { message: 'Password must be at least 6 characters!' }),
-  env: zod.string().min(1, 'Environment is required'),
+  env: zod.preprocess(
+    (value) => (value == null ? '' : value),
+    zod.string().min(1, 'Environment is required')
+  ),
 });
 
 // ----------------------------------------------------------------------
@@ -111,13 +113,19 @@ export function JwtSignInView() {
       </Box>
 
       <Box sx={{ gap: 1.5, display: 'flex', flexDirection: 'column' }}>
-        <Field.Select name="env" label="Environment" slotProps={{ inputLabel: { shrink: true } }}>
-          <MenuItem value="">Select Environment</MenuItem>
-
-          <MenuItem value="WAP">WAP</MenuItem>
-          <MenuItem value="LSP">LSP</MenuItem>
-          <MenuItem value="SCP">SCP</MenuItem>
-        </Field.Select>
+        <Field.Autocomplete
+          name="env"
+          label="Environment"
+          options={['WAP', 'LSP', 'SCP']}
+          getOptionLabel={(option) => option}
+          isOptionEqualToValue={(option, value) => option === value}
+          slotProps={{
+            textField: {
+              placeholder: 'Select Environment',
+              InputLabelProps: { shrink: true },
+            },
+          }}
+        />
       </Box>
 
       <Button
