@@ -21,5 +21,10 @@ export const _account = [
   //   icon: <Iconify icon="custom:invoice-duotone" />,
   // },
   // { label: 'Security', href: '#', icon: <Iconify icon="solar:shield-keyhole-bold-duotone" /> },
-  { label: 'Change Password', href: '#', icon: <Iconify icon="solar:settings-bold-duotone" /> },
+  {
+    label: 'Change Password',
+    href: '#',
+    action: 'change-password',
+    icon: <Iconify icon="solar:settings-bold-duotone" />,
+  },
 ];

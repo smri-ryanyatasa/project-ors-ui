@@ -1,5 +1,7 @@
 'use client';
 
+import { toast } from 'sonner';
+import { useState } from 'react';
 import { varAlpha } from 'minimal-shared/utils';
 import { useBoolean } from 'minimal-shared/hooks';
 
@@ -22,6 +24,9 @@ import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { AnimateBorder } from 'src/components/animate';
 
+import { useUsers } from 'src/sections/user/hooks/use-users';
+import { UserChangePassowordDialog } from 'src/sections/user/dialogs/user-change-password-dialog';
+
 import { useMockedUser, useAuthContext } from 'src/auth/hooks';
 
 import { AccountButton } from './account-button';
@@ -32,10 +37,26 @@ import { SignOutButton } from './sign-out-button';
 export function AccountDrawer({ data = [], sx, ...other }) {
   const pathname = usePathname();
 
+  const { changePassword } = useUsers();
+
   const { user } = useMockedUser();
   const { user: authUser } = useAuthContext();
 
   const { value: open, onFalse: onClose, onTrue: onOpen } = useBoolean();
+
+  const [openChangePassword, setOpenChangePassword] = useState(false);
+
+  const handleMenuClick = (item) => {
+    if (item.action === 'change-password') {
+      setOpenChangePassword(true);
+      return;
+    }
+  };
+
+  const handleChangePassword = async (params) => {
+    await changePassword(params);
+    toast.success('Change password successfully');
+  };
 
   const renderAvatar = () => (
     <AnimateBorder
@@ -68,7 +89,7 @@ export function AccountDrawer({ data = [], sx, ...other }) {
         const rootHref = pathname.includes('/dashboard') ? '/' : paths.dashboard.root;
 
         return (
-          <MenuItem key={option.label}>
+          <MenuItem key={option.label} onClick={() => handleMenuClick(option)}>
             <Link
               component={RouterLink}
               href={option.label === 'Home' ? rootHref : option.href}
@@ -241,6 +262,12 @@ export function AccountDrawer({ data = [], sx, ...other }) {
           <SignOutButton onClose={onClose} />
         </Box>
       </Drawer>
+      <UserChangePassowordDialog
+        open={openChangePassword}
+        user={authUser}
+        onClose={() => setOpenChangePassword(false)}
+        onSave={handleChangePassword}
+      />
     </>
   );
 }
